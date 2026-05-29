@@ -1,0 +1,65 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    @apply font-sans text-navy bg-white;
+    margin: 0;
+  }
+
+  #root {
+    @apply min-h-screen;
+  }
+}
+
+@layer utilities {
+  .section-pad {
+    @apply py-20 md:py-28 px-4 md:px-6;
+  }
+
+  .container-xl {
+    @apply max-w-6xl mx-auto;
+  }
+
+  .eyebrow {
+    @apply inline-flex items-center gap-2 text-xs font-semibold tracking-widest uppercase;
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center gap-2 px-7 py-3.5 bg-brand text-white font-semibold text-base
+           rounded-xl hover:bg-brand-dark hover:-translate-y-0.5 hover:shadow-brand
+           transition-all duration-200 focus-visible:outline-none focus-visible:ring-2
+           focus-visible:ring-brand focus-visible:ring-offset-2;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center gap-2 px-7 py-3.5 bg-white text-navy font-semibold text-base
+           rounded-xl border-2 border-slate-200 hover:border-brand hover:text-brand
+           transition-all duration-200 focus-visible:outline-none focus-visible:ring-2
+           focus-visible:ring-brand focus-visible:ring-offset-2;
+  }
+
+  .card {
+    @apply bg-white rounded-2xl border border-slate-100 shadow-card hover:shadow-card-hover
+           transition-shadow duration-300 p-8;
+  }
+
+  .animate-hidden {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+
+  .animate-visible {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.65s ease-out, transform 0.65s ease-out;
+  }
+}
