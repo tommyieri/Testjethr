@@ -1,17 +1,735 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="it">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Salute e sicurezza sul lavoro full-service dentro Jet HR. Dalla valutazione dei rischi alla sorveglianza sanitaria: tutti gli adempimenti del D.Lgs. 81/2008 gestiti da un partner specializzato." />
-    <title>Salute e Sicurezza sul Lavoro — Jet HR</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Salute e sicurezza sul lavoro full-service dentro Jet HR. Tutti gli adempimenti D.Lgs. 81/2008 gestiti da un partner specializzato." />
+  <title>Salute e Sicurezza sul Lavoro — Jet HR</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] },
+          colors: {
+            brand:       '#1E50FF',
+            'brand-dark':'#1440CC',
+            'brand-tint':'#EEF3FF',
+            'brand-100': '#DCE7FF',
+            navy:        '#0A1628',
+            'navy-mid':  '#1E2F4A',
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Lucide icons -->
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+
+  <style>
+    html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+
+    /* Fade-up animation on scroll */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity .65s ease-out, transform .65s ease-out;
+    }
+    .fade-up.visible { opacity: 1; transform: none; }
+
+    /* Stagger delays */
+    .delay-1 { transition-delay: .1s; }
+    .delay-2 { transition-delay: .2s; }
+    .delay-3 { transition-delay: .3s; }
+    .delay-4 { transition-delay: .4s; }
+    .delay-5 { transition-delay: .5s; }
+
+    /* Navbar */
+    #navbar {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+      transition: background .3s, box-shadow .3s;
+    }
+    #navbar.scrolled {
+      background: rgba(255,255,255,.97);
+      backdrop-filter: blur(8px);
+      box-shadow: 0 1px 12px rgba(10,22,40,.08);
+    }
+
+    /* Buttons */
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 13px 28px; background: #1E50FF; color: #fff;
+      font-weight: 600; font-size: 15px; border-radius: 12px;
+      text-decoration: none; border: none; cursor: pointer;
+      transition: background .2s, transform .2s, box-shadow .2s;
+      font-family: inherit;
+    }
+    .btn-primary:hover {
+      background: #1440CC;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(30,80,255,.3);
+    }
+    .btn-secondary {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 13px 28px; background: #fff; color: #0A1628;
+      font-weight: 600; font-size: 15px; border-radius: 12px;
+      text-decoration: none; border: 2px solid #E2E8F0;
+      cursor: pointer; transition: border-color .2s, color .2s;
+      font-family: inherit;
+    }
+    .btn-secondary:hover { border-color: #1E50FF; color: #1E50FF; }
+
+    /* Cards */
+    .card {
+      background: #fff; border-radius: 16px;
+      border: 1px solid #F1F5F9;
+      box-shadow: 0 2px 12px rgba(10,22,40,.06);
+      transition: box-shadow .3s;
+    }
+    .card:hover { box-shadow: 0 8px 32px rgba(10,22,40,.12); }
+
+    /* Dark pain-point cards */
+    .pain-card {
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,.08);
+      background: #1E2F4A;
+      transition: border-color .3s, background .3s;
+    }
+    .pain-card:hover { border-color: rgba(30,80,255,.35); background: #132038; }
+
+    /* Icon circle */
+    .icon-wrap {
+      width: 48px; height: 48px; border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .icon-wrap-sm {
+      width: 44px; height: 44px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+
+    /* Form inputs */
+    .form-input {
+      width: 100%; padding: 12px 16px;
+      border: 1.5px solid #E2E8F0; border-radius: 12px;
+      font-size: 14px; font-family: inherit; color: #0A1628;
+      background: #fff; outline: none; box-sizing: border-box;
+      transition: border-color .2s, box-shadow .2s;
+    }
+    .form-input:focus {
+      border-color: #1E50FF;
+      box-shadow: 0 0 0 3px rgba(30,80,255,.12);
+    }
+
+    /* Hero grid bg */
+    .hero-grid {
+      background-image:
+        linear-gradient(rgba(30,80,255,.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(30,80,255,.025) 1px, transparent 1px);
+      background-size: 48px 48px;
+    }
+
+    /* Connecting line for steps */
+    @media (min-width: 1024px) {
+      .steps-connector::before {
+        content: '';
+        position: absolute;
+        top: 52px; left: calc(16.66% + 48px); right: calc(16.66% + 48px);
+        height: 1px; background: linear-gradient(90deg, transparent, #E2E8F0, transparent);
+      }
+    }
+
+    /* Pulse dot */
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+    .pulse-dot { animation: pulse 2s ease-in-out infinite; }
+
+    /* Bounce */
+    @keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(6px)} }
+    .bounce { animation: bounce 1.8s ease-in-out infinite; }
+  </style>
+</head>
+
+<body class="font-sans" style="color:#0A1628; background:#fff;">
+
+<!-- ═══════════════════════ NAVBAR ═══════════════════════ -->
+<header id="navbar">
+  <nav style="max-width:1152px; margin:0 auto; padding:0 24px; height:64px; display:flex; align-items:center; justify-content:space-between;">
+
+    <!-- Wordmark -->
+    <a href="#top" style="display:flex;align-items:center;text-decoration:none;gap:0;" aria-label="Jet HR">
+      <span style="font-size:20px;font-weight:900;color:#1E50FF;letter-spacing:-0.5px;">Jet</span>
+      <span style="font-size:20px;font-weight:900;color:#0A1628;letter-spacing:-0.5px;">HR</span>
+      <span style="margin-left:10px;font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#1E50FF;background:#EEF3FF;padding:3px 8px;border-radius:999px;">Beta</span>
+    </a>
+
+    <!-- Desktop nav -->
+    <ul style="display:flex;gap:32px;list-style:none;margin:0;padding:0;" class="hidden md:flex">
+      <li><a href="#come-funziona" style="font-size:14px;font-weight:500;color:#475569;text-decoration:none;transition:color .2s;" onmouseover="this.style.color='#0A1628'" onmouseout="this.style.color='#475569'">Come funziona</a></li>
+      <li><a href="#cosa-include" style="font-size:14px;font-weight:500;color:#475569;text-decoration:none;transition:color .2s;" onmouseover="this.style.color='#0A1628'" onmouseout="this.style.color='#475569'">Cosa include</a></li>
+      <li><a href="#perche-jet-hr" style="font-size:14px;font-weight:500;color:#475569;text-decoration:none;transition:color .2s;" onmouseover="this.style.color='#0A1628'" onmouseout="this.style.color='#475569'">Perché Jet HR</a></li>
+    </ul>
+
+    <!-- Desktop CTA -->
+    <a href="#cta" class="btn-primary hidden md:inline-flex" style="padding:10px 20px;font-size:14px;">Prenota una call</a>
+
+    <!-- Mobile hamburger -->
+    <button id="menu-btn" class="md:hidden" style="background:none;border:none;cursor:pointer;padding:8px;border-radius:8px;" aria-label="Menu">
+      <i data-lucide="menu" style="width:22px;height:22px;color:#0A1628;"></i>
+    </button>
+  </nav>
+
+  <!-- Mobile drawer -->
+  <div id="mobile-menu" style="display:none;background:#fff;border-top:1px solid #F1F5F9;padding:16px 24px 24px;">
+    <nav style="display:flex;flex-direction:column;gap:4px;margin-bottom:16px;">
+      <a href="#come-funziona" class="mobile-nav-link" style="padding:10px 12px;font-size:14px;font-weight:500;color:#374151;text-decoration:none;border-radius:8px;">Come funziona</a>
+      <a href="#cosa-include" class="mobile-nav-link" style="padding:10px 12px;font-size:14px;font-weight:500;color:#374151;text-decoration:none;border-radius:8px;">Cosa include</a>
+      <a href="#perche-jet-hr" class="mobile-nav-link" style="padding:10px 12px;font-size:14px;font-weight:500;color:#374151;text-decoration:none;border-radius:8px;">Perché Jet HR</a>
+    </nav>
+    <a href="#cta" class="btn-primary" style="width:100%;justify-content:center;font-size:14px;">Prenota una call</a>
+  </div>
+</header>
+
+
+<!-- ═══════════════════════ HERO ═══════════════════════ -->
+<section id="top" class="hero-grid" style="min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding-top:64px;overflow:hidden;background:radial-gradient(ellipse 80% 55% at 75% 20%, #DCE7FF 0%, transparent 55%), #fff;">
+  <div style="max-width:1152px;margin:0 auto;padding:80px 24px;width:100%;box-sizing:border-box;">
+    <div style="display:grid;grid-template-columns:1fr;gap:48px;align-items:center;" class="lg:grid-cols-2-hero">
+
+      <!-- Text -->
+      <div class="fade-up" style="text-align:center;" id="hero-text">
+
+        <!-- Eyebrow -->
+        <div style="display:inline-flex;align-items:center;gap:8px;background:#EEF3FF;border-radius:999px;padding:6px 14px;margin-bottom:24px;">
+          <span class="pulse-dot" style="width:6px;height:6px;border-radius:50%;background:#1E50FF;display:inline-block;"></span>
+          <span style="font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#1E50FF;">Nuovo · Salute e sicurezza sul lavoro</span>
+        </div>
+
+        <!-- H1 -->
+        <h1 style="font-size:clamp(36px,6vw,64px);font-weight:900;letter-spacing:-1.5px;line-height:1.05;color:#0A1628;margin:0 0 24px;">
+          La sicurezza sul lavoro,<br>
+          <span style="color:#1E50FF;">finalmente senza pensieri.</span>
+        </h1>
+
+        <!-- Subtitle -->
+        <p style="font-size:clamp(16px,2vw,18px);color:#475569;line-height:1.7;max-width:560px;margin:0 auto 40px;">
+          Dalla valutazione dei rischi alla formazione, dal medico competente alla sorveglianza sanitaria:
+          tutti gli adempimenti del <strong style="color:#0A1628;">D.Lgs. 81/2008</strong> gestiti da un partner specializzato,
+          dentro la piattaforma che usi già.
+        </p>
+
+        <!-- CTAs -->
+        <div style="display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-bottom:40px;">
+          <a href="#cta" class="btn-primary">
+            Prenota una call
+            <i data-lucide="arrow-right" style="width:16px;height:16px;"></i>
+          </a>
+          <a href="#come-funziona" class="btn-secondary">Scopri come funziona</a>
+        </div>
+
+        <!-- Trust line -->
+        <div style="display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;">
+          <div style="display:flex;">
+            <span style="width:28px;height:28px;border-radius:50%;background:#1E50FF;border:2px solid #fff;display:flex;align-items:center;justify-content:center;color:#fff;font-size:10px;font-weight:700;margin-right:-6px;z-index:4;">A</span>
+            <span style="width:28px;height:28px;border-radius:50%;background:#0EA5E9;border:2px solid #fff;display:flex;align-items:center;justify-content:center;color:#fff;font-size:10px;font-weight:700;margin-right:-6px;z-index:3;">B</span>
+            <span style="width:28px;height:28px;border-radius:50%;background:#8B5CF6;border:2px solid #fff;display:flex;align-items:center;justify-content:center;color:#fff;font-size:10px;font-weight:700;margin-right:-6px;z-index:2;">C</span>
+            <span style="width:28px;height:28px;border-radius:50%;background:#10B981;border:2px solid #fff;display:flex;align-items:center;justify-content:center;color:#fff;font-size:10px;font-weight:700;z-index:1;">D</span>
+          </div>
+          <span style="font-size:14px;color:#64748B;">Già scelta da <strong style="color:#0A1628;">più di 1.000 aziende italiane</strong>.</span>
+        </div>
+      </div>
+
+      <!-- Dashboard mockup -->
+      <div class="fade-up delay-2" style="display:flex;justify-content:center;">
+        <div style="position:relative;width:100%;max-width:360px;">
+          <!-- glow -->
+          <div style="position:absolute;inset:-32px;border-radius:24px;background:radial-gradient(ellipse, rgba(30,80,255,.12), transparent 70%);pointer-events:none;"></div>
+          <!-- card -->
+          <div class="card" style="overflow:hidden;padding:0;">
+            <!-- topbar -->
+            <div style="display:flex;align-items:center;gap:8px;padding:14px 20px;border-bottom:1px solid #F1F5F9;background:#F8FAFC;">
+              <span style="font-size:13px;font-weight:700;color:#0A1628;">Salute &amp; Sicurezza</span>
+              <span style="margin-left:auto;font-size:11px;font-weight:700;color:#059669;background:#ECFDF5;padding:3px 8px;border-radius:999px;">Attivo</span>
+            </div>
+            <!-- rows -->
+            <div style="display:flex;flex-direction:column;">
+              <div style="display:flex;align-items:center;gap:12px;padding:14px 20px;border-bottom:1px solid #F8FAFC;">
+                <span style="width:8px;height:8px;border-radius:50%;background:#34D399;flex-shrink:0;"></span>
+                <div>
+                  <p style="font-size:13px;font-weight:600;color:#0A1628;margin:0;">DVR aggiornato</p>
+                  <p style="font-size:11px;color:#94A3B8;margin:0;">Scad. 12 mar 2026</p>
+                </div>
+              </div>
+              <div style="display:flex;align-items:center;gap:12px;padding:14px 20px;border-bottom:1px solid #F8FAFC;">
+                <span style="width:8px;height:8px;border-radius:50%;background:#34D399;flex-shrink:0;"></span>
+                <div>
+                  <p style="font-size:13px;font-weight:600;color:#0A1628;margin:0;">Formazione base</p>
+                  <p style="font-size:11px;color:#94A3B8;margin:0;">Completata</p>
+                </div>
+              </div>
+              <div style="display:flex;align-items:center;gap:12px;padding:14px 20px;border-bottom:1px solid #F8FAFC;">
+                <span style="width:8px;height:8px;border-radius:50%;background:#FBBF24;flex-shrink:0;"></span>
+                <div>
+                  <p style="font-size:13px;font-weight:600;color:#0A1628;margin:0;">Visita medica — M. Rossi</p>
+                  <p style="font-size:11px;color:#94A3B8;margin:0;">Scad. 28 giu 2025</p>
+                </div>
+              </div>
+              <div style="display:flex;align-items:center;gap:12px;padding:14px 20px;">
+                <span style="width:8px;height:8px;border-radius:50%;background:#34D399;flex-shrink:0;"></span>
+                <div>
+                  <p style="font-size:13px;font-weight:600;color:#0A1628;margin:0;">Nomina RSPP esterno</p>
+                  <p style="font-size:11px;color:#94A3B8;margin:0;">Attivo</p>
+                </div>
+              </div>
+            </div>
+            <!-- footer -->
+            <div style="padding:12px 20px;border-top:1px solid #F1F5F9;background:#F8FAFC;display:flex;align-items:center;">
+              <span style="font-size:11px;color:#94A3B8;">4 adempimenti gestiti dal partner</span>
+              <span style="margin-left:auto;font-size:11px;font-weight:600;color:#1E50FF;cursor:pointer;">Dettagli →</span>
+            </div>
+          </div>
+          <!-- floating badge -->
+          <div style="position:absolute;bottom:-16px;left:-16px;background:#fff;border:1px solid #E2E8F0;border-radius:12px;box-shadow:0 2px 12px rgba(10,22,40,.1);padding:10px 14px;display:flex;align-items:center;gap:8px;">
+            <i data-lucide="check-circle-2" style="width:16px;height:16px;color:#10B981;flex-shrink:0;"></i>
+            <span style="font-size:12px;font-weight:700;color:#0A1628;">Zero sanzioni</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scroll indicator -->
+  <a href="#problema" style="display:flex;flex-direction:column;align-items:center;gap:4px;color:#94A3B8;text-decoration:none;padding-bottom:32px;transition:color .2s;" onmouseover="this.style.color='#1E50FF'" onmouseout="this.style.color='#94A3B8'" aria-label="Scorri">
+    <span style="font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;">Scopri</span>
+    <i data-lucide="chevron-down" class="bounce" style="width:18px;height:18px;"></i>
+  </a>
+</section>
+
+
+<!-- ═══════════════════════ PROBLEMA ═══════════════════════ -->
+<section id="problema" style="background:#0A1628;padding:80px 24px;" class="md:py-28">
+  <div style="max-width:1152px;margin:0 auto;">
+
+    <!-- header -->
+    <div class="fade-up" style="text-align:center;margin-bottom:56px;">
+      <p style="font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#1E50FF;margin:0 0 16px;">Odiamo la burocrazia</p>
+      <h2 style="font-size:clamp(26px,4vw,40px);font-weight:800;letter-spacing:-0.5px;color:#fff;margin:0;line-height:1.2;max-width:640px;margin:0 auto;">
+        La sicurezza è un obbligo di legge.<br>
+        <span style="color:#93ACFF;">Gestirla, oggi, è un caos.</span>
+      </h2>
+    </div>
+
+    <!-- grid -->
+    <div style="display:grid;grid-template-columns:1fr;gap:16px;" class="sm:grid-4">
+      <div class="pain-card fade-up" style="padding:28px;">
+        <div style="width:40px;height:40px;border-radius:10px;background:rgba(30,80,255,.15);display:flex;align-items:center;justify-content:center;margin-bottom:16px;">
+          <i data-lucide="users" style="width:20px;height:20px;color:#93ACFF;"></i>
+        </div>
+        <h3 style="font-size:15px;font-weight:700;color:#fff;margin:0 0 8px;">Fornitori diversi e scollegati</h3>
+        <p style="font-size:14px;color:#94A3B8;line-height:1.6;margin:0;">Il consulente sicurezza, il medico competente, il formatore. Ognuno per sé: nessuna visione d'insieme, nessun coordinamento.</p>
+      </div>
+      <div class="pain-card fade-up delay-1" style="padding:28px;">
+        <div style="width:40px;height:40px;border-radius:10px;background:rgba(30,80,255,.15);display:flex;align-items:center;justify-content:center;margin-bottom:16px;">
+          <i data-lucide="calendar-x-2" style="width:20px;height:20px;color:#93ACFF;"></i>
+        </div>
+        <h3 style="font-size:15px;font-weight:700;color:#fff;margin:0 0 8px;">Scadenze che ti rincorrono</h3>
+        <p style="font-size:14px;color:#94A3B8;line-height:1.6;margin:0;">Corsi da rinnovare, visite da prenotare, documenti da aggiornare. Scopri sempre troppo tardi — quando la multa è già arrivata.</p>
+      </div>
+      <div class="pain-card fade-up delay-2" style="padding:28px;">
+        <div style="width:40px;height:40px;border-radius:10px;background:rgba(30,80,255,.15);display:flex;align-items:center;justify-content:center;margin-bottom:16px;">
+          <i data-lucide="alert-triangle" style="width:20px;height:20px;color:#93ACFF;"></i>
+        </div>
+        <h3 style="font-size:15px;font-weight:700;color:#fff;margin:0 0 8px;">Rischio di sanzioni pesanti</h3>
+        <p style="font-size:14px;color:#94A3B8;line-height:1.6;margin:0;">Il D.Lgs. 81/2008 prevede sanzioni fino a 150.000 € e responsabilità penale per il datore. Non è un rischio che si può ignorare.</p>
+      </div>
+      <div class="pain-card fade-up delay-3" style="padding:28px;">
+        <div style="width:40px;height:40px;border-radius:10px;background:rgba(30,80,255,.15);display:flex;align-items:center;justify-content:center;margin-bottom:16px;">
+          <i data-lucide="clock-3" style="width:20px;height:20px;color:#93ACFF;"></i>
+        </div>
+        <h3 style="font-size:15px;font-weight:700;color:#fff;margin:0 0 8px;">Ore perse in adempimenti</h3>
+        <p style="font-size:14px;color:#94A3B8;line-height:1.6;margin:0;">Raccogliere documenti, coordinare fornitori, archiviare verbali. Tempo sottratto al tuo business, senza creare nessun valore.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════ COME FUNZIONA ═══════════════════════ -->
+<section id="come-funziona" style="background:#fff;padding:80px 24px;" class="md:py-28">
+  <div style="max-width:1152px;margin:0 auto;">
+
+    <!-- header -->
+    <div class="fade-up" style="text-align:center;margin-bottom:64px;">
+      <p style="font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#1E50FF;margin:0 0 16px;">Come funziona</p>
+      <h2 style="font-size:clamp(26px,4vw,40px);font-weight:800;letter-spacing:-.5px;color:#0A1628;margin:0;">Tre passi. Poi ci pensiamo noi.</h2>
+    </div>
+
+    <!-- steps -->
+    <div style="display:grid;grid-template-columns:1fr;gap:40px;" class="md:grid-3 steps-connector" id="steps-grid">
+      <div class="fade-up" style="display:flex;flex-direction:column;align-items:center;text-align:center;">
+        <div style="position:relative;margin-bottom:24px;">
+          <div style="width:96px;height:96px;border-radius:16px;background:#EEF3FF;display:flex;align-items:center;justify-content:center;">
+            <i data-lucide="layout-dashboard" style="width:32px;height:32px;color:#1E50FF;"></i>
+          </div>
+          <span style="position:absolute;top:-8px;right:-8px;width:28px;height:28px;border-radius:50%;background:#1E50FF;color:#fff;font-size:12px;font-weight:900;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(30,80,255,.3);">1</span>
+        </div>
+        <h3 style="font-size:17px;font-weight:700;color:#0A1628;margin:0 0 12px;line-height:1.3;">Attivi il modulo dalla tua dashboard Jet HR</h3>
+        <p style="font-size:14px;color:#64748B;line-height:1.7;margin:0;">Un click, zero burocrazia. Il modulo appare subito nella tua piattaforma, pronto all'uso.</p>
+      </div>
+      <div class="fade-up delay-2" style="display:flex;flex-direction:column;align-items:center;text-align:center;">
+        <div style="position:relative;margin-bottom:24px;">
+          <div style="width:96px;height:96px;border-radius:16px;background:#EEF3FF;display:flex;align-items:center;justify-content:center;">
+            <i data-lucide="user-check" style="width:32px;height:32px;color:#1E50FF;"></i>
+          </div>
+          <span style="position:absolute;top:-8px;right:-8px;width:28px;height:28px;border-radius:50%;background:#1E50FF;color:#fff;font-size:12px;font-weight:900;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(30,80,255,.3);">2</span>
+        </div>
+        <h3 style="font-size:17px;font-weight:700;color:#0A1628;margin:0 0 12px;line-height:1.3;">Un partner specializzato prende in carico tutto</h3>
+        <p style="font-size:14px;color:#64748B;line-height:1.7;margin:0;">RSPP esterno, medico competente, formatori certificati: professionisti selezionati da Jet HR che gestiscono ogni adempimento.</p>
+      </div>
+      <div class="fade-up delay-4" style="display:flex;flex-direction:column;align-items:center;text-align:center;">
+        <div style="position:relative;margin-bottom:24px;">
+          <div style="width:96px;height:96px;border-radius:16px;background:#EEF3FF;display:flex;align-items:center;justify-content:center;">
+            <i data-lucide="bell" style="width:32px;height:32px;color:#1E50FF;"></i>
+          </div>
+          <span style="position:absolute;top:-8px;right:-8px;width:28px;height:28px;border-radius:50%;background:#1E50FF;color:#fff;font-size:12px;font-weight:900;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(30,80,255,.3);">3</span>
+        </div>
+        <h3 style="font-size:17px;font-weight:700;color:#0A1628;margin:0 0 12px;line-height:1.3;">Documenti e scadenze restano dentro Jet HR</h3>
+        <p style="font-size:14px;color:#64748B;line-height:1.7;margin:0;">DVR, verbali, attestati, calendari: tutto centralizzato dove sei già ogni giorno. <strong>Zero dimenticanze.</strong></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════ COSA INCLUDE ═══════════════════════ -->
+<section id="cosa-include" style="background:#F8FAFC;padding:80px 24px;" class="md:py-28">
+  <div style="max-width:1152px;margin:0 auto;">
+
+    <!-- header -->
+    <div class="fade-up" style="text-align:center;margin-bottom:56px;">
+      <p style="font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#1E50FF;margin:0 0 16px;">Tutto incluso</p>
+      <h2 style="font-size:clamp(26px,4vw,40px);font-weight:800;letter-spacing:-.5px;color:#0A1628;margin:0 0 16px;">Cosa è compreso nel modulo</h2>
+      <p style="font-size:17px;color:#64748B;max-width:480px;margin:0 auto;">Nessun extra nascosto. Ogni adempimento previsto dal D.Lgs. 81/2008 è coperto.</p>
+    </div>
+
+    <!-- grid -->
+    <div style="display:grid;grid-template-columns:1fr;gap:16px;" class="sm:grid-2 lg:grid-3">
+      <div class="card fade-up" style="padding:32px;">
+        <div class="icon-wrap" style="background:#EEF3FF;margin-bottom:20px;">
+          <i data-lucide="file-text" style="width:22px;height:22px;color:#1E50FF;"></i>
+        </div>
+        <h3 style="font-size:16px;font-weight:700;color:#0A1628;margin:0 0 8px;">Documento di Valutazione dei Rischi (DVR)</h3>
+        <p style="font-size:14px;color:#64748B;line-height:1.6;margin:0;">Redazione, aggiornamento e conservazione del DVR, obbligatorio per tutte le aziende.</p>
+      </div>
+      <div class="card fade-up delay-1" style="padding:32px;">
+        <div class="icon-wrap" style="background:#EEF3FF;margin-bottom:20px;">
+          <i data-lucide="shield-check" style="width:22px;height:22px;color:#1E50FF;"></i>
+        </div>
+        <h3 style="font-size:16px;font-weight:700;color:#0A1628;margin:0 0 8px;">RSPP Esterno</h3>
+        <p style="font-size:14px;color:#64748B;line-height:1.6;margin:0;">Responsabile del Servizio di Prevenzione e Protezione qualificato, nominato e operativo da subito.</p>
+      </div>
+      <div class="card fade-up delay-2" style="padding:32px;">
+        <div class="icon-wrap" style="background:#EEF3FF;margin-bottom:20px;">
+          <i data-lucide="graduation-cap" style="width:22px;height:22px;color:#1E50FF;"></i>
+        </div>
+        <h3 style="font-size:16px;font-weight:700;color:#0A1628;margin:0 0 8px;">Formazione obbligatoria</h3>
+        <p style="font-size:14px;color:#64748B;line-height:1.6;margin:0;">Tutti i livelli di rischio: formazione generale, specifica e per preposti/dirigenti conforme all'Accordo Stato-Regioni.</p>
+      </div>
+      <div class="card fade-up delay-1" style="padding:32px;">
+        <div class="icon-wrap" style="background:#EEF3FF;margin-bottom:20px;">
+          <i data-lucide="heart-pulse" style="width:22px;height:22px;color:#1E50FF;"></i>
+        </div>
+        <h3 style="font-size:16px;font-weight:700;color:#0A1628;margin:0 0 8px;">Medico Competente e sorveglianza sanitaria</h3>
+        <p style="font-size:14px;color:#64748B;line-height:1.6;margin:0;">Visite mediche periodiche, idoneità alla mansione, cartelle sanitarie in piena conformità.</p>
+      </div>
+      <div class="card fade-up delay-2" style="padding:32px;">
+        <div class="icon-wrap" style="background:#EEF3FF;margin-bottom:20px;">
+          <i data-lucide="calendar-check" style="width:22px;height:22px;color:#1E50FF;"></i>
+        </div>
+        <h3 style="font-size:16px;font-weight:700;color:#0A1628;margin:0 0 8px;">Scadenze e promemoria automatici</h3>
+        <p style="font-size:14px;color:#64748B;line-height:1.6;margin:0;">Nessuna scadenza dimenticata: il sistema ti avvisa in anticipo per ogni rinnovo, visita o aggiornamento.</p>
+      </div>
+      <div class="card fade-up delay-3" style="padding:32px;">
+        <div class="icon-wrap" style="background:#EEF3FF;margin-bottom:20px;">
+          <i data-lucide="receipt" style="width:22px;height:22px;color:#1E50FF;"></i>
+        </div>
+        <h3 style="font-size:16px;font-weight:700;color:#0A1628;margin:0 0 8px;">Un unico referente, un'unica fattura</h3>
+        <p style="font-size:14px;color:#64748B;line-height:1.6;margin:0;">Niente fornitori multipli. Un interlocutore, una rendicontazione chiara, zero sorprese.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════ PERCHÉ JET HR ═══════════════════════ -->
+<section id="perche-jet-hr" style="background:#fff;padding:80px 24px;" class="md:py-28">
+  <div style="max-width:1152px;margin:0 auto;display:grid;grid-template-columns:1fr;gap:56px;align-items:start;" class="lg:grid-2">
+
+    <!-- left -->
+    <div class="fade-up">
+      <p style="font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#1E50FF;margin:0 0 16px;">Perché dentro Jet HR</p>
+      <h2 style="font-size:clamp(26px,4vw,40px);font-weight:800;letter-spacing:-.5px;color:#0A1628;margin:0 0 20px;line-height:1.2;">Non è solo un servizio esterno. È integrato nel tuo HR.</h2>
+      <p style="font-size:17px;color:#64748B;line-height:1.7;margin:0 0 40px;">Ci sono decine di consulenti sicurezza sul mercato. La differenza è che con Jet HR hai tutto in un unico posto — e i dati parlano da soli.</p>
+      <div style="padding-top:32px;border-top:1px solid #F1F5F9;">
+        <p style="font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#0A1628;margin:0 0 16px;">Già integrato con</p>
+        <div style="display:flex;flex-wrap:wrap;gap:10px;">
+          <span style="font-size:13px;font-weight:500;color:#475569;background:#F1F5F9;padding:6px 14px;border-radius:999px;">Cedolini</span>
+          <span style="font-size:13px;font-weight:500;color:#475569;background:#F1F5F9;padding:6px 14px;border-radius:999px;">Presenze</span>
+          <span style="font-size:13px;font-weight:500;color:#475569;background:#F1F5F9;padding:6px 14px;border-radius:999px;">Scadenze</span>
+          <span style="font-size:13px;font-weight:500;color:#475569;background:#F1F5F9;padding:6px 14px;border-radius:999px;">Documenti</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- right -->
+    <div style="display:flex;flex-direction:column;gap:16px;">
+      <div class="card fade-up delay-1" style="padding:24px;display:flex;gap:16px;align-items:flex-start;">
+        <div class="icon-wrap-sm" style="background:#EEF3FF;"><i data-lucide="layout-dashboard" style="width:20px;height:20px;color:#1E50FF;"></i></div>
+        <div><h3 style="font-size:15px;font-weight:700;color:#0A1628;margin:0 0 6px;">Tutto nella piattaforma che già usi</h3><p style="font-size:14px;color:#64748B;line-height:1.6;margin:0;">Non apri un nuovo portale. Salute & Sicurezza si aggiunge dove hai già paghe, ferie e cedolini.</p></div>
+      </div>
+      <div class="card fade-up delay-2" style="padding:24px;display:flex;gap:16px;align-items:flex-start;">
+        <div class="icon-wrap-sm" style="background:#EEF3FF;"><i data-lucide="star" style="width:20px;height:20px;color:#1E50FF;"></i></div>
+        <div><h3 style="font-size:15px;font-weight:700;color:#0A1628;margin:0 0 6px;">Partner selezionato, qualità garantita</h3><p style="font-size:14px;color:#64748B;line-height:1.6;margin:0;">Jet HR ha scelto il partner dopo una selezione rigorosa. Se qualcosa non va, hai un unico interlocutore: noi.</p></div>
+      </div>
+      <div class="card fade-up delay-3" style="padding:24px;display:flex;gap:16px;align-items:flex-start;">
+        <div class="icon-wrap-sm" style="background:#EEF3FF;"><i data-lucide="database" style="width:20px;height:20px;color:#1E50FF;"></i></div>
+        <div><h3 style="font-size:15px;font-weight:700;color:#0A1628;margin:0 0 6px;">I tuoi dati già nel sistema</h3><p style="font-size:14px;color:#64748B;line-height:1.6;margin:0;">Dipendenti, mansioni, sedi: il sistema conosce già la tua azienda. I promemoria sono automatici dal giorno uno.</p></div>
+      </div>
+      <div class="card fade-up delay-4" style="padding:24px;display:flex;gap:16px;align-items:flex-start;">
+        <div class="icon-wrap-sm" style="background:#EEF3FF;"><i data-lucide="banknote" style="width:20px;height:20px;color:#1E50FF;"></i></div>
+        <div><h3 style="font-size:15px;font-weight:700;color:#0A1628;margin:0 0 6px;">Prezzo chiaro, niente preventivi opachi</h3><p style="font-size:14px;color:#64748B;line-height:1.6;margin:0;">Sai esattamente cosa paghi. Nessuna sorpresa in fattura, nessuna ora extra da autorizzare.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════ SOCIAL PROOF ═══════════════════════ -->
+<section style="background:#1E50FF;padding:80px 24px;" class="md:py-28">
+  <div style="max-width:1152px;margin:0 auto;">
+    <div class="fade-up" style="text-align:center;margin-bottom:56px;">
+      <p style="font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#93ACFF;margin:0 0 16px;">I numeri parlano chiaro</p>
+      <h2 style="font-size:clamp(26px,4vw,40px);font-weight:800;letter-spacing:-.5px;color:#fff;margin:0;">Non chiedeteci fiducia. Chiedetela ai nostri clienti.</h2>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr;gap:16px;margin-bottom:40px;" class="sm:grid-3">
+      <div class="fade-up" style="text-align:center;padding:40px 24px;border-radius:16px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);">
+        <p style="font-size:56px;font-weight:900;color:#fff;margin:0 0 8px;letter-spacing:-2px;">61</p>
+        <p style="font-size:15px;font-weight:600;color:rgba(255,255,255,.9);margin:0 0 4px;">NPS score</p>
+        <p style="font-size:13px;color:rgba(255,255,255,.55);margin:0;">Clienti che ci raccomanderebbero</p>
+      </div>
+      <div class="fade-up delay-2" style="text-align:center;padding:40px 24px;border-radius:16px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);">
+        <p style="font-size:56px;font-weight:900;color:#fff;margin:0 0 8px;letter-spacing:-2px;">1h</p>
+        <p style="font-size:15px;font-weight:600;color:rgba(255,255,255,.9);margin:0 0 4px;">Tempo medio di risposta</p>
+        <p style="font-size:13px;color:rgba(255,255,255,.55);margin:0;">Dal nostro team di supporto</p>
+      </div>
+      <div class="fade-up delay-4" style="text-align:center;padding:40px 24px;border-radius:16px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);">
+        <p style="font-size:56px;font-weight:900;color:#fff;margin:0 0 8px;letter-spacing:-2px;">90%</p>
+        <p style="font-size:15px;font-weight:600;color:rgba(255,255,255,.9);margin:0 0 4px;">Meno burocrazia</p>
+        <p style="font-size:13px;color:rgba(255,255,255,.55);margin:0;">Tempo risparmiato in adempimenti</p>
+      </div>
+    </div>
+    <div class="fade-up" style="display:flex;flex-wrap:wrap;justify-content:center;gap:12px;">
+      <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:999px;padding:10px 20px;">
+        <i data-lucide="shield-check" style="width:15px;height:15px;color:#fff;"></i>
+        <span style="font-size:13px;font-weight:600;color:#fff;">GDPR Compliant</span>
+      </div>
+      <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:999px;padding:10px 20px;">
+        <i data-lucide="lock" style="width:15px;height:15px;color:#fff;"></i>
+        <span style="font-size:13px;font-weight:600;color:#fff;">ISO 27001</span>
+      </div>
+      <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:999px;padding:10px 20px;">
+        <span style="font-size:13px;font-weight:600;color:#fff;">🇮🇹 Made in Italy</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════ CTA + FORM ═══════════════════════ -->
+<section id="cta" style="background:#EEF3FF;padding:80px 24px;" class="md:py-28">
+  <div style="max-width:1152px;margin:0 auto;">
+    <div class="fade-up" style="text-align:center;margin-bottom:56px;">
+      <p style="font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#1E50FF;margin:0 0 16px;">Inizia oggi</p>
+      <h2 style="font-size:clamp(26px,4vw,40px);font-weight:800;letter-spacing:-.5px;color:#0A1628;margin:0 0 16px;">Ti interessa? Parliamone 15 minuti.</h2>
+      <p style="font-size:17px;color:#64748B;max-width:480px;margin:0 auto;">Nessun impegno, nessuna pressione. Capiamo la tua situazione e ti diciamo se il modulo fa per te.</p>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr;gap:24px;max-width:880px;margin:0 auto;" class="lg:grid-2">
+
+      <!-- Form card -->
+      <div class="card fade-up" style="padding:40px;">
+        <h3 style="font-size:18px;font-weight:700;color:#0A1628;margin:0 0 28px;">Lascia i tuoi dati</h3>
+        <!-- TODO: sostituire YOUR_FORMSPREE_ID con il tuo ID reale -->
+        <form id="contact-form" action="https://formspree.io/f/YOUR_FORMSPREE_ID" method="POST" style="display:flex;flex-direction:column;gap:16px;">
+          <div>
+            <label style="display:block;font-size:13px;font-weight:600;color:#0A1628;margin-bottom:6px;">Nome e cognome <span style="color:#1E50FF;">*</span></label>
+            <input class="form-input" type="text" name="nome" required placeholder="Mario Rossi" />
+          </div>
+          <div>
+            <label style="display:block;font-size:13px;font-weight:600;color:#0A1628;margin-bottom:6px;">Nome azienda <span style="color:#1E50FF;">*</span></label>
+            <input class="form-input" type="text" name="azienda" required placeholder="Acme S.r.l." />
+          </div>
+          <div>
+            <label style="display:block;font-size:13px;font-weight:600;color:#0A1628;margin-bottom:6px;">Email aziendale <span style="color:#1E50FF;">*</span></label>
+            <input class="form-input" type="email" name="email" required placeholder="mario@acme.it" />
+          </div>
+          <div>
+            <label style="display:block;font-size:13px;font-weight:600;color:#0A1628;margin-bottom:6px;">Numero di dipendenti</label>
+            <select class="form-input" name="dipendenti" style="appearance:none;cursor:pointer;">
+              <option value="">Seleziona…</option>
+              <option>1–5 dipendenti</option>
+              <option>6–15 dipendenti</option>
+              <option>16–50 dipendenti</option>
+              <option>51–200 dipendenti</option>
+              <option>200+ dipendenti</option>
+            </select>
+          </div>
+          <p style="font-size:12px;color:#94A3B8;line-height:1.6;margin:0;">Inviando il modulo accetti la nostra <u style="cursor:pointer;">Privacy Policy</u>. Dati trattati ai sensi del Reg. UE 2016/679 (GDPR).</p>
+          <button type="submit" class="btn-primary" style="justify-content:center;">
+            Invia richiesta
+            <i data-lucide="send" style="width:15px;height:15px;"></i>
+          </button>
+          <div id="form-success" style="display:none;text-align:center;padding:16px;background:#ECFDF5;border-radius:12px;color:#059669;font-weight:600;font-size:14px;">
+            ✓ Richiesta inviata! Ti contatteremo entro 1 ora lavorativa.
+          </div>
+        </form>
+      </div>
+
+      <!-- Calendly placeholder -->
+      <div class="card fade-up delay-2" style="padding:40px;display:flex;flex-direction:column;gap:20px;">
+        <div style="display:flex;align-items:center;gap:12px;">
+          <div class="icon-wrap-sm" style="background:#EEF3FF;"><i data-lucide="calendar" style="width:20px;height:20px;color:#1E50FF;"></i></div>
+          <div>
+            <h3 style="font-size:16px;font-weight:700;color:#0A1628;margin:0;">Prenota una call</h3>
+            <p style="font-size:12px;color:#94A3B8;margin:0;">15 minuti, senza impegno</p>
+          </div>
+        </div>
+        <p style="font-size:14px;color:#64748B;line-height:1.7;margin:0;">Preferisci scegliere tu il momento? Prenota direttamente un slot nel calendario del nostro team.</p>
+        <!-- TODO: embed Calendly — sostituire CALENDLY_URL -->
+        <div style="flex:1;min-height:260px;border-radius:12px;border:2px dashed #CBD5E1;background:#F8FAFC;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:24px;text-align:center;">
+          <i data-lucide="calendar" style="width:36px;height:36px;color:#CBD5E1;"></i>
+          <p style="font-size:13px;font-weight:600;color:#94A3B8;margin:0;">Embed Calendly</p>
+          <code style="font-size:11px;color:#94A3B8;background:#fff;border:1px solid #E2E8F0;border-radius:8px;padding:6px 12px;font-family:monospace;">CALENDLY_URL</code>
+          <p style="font-size:12px;color:#CBD5E1;margin:0;">Sostituisci CALENDLY_URL in index.html per attivare l'embed.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════ FOOTER ═══════════════════════ -->
+<footer style="background:#0A1628;padding:64px 24px 40px;" role="contentinfo">
+  <div style="max-width:1152px;margin:0 auto;">
+    <div style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:32px;padding-bottom:40px;border-bottom:1px solid rgba(255,255,255,.1);">
+      <div>
+        <div style="display:flex;align-items:center;margin-bottom:12px;">
+          <span style="font-size:22px;font-weight:900;color:#1E50FF;letter-spacing:-.5px;">Jet</span>
+          <span style="font-size:22px;font-weight:900;color:#fff;letter-spacing:-.5px;">HR</span>
+        </div>
+        <p style="font-size:14px;color:#64748B;line-height:1.6;max-width:280px;margin:0;">Software HR + payroll con un Consulente del Lavoro Partner dedicato. Tutto in un unico posto.</p>
+      </div>
+      <nav style="display:flex;flex-wrap:wrap;gap:24px;align-items:center;">
+        <a href="#come-funziona" style="font-size:14px;color:#64748B;text-decoration:none;transition:color .2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#64748B'">Come funziona</a>
+        <a href="#cosa-include" style="font-size:14px;color:#64748B;text-decoration:none;transition:color .2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#64748B'">Cosa include</a>
+        <a href="#perche-jet-hr" style="font-size:14px;color:#64748B;text-decoration:none;transition:color .2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#64748B'">Perché Jet HR</a>
+        <a href="#cta" style="font-size:14px;color:#64748B;text-decoration:none;transition:color .2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#64748B'">Prenota una call</a>
+      </nav>
+    </div>
+    <div style="padding-top:28px;display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;">
+      <div style="display:flex;gap:24px;font-size:13px;color:#475569;">
+        <span>© 2025 Jet HR S.r.l.</span>
+        <span>P.IVA IT12345678901</span>
+      </div>
+      <p style="font-size:13px;color:#334155;font-style:italic;margin:0;">Prototipo a scopo dimostrativo — non rappresenta un'offerta commerciale definitiva.</p>
+    </div>
+  </div>
+</footer>
+
+
+<!-- ═══════════════════════ SCRIPTS ═══════════════════════ -->
+<script>
+  // Init Lucide icons
+  lucide.createIcons();
+
+  // ── Navbar scroll effect ──
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 16);
+  }, { passive: true });
+
+  // ── Mobile menu ──
+  const menuBtn = document.getElementById('menu-btn');
+  const mobileMenu = document.getElementById('mobile-menu');
+  let menuOpen = false;
+  menuBtn.addEventListener('click', () => {
+    menuOpen = !menuOpen;
+    mobileMenu.style.display = menuOpen ? 'block' : 'none';
+    menuBtn.querySelector('[data-lucide]').setAttribute('data-lucide', menuOpen ? 'x' : 'menu');
+    lucide.createIcons();
+  });
+  // Close on nav link click
+  document.querySelectorAll('.mobile-nav-link, #mobile-menu a').forEach(a => {
+    a.addEventListener('click', () => {
+      menuOpen = false;
+      mobileMenu.style.display = 'none';
+      menuBtn.querySelector('[data-lucide]').setAttribute('data-lucide', 'menu');
+      lucide.createIcons();
+    });
+  });
+
+  // ── Responsive grid helpers via CSS ──
+  const style = document.createElement('style');
+  style.textContent = `
+    @media (min-width:640px)  { .sm\\:grid-2 { grid-template-columns: 1fr 1fr; } .sm\\:grid-3 { grid-template-columns: 1fr 1fr; } .sm\\:grid-4 { grid-template-columns: 1fr 1fr; } }
+    @media (min-width:640px)  { #hero-text { text-align: left !important; } #hero-text > div, #hero-text > div + *, #hero-text .flex { justify-content: flex-start !important; } }
+    @media (min-width:1024px) { .lg\\:grid-2 { grid-template-columns: 1fr 1fr; } .lg\\:grid-3 { grid-template-columns: 1fr 1fr 1fr; } .md\\:grid-3, .sm\\:grid-3 { grid-template-columns: 1fr 1fr 1fr; } .sm\\:grid-4 { grid-template-columns: repeat(4,1fr); } }
+  `;
+  document.head.appendChild(style);
+
+  // ── Fade-up on scroll ──
+  const fadeEls = document.querySelectorAll('.fade-up');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  fadeEls.forEach(el => observer.observe(el));
+
+  // ── Form success message ──
+  const form = document.getElementById('contact-form');
+  if (form) {
+    form.addEventListener('submit', async e => {
+      e.preventDefault();
+      const btn = form.querySelector('button[type=submit]');
+      btn.textContent = 'Invio in corso…';
+      btn.disabled = true;
+      try {
+        const res = await fetch(form.action, { method: 'POST', body: new FormData(form), headers: { Accept: 'application/json' } });
+        if (res.ok) {
+          form.querySelector('#form-success').style.display = 'block';
+          form.reset();
+        } else {
+          btn.textContent = 'Errore — riprova';
+          btn.disabled = false;
+        }
+      } catch {
+        btn.textContent = 'Errore — riprova';
+        btn.disabled = false;
+      }
+    });
+  }
+</script>
+</body>
 </html>
