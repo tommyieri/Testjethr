@@ -1,735 +1,861 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Salute e sicurezza sul lavoro full-service dentro Jet HR. Tutti gli adempimenti D.Lgs. 81/2008 gestiti da un partner specializzato." />
-  <title>Salute e Sicurezza sul Lavoro — Jet HR</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dalla RAL al netto — calcolatore 2026</title>
+<style>:root {
+  --sfondo: #f6f7f9;
+  --carta: #ffffff;
+  --testo: #14181f;
+  --testo-tenue: #5f6875;
+  --bordo: #e3e6ea;
+  --accento: #1f5fd8;
+  --accento-tenue: #eef3fd;
+  --negativo: #b3261e;
+  --positivo: #1a7f45;
+  --raggio: 12px;
+}
 
-  <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+* { box-sizing: border-box; }
 
-  <!-- Tailwind CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] },
-          colors: {
-            brand:       '#1E50FF',
-            'brand-dark':'#1440CC',
-            'brand-tint':'#EEF3FF',
-            'brand-100': '#DCE7FF',
-            navy:        '#0A1628',
-            'navy-mid':  '#1E2F4A',
-          }
-        }
-      }
-    }
-  </script>
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--sfondo);
+  color: var(--testo);
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+    Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
 
-  <!-- Lucide icons -->
-  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+.wrap {
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 48px 20px 64px;
+}
 
-  <style>
-    html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+/* ---------- Intro ---------- */
 
-    /* Fade-up animation on scroll */
-    .fade-up {
-      opacity: 0;
-      transform: translateY(24px);
-      transition: opacity .65s ease-out, transform .65s ease-out;
-    }
-    .fade-up.visible { opacity: 1; transform: none; }
+.intro h1 {
+  font-size: 30px;
+  letter-spacing: -0.5px;
+  margin: 0 0 8px;
+}
+.intro p {
+  margin: 0 0 6px;
+  color: var(--testo-tenue);
+  max-width: 62ch;
+}
+.intro .nota { font-size: 14px; }
 
-    /* Stagger delays */
-    .delay-1 { transition-delay: .1s; }
-    .delay-2 { transition-delay: .2s; }
-    .delay-3 { transition-delay: .3s; }
-    .delay-4 { transition-delay: .4s; }
-    .delay-5 { transition-delay: .5s; }
+/* ---------- Card ---------- */
 
-    /* Navbar */
-    #navbar {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 50;
-      transition: background .3s, box-shadow .3s;
-    }
-    #navbar.scrolled {
-      background: rgba(255,255,255,.97);
-      backdrop-filter: blur(8px);
-      box-shadow: 0 1px 12px rgba(10,22,40,.08);
-    }
+.card {
+  background: var(--carta);
+  border: 1px solid var(--bordo);
+  border-radius: var(--raggio);
+  padding: 20px;
+  margin-top: 20px;
+}
 
-    /* Buttons */
-    .btn-primary {
-      display: inline-flex; align-items: center; gap: 8px;
-      padding: 13px 28px; background: #1E50FF; color: #fff;
-      font-weight: 600; font-size: 15px; border-radius: 12px;
-      text-decoration: none; border: none; cursor: pointer;
-      transition: background .2s, transform .2s, box-shadow .2s;
-      font-family: inherit;
-    }
-    .btn-primary:hover {
-      background: #1440CC;
-      transform: translateY(-2px);
-      box-shadow: 0 8px 24px rgba(30,80,255,.3);
-    }
-    .btn-secondary {
-      display: inline-flex; align-items: center; gap: 8px;
-      padding: 13px 28px; background: #fff; color: #0A1628;
-      font-weight: 600; font-size: 15px; border-radius: 12px;
-      text-decoration: none; border: 2px solid #E2E8F0;
-      cursor: pointer; transition: border-color .2s, color .2s;
-      font-family: inherit;
-    }
-    .btn-secondary:hover { border-color: #1E50FF; color: #1E50FF; }
+/* ---------- Form ---------- */
 
-    /* Cards */
-    .card {
-      background: #fff; border-radius: 16px;
-      border: 1px solid #F1F5F9;
-      box-shadow: 0 2px 12px rgba(10,22,40,.06);
-      transition: box-shadow .3s;
-    }
-    .card:hover { box-shadow: 0 8px 32px rgba(10,22,40,.12); }
+.tabs {
+  display: inline-flex;
+  background: var(--sfondo);
+  border-radius: 8px;
+  padding: 3px;
+  margin-bottom: 18px;
+}
+.tab {
+  border: 0;
+  background: transparent;
+  padding: 7px 16px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--testo-tenue);
+  cursor: pointer;
+}
+.tab.attivo {
+  background: var(--carta);
+  color: var(--testo);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
 
-    /* Dark pain-point cards */
-    .pain-card {
-      border-radius: 16px;
-      border: 1px solid rgba(255,255,255,.08);
-      background: #1E2F4A;
-      transition: border-color .3s, background .3s;
-    }
-    .pain-card:hover { border-color: rgba(30,80,255,.35); background: #132038; }
+.campi {
+  display: flex;
+  gap: 12px;
+  align-items: flex-end;
+  flex-wrap: wrap;
+}
+.campo { flex: 1 1 220px; }
+.campo.stretto { flex: 0 0 110px; }
+.campo > span {
+  display: block;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--testo-tenue);
+  margin-bottom: 6px;
+}
 
-    /* Icon circle */
-    .icon-wrap {
-      width: 48px; height: 48px; border-radius: 12px;
-      display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0;
-    }
-    .icon-wrap-sm {
-      width: 44px; height: 44px; border-radius: 10px;
-      display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0;
-    }
+.input-euro { position: relative; }
+.input-euro .suffisso {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--testo-tenue);
+  pointer-events: none;
+}
 
-    /* Form inputs */
-    .form-input {
-      width: 100%; padding: 12px 16px;
-      border: 1.5px solid #E2E8F0; border-radius: 12px;
-      font-size: 14px; font-family: inherit; color: #0A1628;
-      background: #fff; outline: none; box-sizing: border-box;
-      transition: border-color .2s, box-shadow .2s;
-    }
-    .form-input:focus {
-      border-color: #1E50FF;
-      box-shadow: 0 0 0 3px rgba(30,80,255,.12);
-    }
+input[type="text"], select {
+  width: 100%;
+  padding: 11px 12px;
+  font-size: 17px;
+  font-variant-numeric: tabular-nums;
+  border: 1px solid var(--bordo);
+  border-radius: 8px;
+  background: var(--carta);
+  color: var(--testo);
+}
+input[type="text"] { padding-right: 30px; }
+input:focus, select:focus {
+  outline: 2px solid var(--accento);
+  outline-offset: -1px;
+  border-color: var(--accento);
+}
 
-    /* Hero grid bg */
-    .hero-grid {
-      background-image:
-        linear-gradient(rgba(30,80,255,.025) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(30,80,255,.025) 1px, transparent 1px);
-      background-size: 48px 48px;
-    }
+.calcola {
+  flex: 0 0 auto;
+  padding: 12px 26px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #fff;
+  background: var(--accento);
+  border: 0;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.calcola:hover { background: #1a51ba; }
 
-    /* Connecting line for steps */
-    @media (min-width: 1024px) {
-      .steps-connector::before {
-        content: '';
-        position: absolute;
-        top: 52px; left: calc(16.66% + 48px); right: calc(16.66% + 48px);
-        height: 1px; background: linear-gradient(90deg, transparent, #E2E8F0, transparent);
-      }
-    }
+.errore {
+  margin: 12px 0 0;
+  color: var(--negativo);
+  font-size: 14px;
+}
 
-    /* Pulse dot */
-    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
-    .pulse-dot { animation: pulse 2s ease-in-out infinite; }
+/* ---------- Risultati ---------- */
 
-    /* Bounce */
-    @keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(6px)} }
-    .bounce { animation: bounce 1.8s ease-in-out infinite; }
-  </style>
+.inversa-nota {
+  margin: 0 0 16px;
+  padding: 11px 14px;
+  background: var(--accento-tenue);
+  border-radius: 8px;
+  font-size: 15px;
+}
+
+.numeroni {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 14px;
+}
+.numerone {
+  padding: 14px 16px;
+  border: 1px solid var(--bordo);
+  border-radius: 10px;
+}
+.numerone.primario {
+  background: var(--accento-tenue);
+  border-color: #cfdff9;
+}
+.numerone .label {
+  display: block;
+  font-size: 12.5px;
+  color: var(--testo-tenue);
+  margin-bottom: 4px;
+}
+.numerone .valore {
+  display: block;
+  font-size: 25px;
+  font-weight: 650;
+  letter-spacing: -0.5px;
+  font-variant-numeric: tabular-nums;
+}
+.numerone .valore.negativo { color: var(--negativo); }
+
+.barra {
+  display: flex;
+  height: 12px;
+  border-radius: 6px;
+  overflow: hidden;
+  margin-top: 20px;
+  background: #d94c46;
+}
+.barra-netto { background: var(--positivo); }
+.barra-contributi { background: #e0a020; }
+.barra-tasse { flex: 1; }
+
+.legenda {
+  display: flex;
+  gap: 18px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+  font-size: 13px;
+  color: var(--testo-tenue);
+}
+.legenda .q {
+  display: inline-block;
+  width: 9px;
+  height: 9px;
+  border-radius: 2px;
+  margin-right: 6px;
+}
+.q.netto { background: var(--positivo); }
+.q.contributi { background: #e0a020; }
+.q.tasse { background: #d94c46; }
+
+/* ---------- Breakdown ---------- */
+
+.breakdown-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 6px;
+}
+.breakdown h2, .avvertenze h2 {
+  font-size: 16px;
+  margin: 0;
+}
+.link {
+  background: none;
+  border: 0;
+  color: var(--accento);
+  font-size: 13.5px;
+  cursor: pointer;
+  padding: 0;
+}
+
+.voci { list-style: none; margin: 0; padding: 0; }
+.voce { border-bottom: 1px solid var(--bordo); }
+.voce:last-child { border-bottom: 0; }
+.voce.tappa { background: #fafbfc; }
+
+.voce-riga {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 11px 4px;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  text-align: left;
+  font-size: 14.5px;
+  color: var(--testo);
+}
+.voce-riga:hover { background: #f4f6f8; }
+
+.freccia {
+  flex: 0 0 12px;
+  color: var(--testo-tenue);
+  transition: transform 0.15s;
+  font-size: 16px;
+  line-height: 1;
+}
+.freccia.giu { transform: rotate(90deg); }
+
+.voce-label { flex: 1; }
+.voce-importo {
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.voce-importo.negativo { color: var(--negativo); }
+.voce-importo.positivo { color: var(--positivo); }
+
+.voce-dettaglio {
+  padding: 4px 4px 16px 26px;
+  display: grid;
+  gap: 10px;
+}
+.riga-dettaglio {
+  display: grid;
+  grid-template-columns: 62px 1fr;
+  gap: 10px;
+  align-items: start;
+}
+.tag {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: var(--testo-tenue);
+  padding-top: 3px;
+}
+.riga-dettaglio code {
+  font-size: 13px;
+  background: var(--sfondo);
+  padding: 7px 10px;
+  border-radius: 6px;
+  display: block;
+  line-height: 1.6;
+  word-break: break-word;
+}
+.riga-dettaglio p {
+  margin: 0;
+  font-size: 13.5px;
+  color: var(--testo-tenue);
+}
+
+/* ---------- Avvertenze ---------- */
+
+.avvertenze {
+  background: #fffaf0;
+  border-color: #f0dfc0;
+}
+.avvertenze ul {
+  margin: 10px 0 0;
+  padding-left: 18px;
+  font-size: 13.5px;
+  color: #6b5426;
+}
+.avvertenze li { margin-bottom: 7px; }
+
+/* ---------- Footer ---------- */
+
+footer {
+  margin-top: 28px;
+  font-size: 13px;
+  color: var(--testo-tenue);
+}
+footer p { max-width: 62ch; }
+</style>
 </head>
+<body>
+<main class="wrap">
+  <header class="intro">
+    <h1>Dalla RAL al netto</h1>
+    <p>Calcolatore di retribuzione netta annuale e mensile — anno fiscale 2026. Impiegato a tempo indeterminato, residente a Milano, nessuna agevolazione particolare.</p>
+    <p class="nota">Ogni voce del calcolo è espandibile: trovi la formula applicata e la fonte normativa da cui viene il parametro.</p>
+  </header>
 
-<body class="font-sans" style="color:#0A1628; background:#fff;">
-
-<!-- ═══════════════════════ NAVBAR ═══════════════════════ -->
-<header id="navbar">
-  <nav style="max-width:1152px; margin:0 auto; padding:0 24px; height:64px; display:flex; align-items:center; justify-content:space-between;">
-
-    <!-- Wordmark -->
-    <a href="#top" style="display:flex;align-items:center;text-decoration:none;gap:0;" aria-label="Jet HR">
-      <span style="font-size:20px;font-weight:900;color:#1E50FF;letter-spacing:-0.5px;">Jet</span>
-      <span style="font-size:20px;font-weight:900;color:#0A1628;letter-spacing:-0.5px;">HR</span>
-      <span style="margin-left:10px;font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#1E50FF;background:#EEF3FF;padding:3px 8px;border-radius:999px;">Beta</span>
-    </a>
-
-    <!-- Desktop nav -->
-    <ul style="display:flex;gap:32px;list-style:none;margin:0;padding:0;" class="hidden md:flex">
-      <li><a href="#come-funziona" style="font-size:14px;font-weight:500;color:#475569;text-decoration:none;transition:color .2s;" onmouseover="this.style.color='#0A1628'" onmouseout="this.style.color='#475569'">Come funziona</a></li>
-      <li><a href="#cosa-include" style="font-size:14px;font-weight:500;color:#475569;text-decoration:none;transition:color .2s;" onmouseover="this.style.color='#0A1628'" onmouseout="this.style.color='#475569'">Cosa include</a></li>
-      <li><a href="#perche-jet-hr" style="font-size:14px;font-weight:500;color:#475569;text-decoration:none;transition:color .2s;" onmouseover="this.style.color='#0A1628'" onmouseout="this.style.color='#475569'">Perché Jet HR</a></li>
-    </ul>
-
-    <!-- Desktop CTA -->
-    <a href="#cta" class="btn-primary hidden md:inline-flex" style="padding:10px 20px;font-size:14px;">Prenota una call</a>
-
-    <!-- Mobile hamburger -->
-    <button id="menu-btn" class="md:hidden" style="background:none;border:none;cursor:pointer;padding:8px;border-radius:8px;" aria-label="Menu">
-      <i data-lucide="menu" style="width:22px;height:22px;color:#0A1628;"></i>
-    </button>
-  </nav>
-
-  <!-- Mobile drawer -->
-  <div id="mobile-menu" style="display:none;background:#fff;border-top:1px solid #F1F5F9;padding:16px 24px 24px;">
-    <nav style="display:flex;flex-direction:column;gap:4px;margin-bottom:16px;">
-      <a href="#come-funziona" class="mobile-nav-link" style="padding:10px 12px;font-size:14px;font-weight:500;color:#374151;text-decoration:none;border-radius:8px;">Come funziona</a>
-      <a href="#cosa-include" class="mobile-nav-link" style="padding:10px 12px;font-size:14px;font-weight:500;color:#374151;text-decoration:none;border-radius:8px;">Cosa include</a>
-      <a href="#perche-jet-hr" class="mobile-nav-link" style="padding:10px 12px;font-size:14px;font-weight:500;color:#374151;text-decoration:none;border-radius:8px;">Perché Jet HR</a>
-    </nav>
-    <a href="#cta" class="btn-primary" style="width:100%;justify-content:center;font-size:14px;">Prenota una call</a>
-  </div>
-</header>
-
-
-<!-- ═══════════════════════ HERO ═══════════════════════ -->
-<section id="top" class="hero-grid" style="min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding-top:64px;overflow:hidden;background:radial-gradient(ellipse 80% 55% at 75% 20%, #DCE7FF 0%, transparent 55%), #fff;">
-  <div style="max-width:1152px;margin:0 auto;padding:80px 24px;width:100%;box-sizing:border-box;">
-    <div style="display:grid;grid-template-columns:1fr;gap:48px;align-items:center;" class="lg:grid-cols-2-hero">
-
-      <!-- Text -->
-      <div class="fade-up" style="text-align:center;" id="hero-text">
-
-        <!-- Eyebrow -->
-        <div style="display:inline-flex;align-items:center;gap:8px;background:#EEF3FF;border-radius:999px;padding:6px 14px;margin-bottom:24px;">
-          <span class="pulse-dot" style="width:6px;height:6px;border-radius:50%;background:#1E50FF;display:inline-block;"></span>
-          <span style="font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#1E50FF;">Nuovo · Salute e sicurezza sul lavoro</span>
-        </div>
-
-        <!-- H1 -->
-        <h1 style="font-size:clamp(36px,6vw,64px);font-weight:900;letter-spacing:-1.5px;line-height:1.05;color:#0A1628;margin:0 0 24px;">
-          La sicurezza sul lavoro,<br>
-          <span style="color:#1E50FF;">finalmente senza pensieri.</span>
-        </h1>
-
-        <!-- Subtitle -->
-        <p style="font-size:clamp(16px,2vw,18px);color:#475569;line-height:1.7;max-width:560px;margin:0 auto 40px;">
-          Dalla valutazione dei rischi alla formazione, dal medico competente alla sorveglianza sanitaria:
-          tutti gli adempimenti del <strong style="color:#0A1628;">D.Lgs. 81/2008</strong> gestiti da un partner specializzato,
-          dentro la piattaforma che usi già.
-        </p>
-
-        <!-- CTAs -->
-        <div style="display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-bottom:40px;">
-          <a href="#cta" class="btn-primary">
-            Prenota una call
-            <i data-lucide="arrow-right" style="width:16px;height:16px;"></i>
-          </a>
-          <a href="#come-funziona" class="btn-secondary">Scopri come funziona</a>
-        </div>
-
-        <!-- Trust line -->
-        <div style="display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;">
-          <div style="display:flex;">
-            <span style="width:28px;height:28px;border-radius:50%;background:#1E50FF;border:2px solid #fff;display:flex;align-items:center;justify-content:center;color:#fff;font-size:10px;font-weight:700;margin-right:-6px;z-index:4;">A</span>
-            <span style="width:28px;height:28px;border-radius:50%;background:#0EA5E9;border:2px solid #fff;display:flex;align-items:center;justify-content:center;color:#fff;font-size:10px;font-weight:700;margin-right:-6px;z-index:3;">B</span>
-            <span style="width:28px;height:28px;border-radius:50%;background:#8B5CF6;border:2px solid #fff;display:flex;align-items:center;justify-content:center;color:#fff;font-size:10px;font-weight:700;margin-right:-6px;z-index:2;">C</span>
-            <span style="width:28px;height:28px;border-radius:50%;background:#10B981;border:2px solid #fff;display:flex;align-items:center;justify-content:center;color:#fff;font-size:10px;font-weight:700;z-index:1;">D</span>
-          </div>
-          <span style="font-size:14px;color:#64748B;">Già scelta da <strong style="color:#0A1628;">più di 1.000 aziende italiane</strong>.</span>
-        </div>
-      </div>
-
-      <!-- Dashboard mockup -->
-      <div class="fade-up delay-2" style="display:flex;justify-content:center;">
-        <div style="position:relative;width:100%;max-width:360px;">
-          <!-- glow -->
-          <div style="position:absolute;inset:-32px;border-radius:24px;background:radial-gradient(ellipse, rgba(30,80,255,.12), transparent 70%);pointer-events:none;"></div>
-          <!-- card -->
-          <div class="card" style="overflow:hidden;padding:0;">
-            <!-- topbar -->
-            <div style="display:flex;align-items:center;gap:8px;padding:14px 20px;border-bottom:1px solid #F1F5F9;background:#F8FAFC;">
-              <span style="font-size:13px;font-weight:700;color:#0A1628;">Salute &amp; Sicurezza</span>
-              <span style="margin-left:auto;font-size:11px;font-weight:700;color:#059669;background:#ECFDF5;padding:3px 8px;border-radius:999px;">Attivo</span>
-            </div>
-            <!-- rows -->
-            <div style="display:flex;flex-direction:column;">
-              <div style="display:flex;align-items:center;gap:12px;padding:14px 20px;border-bottom:1px solid #F8FAFC;">
-                <span style="width:8px;height:8px;border-radius:50%;background:#34D399;flex-shrink:0;"></span>
-                <div>
-                  <p style="font-size:13px;font-weight:600;color:#0A1628;margin:0;">DVR aggiornato</p>
-                  <p style="font-size:11px;color:#94A3B8;margin:0;">Scad. 12 mar 2026</p>
-                </div>
-              </div>
-              <div style="display:flex;align-items:center;gap:12px;padding:14px 20px;border-bottom:1px solid #F8FAFC;">
-                <span style="width:8px;height:8px;border-radius:50%;background:#34D399;flex-shrink:0;"></span>
-                <div>
-                  <p style="font-size:13px;font-weight:600;color:#0A1628;margin:0;">Formazione base</p>
-                  <p style="font-size:11px;color:#94A3B8;margin:0;">Completata</p>
-                </div>
-              </div>
-              <div style="display:flex;align-items:center;gap:12px;padding:14px 20px;border-bottom:1px solid #F8FAFC;">
-                <span style="width:8px;height:8px;border-radius:50%;background:#FBBF24;flex-shrink:0;"></span>
-                <div>
-                  <p style="font-size:13px;font-weight:600;color:#0A1628;margin:0;">Visita medica — M. Rossi</p>
-                  <p style="font-size:11px;color:#94A3B8;margin:0;">Scad. 28 giu 2025</p>
-                </div>
-              </div>
-              <div style="display:flex;align-items:center;gap:12px;padding:14px 20px;">
-                <span style="width:8px;height:8px;border-radius:50%;background:#34D399;flex-shrink:0;"></span>
-                <div>
-                  <p style="font-size:13px;font-weight:600;color:#0A1628;margin:0;">Nomina RSPP esterno</p>
-                  <p style="font-size:11px;color:#94A3B8;margin:0;">Attivo</p>
-                </div>
-              </div>
-            </div>
-            <!-- footer -->
-            <div style="padding:12px 20px;border-top:1px solid #F1F5F9;background:#F8FAFC;display:flex;align-items:center;">
-              <span style="font-size:11px;color:#94A3B8;">4 adempimenti gestiti dal partner</span>
-              <span style="margin-left:auto;font-size:11px;font-weight:600;color:#1E50FF;cursor:pointer;">Dettagli →</span>
-            </div>
-          </div>
-          <!-- floating badge -->
-          <div style="position:absolute;bottom:-16px;left:-16px;background:#fff;border:1px solid #E2E8F0;border-radius:12px;box-shadow:0 2px 12px rgba(10,22,40,.1);padding:10px 14px;display:flex;align-items:center;gap:8px;">
-            <i data-lucide="check-circle-2" style="width:16px;height:16px;color:#10B981;flex-shrink:0;"></i>
-            <span style="font-size:12px;font-weight:700;color:#0A1628;">Zero sanzioni</span>
-          </div>
-        </div>
-      </div>
+  <section class="card form">
+    <div class="tabs" role="tablist">
+      <button class="tab attivo" data-mod="diretta">Ho una RAL</button>
+      <button class="tab" data-mod="inversa">Voglio un netto</button>
     </div>
-  </div>
-
-  <!-- Scroll indicator -->
-  <a href="#problema" style="display:flex;flex-direction:column;align-items:center;gap:4px;color:#94A3B8;text-decoration:none;padding-bottom:32px;transition:color .2s;" onmouseover="this.style.color='#1E50FF'" onmouseout="this.style.color='#94A3B8'" aria-label="Scorri">
-    <span style="font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;">Scopri</span>
-    <i data-lucide="chevron-down" class="bounce" style="width:18px;height:18px;"></i>
-  </a>
-</section>
-
-
-<!-- ═══════════════════════ PROBLEMA ═══════════════════════ -->
-<section id="problema" style="background:#0A1628;padding:80px 24px;" class="md:py-28">
-  <div style="max-width:1152px;margin:0 auto;">
-
-    <!-- header -->
-    <div class="fade-up" style="text-align:center;margin-bottom:56px;">
-      <p style="font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#1E50FF;margin:0 0 16px;">Odiamo la burocrazia</p>
-      <h2 style="font-size:clamp(26px,4vw,40px);font-weight:800;letter-spacing:-0.5px;color:#fff;margin:0;line-height:1.2;max-width:640px;margin:0 auto;">
-        La sicurezza è un obbligo di legge.<br>
-        <span style="color:#93ACFF;">Gestirla, oggi, è un caos.</span>
-      </h2>
+    <div class="campi">
+      <label class="campo" id="campo-ral">
+        <span>Retribuzione annua lorda</span>
+        <div class="input-euro"><input type="text" inputmode="decimal" id="ral" value="30000"><span class="suffisso">€</span></div>
+      </label>
+      <label class="campo" id="campo-netto" style="display:none">
+        <span>Netto mensile desiderato</span>
+        <div class="input-euro"><input type="text" inputmode="decimal" id="netto" value="2000"><span class="suffisso">€</span></div>
+      </label>
+      <label class="campo stretto">
+        <span>Mensilità</span>
+        <select id="mensilita"><option>12</option><option selected>13</option><option>14</option></select>
+      </label>
+      <button class="calcola" id="calcola">Calcola</button>
     </div>
+    <p class="errore" id="errore"></p>
+  </section>
 
-    <!-- grid -->
-    <div style="display:grid;grid-template-columns:1fr;gap:16px;" class="sm:grid-4">
-      <div class="pain-card fade-up" style="padding:28px;">
-        <div style="width:40px;height:40px;border-radius:10px;background:rgba(30,80,255,.15);display:flex;align-items:center;justify-content:center;margin-bottom:16px;">
-          <i data-lucide="users" style="width:20px;height:20px;color:#93ACFF;"></i>
-        </div>
-        <h3 style="font-size:15px;font-weight:700;color:#fff;margin:0 0 8px;">Fornitori diversi e scollegati</h3>
-        <p style="font-size:14px;color:#94A3B8;line-height:1.6;margin:0;">Il consulente sicurezza, il medico competente, il formatore. Ognuno per sé: nessuna visione d'insieme, nessun coordinamento.</p>
-      </div>
-      <div class="pain-card fade-up delay-1" style="padding:28px;">
-        <div style="width:40px;height:40px;border-radius:10px;background:rgba(30,80,255,.15);display:flex;align-items:center;justify-content:center;margin-bottom:16px;">
-          <i data-lucide="calendar-x-2" style="width:20px;height:20px;color:#93ACFF;"></i>
-        </div>
-        <h3 style="font-size:15px;font-weight:700;color:#fff;margin:0 0 8px;">Scadenze che ti rincorrono</h3>
-        <p style="font-size:14px;color:#94A3B8;line-height:1.6;margin:0;">Corsi da rinnovare, visite da prenotare, documenti da aggiornare. Scopri sempre troppo tardi — quando la multa è già arrivata.</p>
-      </div>
-      <div class="pain-card fade-up delay-2" style="padding:28px;">
-        <div style="width:40px;height:40px;border-radius:10px;background:rgba(30,80,255,.15);display:flex;align-items:center;justify-content:center;margin-bottom:16px;">
-          <i data-lucide="alert-triangle" style="width:20px;height:20px;color:#93ACFF;"></i>
-        </div>
-        <h3 style="font-size:15px;font-weight:700;color:#fff;margin:0 0 8px;">Rischio di sanzioni pesanti</h3>
-        <p style="font-size:14px;color:#94A3B8;line-height:1.6;margin:0;">Il D.Lgs. 81/2008 prevede sanzioni fino a 150.000 € e responsabilità penale per il datore. Non è un rischio che si può ignorare.</p>
-      </div>
-      <div class="pain-card fade-up delay-3" style="padding:28px;">
-        <div style="width:40px;height:40px;border-radius:10px;background:rgba(30,80,255,.15);display:flex;align-items:center;justify-content:center;margin-bottom:16px;">
-          <i data-lucide="clock-3" style="width:20px;height:20px;color:#93ACFF;"></i>
-        </div>
-        <h3 style="font-size:15px;font-weight:700;color:#fff;margin:0 0 8px;">Ore perse in adempimenti</h3>
-        <p style="font-size:14px;color:#94A3B8;line-height:1.6;margin:0;">Raccogliere documenti, coordinare fornitori, archiviare verbali. Tempo sottratto al tuo business, senza creare nessun valore.</p>
-      </div>
-    </div>
-  </div>
-</section>
+  <div id="out"></div>
 
+  <footer>
+    <p>Prototipo a scopo dimostrativo. Non sostituisce il calcolo di un consulente del lavoro. Assunzioni, semplificazioni e limiti noti sono documentati nel <strong>README</strong> del repository.</p>
+  </footer>
+</main>
+<script>"use strict";
+(() => {
+  // lib/parametri-2026.ts
+  var ANNO_FISCALE = 2026;
+  var CONTRIBUTI = {
+    /**
+     * Aliquota IVS a carico del lavoratore dipendente, settore privato.
+     * L'aliquota complessiva è il 33%, di cui 23,81% a carico del datore
+     * di lavoro: quella quota è costo aziendale, non compare in busta paga
+     * e quindi non entra nel calcolo del netto.
+     * Fonte: circolari INPS aliquote contributive 2026.
+     */
+    aliquotaDipendente: 0.0919,
+    /**
+     * Massimale annuo della base contributiva e pensionabile, applicabile
+     * ai lavoratori privi di anzianità contributiva al 31/12/1995
+     * (sistema contributivo puro). Oltre il massimale non si versa IVS.
+     * Fonte: circolare INPS massimale 2026 (~120.607 €).
+     */
+    massimaleAnnuo: 120607
+  };
+  var SCAGLIONI_IRPEF = [
+    { limite: 28e3, aliquota: 0.23 },
+    { limite: 5e4, aliquota: 0.33 },
+    { limite: null, aliquota: 0.43 }
+  ];
+  var DETRAZIONI_LAVORO_DIPENDENTE = {
+    /** Fino a 15.000 € di reddito complessivo: importo fisso. */
+    importoBase: 1955,
+    /** Detrazione minima garantita per rapporti a tempo indeterminato. */
+    minimoGarantito: 690,
+    sogliaBase: 15e3,
+    /**
+     * Scaglione 15.001 – 28.000:
+     *   1.910 + 1.190 × [(28.000 − reddito) / 13.000]
+     */
+    fascia2: { limite: 28e3, fisso: 1910, variabile: 1190, ampiezza: 13e3 },
+    /**
+     * Scaglione 28.001 – 50.000:
+     *   1.910 × [(50.000 − reddito) / 22.000]
+     */
+    fascia3: { limite: 5e4, fisso: 1910, ampiezza: 22e3 },
+    /** Oltre 50.000 € la detrazione per lavoro dipendente si azzera. */
+    /**
+     * Maggiorazione di 65 € per redditi complessivi tra 25.000 e 35.000.
+     * Fonte: art. 13 co. 1 lett. b) TUIR come modificato.
+     */
+    maggiorazione: { importo: 65, da: 25e3, a: 35e3 }
+  };
+  var ULTERIORE_DETRAZIONE = {
+    attiva: true,
+    importo: 1e3,
+    da: 2e4,
+    sogliaPiena: 32e3,
+    a: 4e4
+  };
+  var SOMMA_INTEGRATIVA = {
+    attiva: true,
+    fasce: [
+      { limite: 8500, percentuale: 0.071 },
+      { limite: 15e3, percentuale: 0.053 },
+      { limite: 2e4, percentuale: 0.048 }
+    ]
+  };
+  var TRATTAMENTO_INTEGRATIVO = {
+    attiva: true,
+    importo: 1200,
+    sogliaReddito: 15e3
+  };
+  var ADDIZIONALE_REGIONALE = {
+    regione: "Lombardia",
+    scaglioni: [
+      { limite: 15e3, aliquota: 0.0123 },
+      { limite: 28e3, aliquota: 0.0158 },
+      { limite: 5e4, aliquota: 0.0172 },
+      { limite: null, aliquota: 0.0173 }
+    ]
+  };
+  var ADDIZIONALE_COMUNALE = {
+    comune: "Milano",
+    aliquota: 8e-3,
+    sogliaEsenzione: 23e3
+  };
+  var MENSILITA_DEFAULT = 13;
 
-<!-- ═══════════════════════ COME FUNZIONA ═══════════════════════ -->
-<section id="come-funziona" style="background:#fff;padding:80px 24px;" class="md:py-28">
-  <div style="max-width:1152px;margin:0 auto;">
-
-    <!-- header -->
-    <div class="fade-up" style="text-align:center;margin-bottom:64px;">
-      <p style="font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#1E50FF;margin:0 0 16px;">Come funziona</p>
-      <h2 style="font-size:clamp(26px,4vw,40px);font-weight:800;letter-spacing:-.5px;color:#0A1628;margin:0;">Tre passi. Poi ci pensiamo noi.</h2>
-    </div>
-
-    <!-- steps -->
-    <div style="display:grid;grid-template-columns:1fr;gap:40px;" class="md:grid-3 steps-connector" id="steps-grid">
-      <div class="fade-up" style="display:flex;flex-direction:column;align-items:center;text-align:center;">
-        <div style="position:relative;margin-bottom:24px;">
-          <div style="width:96px;height:96px;border-radius:16px;background:#EEF3FF;display:flex;align-items:center;justify-content:center;">
-            <i data-lucide="layout-dashboard" style="width:32px;height:32px;color:#1E50FF;"></i>
-          </div>
-          <span style="position:absolute;top:-8px;right:-8px;width:28px;height:28px;border-radius:50%;background:#1E50FF;color:#fff;font-size:12px;font-weight:900;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(30,80,255,.3);">1</span>
-        </div>
-        <h3 style="font-size:17px;font-weight:700;color:#0A1628;margin:0 0 12px;line-height:1.3;">Attivi il modulo dalla tua dashboard Jet HR</h3>
-        <p style="font-size:14px;color:#64748B;line-height:1.7;margin:0;">Un click, zero burocrazia. Il modulo appare subito nella tua piattaforma, pronto all'uso.</p>
-      </div>
-      <div class="fade-up delay-2" style="display:flex;flex-direction:column;align-items:center;text-align:center;">
-        <div style="position:relative;margin-bottom:24px;">
-          <div style="width:96px;height:96px;border-radius:16px;background:#EEF3FF;display:flex;align-items:center;justify-content:center;">
-            <i data-lucide="user-check" style="width:32px;height:32px;color:#1E50FF;"></i>
-          </div>
-          <span style="position:absolute;top:-8px;right:-8px;width:28px;height:28px;border-radius:50%;background:#1E50FF;color:#fff;font-size:12px;font-weight:900;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(30,80,255,.3);">2</span>
-        </div>
-        <h3 style="font-size:17px;font-weight:700;color:#0A1628;margin:0 0 12px;line-height:1.3;">Un partner specializzato prende in carico tutto</h3>
-        <p style="font-size:14px;color:#64748B;line-height:1.7;margin:0;">RSPP esterno, medico competente, formatori certificati: professionisti selezionati da Jet HR che gestiscono ogni adempimento.</p>
-      </div>
-      <div class="fade-up delay-4" style="display:flex;flex-direction:column;align-items:center;text-align:center;">
-        <div style="position:relative;margin-bottom:24px;">
-          <div style="width:96px;height:96px;border-radius:16px;background:#EEF3FF;display:flex;align-items:center;justify-content:center;">
-            <i data-lucide="bell" style="width:32px;height:32px;color:#1E50FF;"></i>
-          </div>
-          <span style="position:absolute;top:-8px;right:-8px;width:28px;height:28px;border-radius:50%;background:#1E50FF;color:#fff;font-size:12px;font-weight:900;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(30,80,255,.3);">3</span>
-        </div>
-        <h3 style="font-size:17px;font-weight:700;color:#0A1628;margin:0 0 12px;line-height:1.3;">Documenti e scadenze restano dentro Jet HR</h3>
-        <p style="font-size:14px;color:#64748B;line-height:1.7;margin:0;">DVR, verbali, attestati, calendari: tutto centralizzato dove sei già ogni giorno. <strong>Zero dimenticanze.</strong></p>
-      </div>
-    </div>
-  </div>
-</section>
-
-
-<!-- ═══════════════════════ COSA INCLUDE ═══════════════════════ -->
-<section id="cosa-include" style="background:#F8FAFC;padding:80px 24px;" class="md:py-28">
-  <div style="max-width:1152px;margin:0 auto;">
-
-    <!-- header -->
-    <div class="fade-up" style="text-align:center;margin-bottom:56px;">
-      <p style="font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#1E50FF;margin:0 0 16px;">Tutto incluso</p>
-      <h2 style="font-size:clamp(26px,4vw,40px);font-weight:800;letter-spacing:-.5px;color:#0A1628;margin:0 0 16px;">Cosa è compreso nel modulo</h2>
-      <p style="font-size:17px;color:#64748B;max-width:480px;margin:0 auto;">Nessun extra nascosto. Ogni adempimento previsto dal D.Lgs. 81/2008 è coperto.</p>
-    </div>
-
-    <!-- grid -->
-    <div style="display:grid;grid-template-columns:1fr;gap:16px;" class="sm:grid-2 lg:grid-3">
-      <div class="card fade-up" style="padding:32px;">
-        <div class="icon-wrap" style="background:#EEF3FF;margin-bottom:20px;">
-          <i data-lucide="file-text" style="width:22px;height:22px;color:#1E50FF;"></i>
-        </div>
-        <h3 style="font-size:16px;font-weight:700;color:#0A1628;margin:0 0 8px;">Documento di Valutazione dei Rischi (DVR)</h3>
-        <p style="font-size:14px;color:#64748B;line-height:1.6;margin:0;">Redazione, aggiornamento e conservazione del DVR, obbligatorio per tutte le aziende.</p>
-      </div>
-      <div class="card fade-up delay-1" style="padding:32px;">
-        <div class="icon-wrap" style="background:#EEF3FF;margin-bottom:20px;">
-          <i data-lucide="shield-check" style="width:22px;height:22px;color:#1E50FF;"></i>
-        </div>
-        <h3 style="font-size:16px;font-weight:700;color:#0A1628;margin:0 0 8px;">RSPP Esterno</h3>
-        <p style="font-size:14px;color:#64748B;line-height:1.6;margin:0;">Responsabile del Servizio di Prevenzione e Protezione qualificato, nominato e operativo da subito.</p>
-      </div>
-      <div class="card fade-up delay-2" style="padding:32px;">
-        <div class="icon-wrap" style="background:#EEF3FF;margin-bottom:20px;">
-          <i data-lucide="graduation-cap" style="width:22px;height:22px;color:#1E50FF;"></i>
-        </div>
-        <h3 style="font-size:16px;font-weight:700;color:#0A1628;margin:0 0 8px;">Formazione obbligatoria</h3>
-        <p style="font-size:14px;color:#64748B;line-height:1.6;margin:0;">Tutti i livelli di rischio: formazione generale, specifica e per preposti/dirigenti conforme all'Accordo Stato-Regioni.</p>
-      </div>
-      <div class="card fade-up delay-1" style="padding:32px;">
-        <div class="icon-wrap" style="background:#EEF3FF;margin-bottom:20px;">
-          <i data-lucide="heart-pulse" style="width:22px;height:22px;color:#1E50FF;"></i>
-        </div>
-        <h3 style="font-size:16px;font-weight:700;color:#0A1628;margin:0 0 8px;">Medico Competente e sorveglianza sanitaria</h3>
-        <p style="font-size:14px;color:#64748B;line-height:1.6;margin:0;">Visite mediche periodiche, idoneità alla mansione, cartelle sanitarie in piena conformità.</p>
-      </div>
-      <div class="card fade-up delay-2" style="padding:32px;">
-        <div class="icon-wrap" style="background:#EEF3FF;margin-bottom:20px;">
-          <i data-lucide="calendar-check" style="width:22px;height:22px;color:#1E50FF;"></i>
-        </div>
-        <h3 style="font-size:16px;font-weight:700;color:#0A1628;margin:0 0 8px;">Scadenze e promemoria automatici</h3>
-        <p style="font-size:14px;color:#64748B;line-height:1.6;margin:0;">Nessuna scadenza dimenticata: il sistema ti avvisa in anticipo per ogni rinnovo, visita o aggiornamento.</p>
-      </div>
-      <div class="card fade-up delay-3" style="padding:32px;">
-        <div class="icon-wrap" style="background:#EEF3FF;margin-bottom:20px;">
-          <i data-lucide="receipt" style="width:22px;height:22px;color:#1E50FF;"></i>
-        </div>
-        <h3 style="font-size:16px;font-weight:700;color:#0A1628;margin:0 0 8px;">Un unico referente, un'unica fattura</h3>
-        <p style="font-size:14px;color:#64748B;line-height:1.6;margin:0;">Niente fornitori multipli. Un interlocutore, una rendicontazione chiara, zero sorprese.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-
-<!-- ═══════════════════════ PERCHÉ JET HR ═══════════════════════ -->
-<section id="perche-jet-hr" style="background:#fff;padding:80px 24px;" class="md:py-28">
-  <div style="max-width:1152px;margin:0 auto;display:grid;grid-template-columns:1fr;gap:56px;align-items:start;" class="lg:grid-2">
-
-    <!-- left -->
-    <div class="fade-up">
-      <p style="font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#1E50FF;margin:0 0 16px;">Perché dentro Jet HR</p>
-      <h2 style="font-size:clamp(26px,4vw,40px);font-weight:800;letter-spacing:-.5px;color:#0A1628;margin:0 0 20px;line-height:1.2;">Non è solo un servizio esterno. È integrato nel tuo HR.</h2>
-      <p style="font-size:17px;color:#64748B;line-height:1.7;margin:0 0 40px;">Ci sono decine di consulenti sicurezza sul mercato. La differenza è che con Jet HR hai tutto in un unico posto — e i dati parlano da soli.</p>
-      <div style="padding-top:32px;border-top:1px solid #F1F5F9;">
-        <p style="font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#0A1628;margin:0 0 16px;">Già integrato con</p>
-        <div style="display:flex;flex-wrap:wrap;gap:10px;">
-          <span style="font-size:13px;font-weight:500;color:#475569;background:#F1F5F9;padding:6px 14px;border-radius:999px;">Cedolini</span>
-          <span style="font-size:13px;font-weight:500;color:#475569;background:#F1F5F9;padding:6px 14px;border-radius:999px;">Presenze</span>
-          <span style="font-size:13px;font-weight:500;color:#475569;background:#F1F5F9;padding:6px 14px;border-radius:999px;">Scadenze</span>
-          <span style="font-size:13px;font-weight:500;color:#475569;background:#F1F5F9;padding:6px 14px;border-radius:999px;">Documenti</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- right -->
-    <div style="display:flex;flex-direction:column;gap:16px;">
-      <div class="card fade-up delay-1" style="padding:24px;display:flex;gap:16px;align-items:flex-start;">
-        <div class="icon-wrap-sm" style="background:#EEF3FF;"><i data-lucide="layout-dashboard" style="width:20px;height:20px;color:#1E50FF;"></i></div>
-        <div><h3 style="font-size:15px;font-weight:700;color:#0A1628;margin:0 0 6px;">Tutto nella piattaforma che già usi</h3><p style="font-size:14px;color:#64748B;line-height:1.6;margin:0;">Non apri un nuovo portale. Salute & Sicurezza si aggiunge dove hai già paghe, ferie e cedolini.</p></div>
-      </div>
-      <div class="card fade-up delay-2" style="padding:24px;display:flex;gap:16px;align-items:flex-start;">
-        <div class="icon-wrap-sm" style="background:#EEF3FF;"><i data-lucide="star" style="width:20px;height:20px;color:#1E50FF;"></i></div>
-        <div><h3 style="font-size:15px;font-weight:700;color:#0A1628;margin:0 0 6px;">Partner selezionato, qualità garantita</h3><p style="font-size:14px;color:#64748B;line-height:1.6;margin:0;">Jet HR ha scelto il partner dopo una selezione rigorosa. Se qualcosa non va, hai un unico interlocutore: noi.</p></div>
-      </div>
-      <div class="card fade-up delay-3" style="padding:24px;display:flex;gap:16px;align-items:flex-start;">
-        <div class="icon-wrap-sm" style="background:#EEF3FF;"><i data-lucide="database" style="width:20px;height:20px;color:#1E50FF;"></i></div>
-        <div><h3 style="font-size:15px;font-weight:700;color:#0A1628;margin:0 0 6px;">I tuoi dati già nel sistema</h3><p style="font-size:14px;color:#64748B;line-height:1.6;margin:0;">Dipendenti, mansioni, sedi: il sistema conosce già la tua azienda. I promemoria sono automatici dal giorno uno.</p></div>
-      </div>
-      <div class="card fade-up delay-4" style="padding:24px;display:flex;gap:16px;align-items:flex-start;">
-        <div class="icon-wrap-sm" style="background:#EEF3FF;"><i data-lucide="banknote" style="width:20px;height:20px;color:#1E50FF;"></i></div>
-        <div><h3 style="font-size:15px;font-weight:700;color:#0A1628;margin:0 0 6px;">Prezzo chiaro, niente preventivi opachi</h3><p style="font-size:14px;color:#64748B;line-height:1.6;margin:0;">Sai esattamente cosa paghi. Nessuna sorpresa in fattura, nessuna ora extra da autorizzare.</p></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-
-<!-- ═══════════════════════ SOCIAL PROOF ═══════════════════════ -->
-<section style="background:#1E50FF;padding:80px 24px;" class="md:py-28">
-  <div style="max-width:1152px;margin:0 auto;">
-    <div class="fade-up" style="text-align:center;margin-bottom:56px;">
-      <p style="font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#93ACFF;margin:0 0 16px;">I numeri parlano chiaro</p>
-      <h2 style="font-size:clamp(26px,4vw,40px);font-weight:800;letter-spacing:-.5px;color:#fff;margin:0;">Non chiedeteci fiducia. Chiedetela ai nostri clienti.</h2>
-    </div>
-    <div style="display:grid;grid-template-columns:1fr;gap:16px;margin-bottom:40px;" class="sm:grid-3">
-      <div class="fade-up" style="text-align:center;padding:40px 24px;border-radius:16px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);">
-        <p style="font-size:56px;font-weight:900;color:#fff;margin:0 0 8px;letter-spacing:-2px;">61</p>
-        <p style="font-size:15px;font-weight:600;color:rgba(255,255,255,.9);margin:0 0 4px;">NPS score</p>
-        <p style="font-size:13px;color:rgba(255,255,255,.55);margin:0;">Clienti che ci raccomanderebbero</p>
-      </div>
-      <div class="fade-up delay-2" style="text-align:center;padding:40px 24px;border-radius:16px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);">
-        <p style="font-size:56px;font-weight:900;color:#fff;margin:0 0 8px;letter-spacing:-2px;">1h</p>
-        <p style="font-size:15px;font-weight:600;color:rgba(255,255,255,.9);margin:0 0 4px;">Tempo medio di risposta</p>
-        <p style="font-size:13px;color:rgba(255,255,255,.55);margin:0;">Dal nostro team di supporto</p>
-      </div>
-      <div class="fade-up delay-4" style="text-align:center;padding:40px 24px;border-radius:16px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);">
-        <p style="font-size:56px;font-weight:900;color:#fff;margin:0 0 8px;letter-spacing:-2px;">90%</p>
-        <p style="font-size:15px;font-weight:600;color:rgba(255,255,255,.9);margin:0 0 4px;">Meno burocrazia</p>
-        <p style="font-size:13px;color:rgba(255,255,255,.55);margin:0;">Tempo risparmiato in adempimenti</p>
-      </div>
-    </div>
-    <div class="fade-up" style="display:flex;flex-wrap:wrap;justify-content:center;gap:12px;">
-      <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:999px;padding:10px 20px;">
-        <i data-lucide="shield-check" style="width:15px;height:15px;color:#fff;"></i>
-        <span style="font-size:13px;font-weight:600;color:#fff;">GDPR Compliant</span>
-      </div>
-      <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:999px;padding:10px 20px;">
-        <i data-lucide="lock" style="width:15px;height:15px;color:#fff;"></i>
-        <span style="font-size:13px;font-weight:600;color:#fff;">ISO 27001</span>
-      </div>
-      <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:999px;padding:10px 20px;">
-        <span style="font-size:13px;font-weight:600;color:#fff;">🇮🇹 Made in Italy</span>
-      </div>
-    </div>
-  </div>
-</section>
-
-
-<!-- ═══════════════════════ CTA + FORM ═══════════════════════ -->
-<section id="cta" style="background:#EEF3FF;padding:80px 24px;" class="md:py-28">
-  <div style="max-width:1152px;margin:0 auto;">
-    <div class="fade-up" style="text-align:center;margin-bottom:56px;">
-      <p style="font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#1E50FF;margin:0 0 16px;">Inizia oggi</p>
-      <h2 style="font-size:clamp(26px,4vw,40px);font-weight:800;letter-spacing:-.5px;color:#0A1628;margin:0 0 16px;">Ti interessa? Parliamone 15 minuti.</h2>
-      <p style="font-size:17px;color:#64748B;max-width:480px;margin:0 auto;">Nessun impegno, nessuna pressione. Capiamo la tua situazione e ti diciamo se il modulo fa per te.</p>
-    </div>
-
-    <div style="display:grid;grid-template-columns:1fr;gap:24px;max-width:880px;margin:0 auto;" class="lg:grid-2">
-
-      <!-- Form card -->
-      <div class="card fade-up" style="padding:40px;">
-        <h3 style="font-size:18px;font-weight:700;color:#0A1628;margin:0 0 28px;">Lascia i tuoi dati</h3>
-        <!-- TODO: sostituire YOUR_FORMSPREE_ID con il tuo ID reale -->
-        <form id="contact-form" action="https://formspree.io/f/YOUR_FORMSPREE_ID" method="POST" style="display:flex;flex-direction:column;gap:16px;">
-          <div>
-            <label style="display:block;font-size:13px;font-weight:600;color:#0A1628;margin-bottom:6px;">Nome e cognome <span style="color:#1E50FF;">*</span></label>
-            <input class="form-input" type="text" name="nome" required placeholder="Mario Rossi" />
-          </div>
-          <div>
-            <label style="display:block;font-size:13px;font-weight:600;color:#0A1628;margin-bottom:6px;">Nome azienda <span style="color:#1E50FF;">*</span></label>
-            <input class="form-input" type="text" name="azienda" required placeholder="Acme S.r.l." />
-          </div>
-          <div>
-            <label style="display:block;font-size:13px;font-weight:600;color:#0A1628;margin-bottom:6px;">Email aziendale <span style="color:#1E50FF;">*</span></label>
-            <input class="form-input" type="email" name="email" required placeholder="mario@acme.it" />
-          </div>
-          <div>
-            <label style="display:block;font-size:13px;font-weight:600;color:#0A1628;margin-bottom:6px;">Numero di dipendenti</label>
-            <select class="form-input" name="dipendenti" style="appearance:none;cursor:pointer;">
-              <option value="">Seleziona…</option>
-              <option>1–5 dipendenti</option>
-              <option>6–15 dipendenti</option>
-              <option>16–50 dipendenti</option>
-              <option>51–200 dipendenti</option>
-              <option>200+ dipendenti</option>
-            </select>
-          </div>
-          <p style="font-size:12px;color:#94A3B8;line-height:1.6;margin:0;">Inviando il modulo accetti la nostra <u style="cursor:pointer;">Privacy Policy</u>. Dati trattati ai sensi del Reg. UE 2016/679 (GDPR).</p>
-          <button type="submit" class="btn-primary" style="justify-content:center;">
-            Invia richiesta
-            <i data-lucide="send" style="width:15px;height:15px;"></i>
-          </button>
-          <div id="form-success" style="display:none;text-align:center;padding:16px;background:#ECFDF5;border-radius:12px;color:#059669;font-weight:600;font-size:14px;">
-            ✓ Richiesta inviata! Ti contatteremo entro 1 ora lavorativa.
-          </div>
-        </form>
-      </div>
-
-      <!-- Calendly placeholder -->
-      <div class="card fade-up delay-2" style="padding:40px;display:flex;flex-direction:column;gap:20px;">
-        <div style="display:flex;align-items:center;gap:12px;">
-          <div class="icon-wrap-sm" style="background:#EEF3FF;"><i data-lucide="calendar" style="width:20px;height:20px;color:#1E50FF;"></i></div>
-          <div>
-            <h3 style="font-size:16px;font-weight:700;color:#0A1628;margin:0;">Prenota una call</h3>
-            <p style="font-size:12px;color:#94A3B8;margin:0;">15 minuti, senza impegno</p>
-          </div>
-        </div>
-        <p style="font-size:14px;color:#64748B;line-height:1.7;margin:0;">Preferisci scegliere tu il momento? Prenota direttamente un slot nel calendario del nostro team.</p>
-        <!-- TODO: embed Calendly — sostituire CALENDLY_URL -->
-        <div style="flex:1;min-height:260px;border-radius:12px;border:2px dashed #CBD5E1;background:#F8FAFC;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:24px;text-align:center;">
-          <i data-lucide="calendar" style="width:36px;height:36px;color:#CBD5E1;"></i>
-          <p style="font-size:13px;font-weight:600;color:#94A3B8;margin:0;">Embed Calendly</p>
-          <code style="font-size:11px;color:#94A3B8;background:#fff;border:1px solid #E2E8F0;border-radius:8px;padding:6px 12px;font-family:monospace;">CALENDLY_URL</code>
-          <p style="font-size:12px;color:#CBD5E1;margin:0;">Sostituisci CALENDLY_URL in index.html per attivare l'embed.</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-
-<!-- ═══════════════════════ FOOTER ═══════════════════════ -->
-<footer style="background:#0A1628;padding:64px 24px 40px;" role="contentinfo">
-  <div style="max-width:1152px;margin:0 auto;">
-    <div style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:32px;padding-bottom:40px;border-bottom:1px solid rgba(255,255,255,.1);">
-      <div>
-        <div style="display:flex;align-items:center;margin-bottom:12px;">
-          <span style="font-size:22px;font-weight:900;color:#1E50FF;letter-spacing:-.5px;">Jet</span>
-          <span style="font-size:22px;font-weight:900;color:#fff;letter-spacing:-.5px;">HR</span>
-        </div>
-        <p style="font-size:14px;color:#64748B;line-height:1.6;max-width:280px;margin:0;">Software HR + payroll con un Consulente del Lavoro Partner dedicato. Tutto in un unico posto.</p>
-      </div>
-      <nav style="display:flex;flex-wrap:wrap;gap:24px;align-items:center;">
-        <a href="#come-funziona" style="font-size:14px;color:#64748B;text-decoration:none;transition:color .2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#64748B'">Come funziona</a>
-        <a href="#cosa-include" style="font-size:14px;color:#64748B;text-decoration:none;transition:color .2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#64748B'">Cosa include</a>
-        <a href="#perche-jet-hr" style="font-size:14px;color:#64748B;text-decoration:none;transition:color .2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#64748B'">Perché Jet HR</a>
-        <a href="#cta" style="font-size:14px;color:#64748B;text-decoration:none;transition:color .2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#64748B'">Prenota una call</a>
-      </nav>
-    </div>
-    <div style="padding-top:28px;display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;">
-      <div style="display:flex;gap:24px;font-size:13px;color:#475569;">
-        <span>© 2025 Jet HR S.r.l.</span>
-        <span>P.IVA IT12345678901</span>
-      </div>
-      <p style="font-size:13px;color:#334155;font-style:italic;margin:0;">Prototipo a scopo dimostrativo — non rappresenta un'offerta commerciale definitiva.</p>
-    </div>
-  </div>
-</footer>
-
-
-<!-- ═══════════════════════ SCRIPTS ═══════════════════════ -->
-<script>
-  // Init Lucide icons
-  lucide.createIcons();
-
-  // ── Navbar scroll effect ──
-  const navbar = document.getElementById('navbar');
-  window.addEventListener('scroll', () => {
-    navbar.classList.toggle('scrolled', window.scrollY > 16);
-  }, { passive: true });
-
-  // ── Mobile menu ──
-  const menuBtn = document.getElementById('menu-btn');
-  const mobileMenu = document.getElementById('mobile-menu');
-  let menuOpen = false;
-  menuBtn.addEventListener('click', () => {
-    menuOpen = !menuOpen;
-    mobileMenu.style.display = menuOpen ? 'block' : 'none';
-    menuBtn.querySelector('[data-lucide]').setAttribute('data-lucide', menuOpen ? 'x' : 'menu');
-    lucide.createIcons();
-  });
-  // Close on nav link click
-  document.querySelectorAll('.mobile-nav-link, #mobile-menu a').forEach(a => {
-    a.addEventListener('click', () => {
-      menuOpen = false;
-      mobileMenu.style.display = 'none';
-      menuBtn.querySelector('[data-lucide]').setAttribute('data-lucide', 'menu');
-      lucide.createIcons();
-    });
-  });
-
-  // ── Responsive grid helpers via CSS ──
-  const style = document.createElement('style');
-  style.textContent = `
-    @media (min-width:640px)  { .sm\\:grid-2 { grid-template-columns: 1fr 1fr; } .sm\\:grid-3 { grid-template-columns: 1fr 1fr; } .sm\\:grid-4 { grid-template-columns: 1fr 1fr; } }
-    @media (min-width:640px)  { #hero-text { text-align: left !important; } #hero-text > div, #hero-text > div + *, #hero-text .flex { justify-content: flex-start !important; } }
-    @media (min-width:1024px) { .lg\\:grid-2 { grid-template-columns: 1fr 1fr; } .lg\\:grid-3 { grid-template-columns: 1fr 1fr 1fr; } .md\\:grid-3, .sm\\:grid-3 { grid-template-columns: 1fr 1fr 1fr; } .sm\\:grid-4 { grid-template-columns: repeat(4,1fr); } }
-  `;
-  document.head.appendChild(style);
-
-  // ── Fade-up on scroll ──
-  const fadeEls = document.querySelectorAll('.fade-up');
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(e => {
-      if (e.isIntersecting) {
-        e.target.classList.add('visible');
-        observer.unobserve(e.target);
-      }
-    });
-  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
-  fadeEls.forEach(el => observer.observe(el));
-
-  // ── Form success message ──
-  const form = document.getElementById('contact-form');
-  if (form) {
-    form.addEventListener('submit', async e => {
-      e.preventDefault();
-      const btn = form.querySelector('button[type=submit]');
-      btn.textContent = 'Invio in corso…';
-      btn.disabled = true;
-      try {
-        const res = await fetch(form.action, { method: 'POST', body: new FormData(form), headers: { Accept: 'application/json' } });
-        if (res.ok) {
-          form.querySelector('#form-success').style.display = 'block';
-          form.reset();
-        } else {
-          btn.textContent = 'Errore — riprova';
-          btn.disabled = false;
-        }
-      } catch {
-        btn.textContent = 'Errore — riprova';
-        btn.disabled = false;
-      }
-    });
+  // lib/calcolo.ts
+  function arrotonda(n) {
+    return Math.round((n + Number.EPSILON) * 100) / 100;
   }
+  function applicaScaglioni(imponibile, scaglioni) {
+    let residuo = imponibile;
+    let precedente = 0;
+    let totale = 0;
+    const dettaglio = [];
+    for (const scaglione of scaglioni) {
+      if (residuo <= 0) break;
+      const tetto = scaglione.limite ?? Infinity;
+      const ampiezza = tetto - precedente;
+      const imponibileScaglione = Math.min(residuo, ampiezza);
+      const imposta = imponibileScaglione * scaglione.aliquota;
+      totale += imposta;
+      dettaglio.push(
+        `${arrotonda(imponibileScaglione).toLocaleString("it-IT")} € \xD7 ${(scaglione.aliquota * 100).toFixed(2).replace(".", ",")}% = ${arrotonda(imposta).toLocaleString("it-IT")} €`
+      );
+      residuo -= imponibileScaglione;
+      precedente = tetto;
+    }
+    return { totale: arrotonda(totale), dettaglio };
+  }
+  function calcolaContributi(ral) {
+    const baseImponibile = Math.min(ral, CONTRIBUTI.massimaleAnnuo);
+    return arrotonda(baseImponibile * CONTRIBUTI.aliquotaDipendente);
+  }
+  function calcolaDetrazioneLavoroDipendente(reddito) {
+    let detrazione;
+    if (reddito <= 0) {
+      return 0;
+    } else if (reddito <= DETRAZIONI_LAVORO_DIPENDENTE.sogliaBase) {
+      detrazione = Math.max(DETRAZIONI_LAVORO_DIPENDENTE.importoBase, DETRAZIONI_LAVORO_DIPENDENTE.minimoGarantito);
+    } else if (reddito <= DETRAZIONI_LAVORO_DIPENDENTE.fascia2.limite) {
+      detrazione = DETRAZIONI_LAVORO_DIPENDENTE.fascia2.fisso + DETRAZIONI_LAVORO_DIPENDENTE.fascia2.variabile * ((DETRAZIONI_LAVORO_DIPENDENTE.fascia2.limite - reddito) / DETRAZIONI_LAVORO_DIPENDENTE.fascia2.ampiezza);
+    } else if (reddito <= DETRAZIONI_LAVORO_DIPENDENTE.fascia3.limite) {
+      detrazione = DETRAZIONI_LAVORO_DIPENDENTE.fascia3.fisso * ((DETRAZIONI_LAVORO_DIPENDENTE.fascia3.limite - reddito) / DETRAZIONI_LAVORO_DIPENDENTE.fascia3.ampiezza);
+    } else {
+      detrazione = 0;
+    }
+    const m = DETRAZIONI_LAVORO_DIPENDENTE.maggiorazione;
+    if (reddito >= m.da && reddito <= m.a) {
+      detrazione += m.importo;
+    }
+    return arrotonda(Math.max(detrazione, 0));
+  }
+  function calcolaUlterioreDetrazione(reddito) {
+    const u = ULTERIORE_DETRAZIONE;
+    if (!u.attiva) return 0;
+    if (reddito < u.da || reddito > u.a) return 0;
+    if (reddito <= u.sogliaPiena) return u.importo;
+    return arrotonda(u.importo * ((u.a - reddito) / (u.a - u.sogliaPiena)));
+  }
+  function calcolaAddizionaleRegionale(imponibile) {
+    if (imponibile <= 0) return 0;
+    return applicaScaglioni(imponibile, ADDIZIONALE_REGIONALE.scaglioni).totale;
+  }
+  function calcolaAddizionaleComunale(imponibile) {
+    if (imponibile <= ADDIZIONALE_COMUNALE.sogliaEsenzione) return 0;
+    return arrotonda(imponibile * ADDIZIONALE_COMUNALE.aliquota);
+  }
+  function calcolaTrattamentoIntegrativo(reddito, irpefLorda, detrazioneLavoro) {
+    const t = TRATTAMENTO_INTEGRATIVO;
+    if (!t.attiva) return 0;
+    if (reddito > t.sogliaReddito) return 0;
+    if (irpefLorda <= detrazioneLavoro) return 0;
+    return t.importo;
+  }
+  function calcolaSommaIntegrativa(reddito) {
+    const s = SOMMA_INTEGRATIVA;
+    if (!s.attiva || reddito <= 0) return 0;
+    const fascia = s.fasce.find((f) => reddito <= f.limite);
+    if (!fascia) return 0;
+    return arrotonda(reddito * fascia.percentuale);
+  }
+  function calcolaNetto(ral, mensilita = MENSILITA_DEFAULT) {
+    if (!Number.isFinite(ral) || ral < 0) {
+      throw new Error("La RAL deve essere un numero positivo.");
+    }
+    if (!Number.isFinite(mensilita) || mensilita <= 0) {
+      throw new Error("Il numero di mensilit\xE0 deve essere maggiore di zero.");
+    }
+    const contributiInps = calcolaContributi(ral);
+    const imponibileFiscale = arrotonda(ral - contributiInps);
+    const scagl = applicaScaglioni(imponibileFiscale, SCAGLIONI_IRPEF);
+    const irpefLorda = scagl.totale;
+    const detrazioneLavoroDipendente = calcolaDetrazioneLavoroDipendente(imponibileFiscale);
+    const ulterioreDetrazione = calcolaUlterioreDetrazione(imponibileFiscale);
+    const detrazioniTotali = arrotonda(
+      detrazioneLavoroDipendente + ulterioreDetrazione
+    );
+    const irpefNetta = arrotonda(Math.max(0, irpefLorda - detrazioniTotali));
+    const addizionaleRegionale = calcolaAddizionaleRegionale(imponibileFiscale);
+    const addizionaleComunale = calcolaAddizionaleComunale(imponibileFiscale);
+    const trattamentoIntegrativo = calcolaTrattamentoIntegrativo(
+      imponibileFiscale,
+      irpefLorda,
+      detrazioneLavoroDipendente
+    );
+    const sommaIntegrativa = calcolaSommaIntegrativa(imponibileFiscale);
+    const sommeAggiuntive = arrotonda(trattamentoIntegrativo + sommaIntegrativa);
+    const totaleTrattenute = arrotonda(
+      contributiInps + irpefNetta + addizionaleRegionale + addizionaleComunale
+    );
+    const nettoAnnuo = arrotonda(ral - totaleTrattenute + sommeAggiuntive);
+    const nettoMensile = arrotonda(nettoAnnuo / mensilita);
+    const aliquotaEffettiva = ral > 0 ? arrotonda(nettoAnnuo / ral * 100) : 0;
+    const pct = (n) => (n * 100).toFixed(2).replace(".", ",");
+    const eur = (n) => arrotonda(n).toLocaleString("it-IT", { minimumFractionDigits: 2 });
+    const dettaglio = [
+      {
+        id: "ral",
+        etichetta: "Retribuzione annua lorda",
+        importo: ral,
+        segno: "neutro",
+        formula: "Valore inserito dall'utente",
+        fonte: "Input"
+      },
+      {
+        id: "contributi",
+        etichetta: "Contributi previdenziali INPS (carico dipendente)",
+        importo: contributiInps,
+        segno: "negativo",
+        formula: `${eur(Math.min(ral, CONTRIBUTI.massimaleAnnuo))} € \xD7 ${pct(
+          CONTRIBUTI.aliquotaDipendente
+        )}% = ${eur(contributiInps)} €`,
+        fonte: `Aliquota IVS a carico lavoratore, settore privato — circolari INPS 2026. Massimale contributivo ${eur(CONTRIBUTI.massimaleAnnuo)} €.`
+      },
+      {
+        id: "imponibile",
+        etichetta: "Imponibile fiscale",
+        importo: imponibileFiscale,
+        segno: "neutro",
+        formula: `${eur(ral)} € − ${eur(contributiInps)} € = ${eur(
+          imponibileFiscale
+        )} €`,
+        fonte: "I contributi previdenziali sono deducibili dal reddito imponibile."
+      },
+      {
+        id: "irpef-lorda",
+        etichetta: "IRPEF lorda",
+        importo: irpefLorda,
+        segno: "negativo",
+        formula: componiFormulaScaglioni(scagl.dettaglio, irpefLorda),
+        fonte: "Scaglioni IRPEF 2026: 23% fino a 28.000, 33% da 28.001 a 50.000, 43% oltre. La seconda aliquota \xE8 scesa dal 35% al 33% con la Legge di Bilancio 2026 (L. 199/2025, art. 1 co. 3)."
+      },
+      {
+        id: "detrazione-lavoro",
+        etichetta: "Detrazione per lavoro dipendente",
+        importo: detrazioneLavoroDipendente,
+        segno: "positivo",
+        formula: formulaDetrazione(imponibileFiscale, detrazioneLavoroDipendente),
+        fonte: "Art. 13 TUIR. Include la maggiorazione di 65 € per redditi tra 25.000 e 35.000 €."
+      },
+      {
+        id: "ulteriore-detrazione",
+        etichetta: "Ulteriore detrazione (redditi 20.000 – 40.000 €)",
+        importo: ulterioreDetrazione,
+        segno: "positivo",
+        formula: ulterioreDetrazione > 0 ? imponibileFiscale <= ULTERIORE_DETRAZIONE.sogliaPiena ? `Importo pieno: ${eur(ULTERIORE_DETRAZIONE.importo)} €` : `1.000 \xD7 [(40.000 − ${eur(imponibileFiscale)}) / 8.000] = ${eur(
+          ulterioreDetrazione
+        )} €` : "Non spettante per questa fascia di reddito",
+        fonte: "L. 207/2024 art. 1 co. 6 — voce da riverificare, vedi README."
+      },
+      {
+        id: "irpef-netta",
+        etichetta: "IRPEF netta",
+        importo: irpefNetta,
+        segno: "negativo",
+        formula: `max(0; ${eur(irpefLorda)} € − ${eur(
+          detrazioniTotali
+        )} €) = ${eur(irpefNetta)} €`,
+        fonte: "L'imposta netta non pu\xF2 essere negativa: le detrazioni eccedenti si perdono."
+      },
+      {
+        id: "add-regionale",
+        etichetta: `Addizionale regionale ${ADDIZIONALE_REGIONALE.regione}`,
+        importo: addizionaleRegionale,
+        segno: "negativo",
+        formula: componiFormulaScaglioni(
+          applicaScaglioni(imponibileFiscale, ADDIZIONALE_REGIONALE.scaglioni).dettaglio,
+          addizionaleRegionale
+        ),
+        fonte: "Aliquote a scaglioni 1,23% – 1,73%. Fonte: Dipartimento delle Finanze (MEF), art. 72 L.R. Lombardia 14/07/2003 n. 10."
+      },
+      {
+        id: "add-comunale",
+        etichetta: `Addizionale comunale ${ADDIZIONALE_COMUNALE.comune}`,
+        importo: addizionaleComunale,
+        segno: "negativo",
+        formula: addizionaleComunale > 0 ? `${eur(imponibileFiscale)} € \xD7 ${pct(
+          ADDIZIONALE_COMUNALE.aliquota
+        )}% = ${eur(addizionaleComunale)} €` : `Imponibile sotto la soglia di esenzione di ${eur(
+          ADDIZIONALE_COMUNALE.sogliaEsenzione
+        )} € → esente`,
+        fonte: `Aliquota ${pct(ADDIZIONALE_COMUNALE.aliquota)}%, esenzione fino a ${eur(ADDIZIONALE_COMUNALE.sogliaEsenzione)} €. \xC8 una soglia, non una franchigia: superata, si paga sull'intero imponibile. Fonte: delibera Comune di Milano n. 46 del 28/09/2020.`
+      }
+    ];
+    if (trattamentoIntegrativo > 0) {
+      dettaglio.push({
+        id: "trattamento-integrativo",
+        etichetta: "Trattamento integrativo",
+        importo: trattamentoIntegrativo,
+        segno: "positivo",
+        formula: `Reddito ≤ ${eur(
+          TRATTAMENTO_INTEGRATIVO.sogliaReddito
+        )} € e imposta lorda capiente → ${eur(trattamentoIntegrativo)} €`,
+        fonte: "DL 3/2020 art. 1, confermato dalla L. 199/2025."
+      });
+    }
+    if (sommaIntegrativa > 0) {
+      dettaglio.push({
+        id: "somma-integrativa",
+        etichetta: "Somma integrativa non imponibile",
+        importo: sommaIntegrativa,
+        segno: "positivo",
+        formula: `${eur(imponibileFiscale)} € \xD7 percentuale di fascia = ${eur(
+          sommaIntegrativa
+        )} €`,
+        fonte: "L. 207/2024 art. 1 co. 4-5 — voce da riverificare, vedi README."
+      });
+    }
+    const avvertenze = [];
+    if (sommeAggiuntive > 0) {
+      avvertenze.push(
+        "In questa fascia di reddito il calcolo include misure integrative (trattamento integrativo e/o somma integrativa non imponibile) la cui disciplina 2026 \xE8 stata implementata con confidenza ridotta. Il netto risultante pu\xF2 essere sovrastimato: verificare prima di qualunque uso reale."
+      );
+    }
+    if (ulterioreDetrazione > 0) {
+      avvertenze.push(
+        "\xC8 stata applicata l'ulteriore detrazione per redditi 20.000 – 40.000 €: voce da riverificare sul testo aggiornato della norma."
+      );
+    }
+    if (ral > CONTRIBUTI.massimaleAnnuo) {
+      avvertenze.push(
+        "RAL oltre il massimale contributivo: sopra la soglia non si versa IVS. Il prototipo non gestisce l'aliquota aggiuntiva dell'1% prevista oltre la prima fascia di retribuzione pensionabile."
+      );
+    }
+    avvertenze.push(
+      "Le addizionali regionale e comunale sono calcolate sul reddito dell'anno corrente. Nella realt\xE0 si determinano sul reddito dell'anno precedente e si trattengono a rate nell'anno successivo: \xE8 una semplificazione consapevole."
+    );
+    dettaglio.push({
+      id: "netto-annuo",
+      etichetta: "Netto annuo",
+      importo: nettoAnnuo,
+      segno: "neutro",
+      formula: `${eur(ral)} € − ${eur(totaleTrattenute)} € di trattenute${sommeAggiuntive > 0 ? ` + ${eur(sommeAggiuntive)} € di somme aggiuntive` : ""} = ${eur(nettoAnnuo)} €`,
+      fonte: "Somma delle voci precedenti."
+    });
+    return {
+      annoFiscale: ANNO_FISCALE,
+      ral,
+      mensilita,
+      contributiInps,
+      imponibileFiscale,
+      irpefLorda,
+      detrazioneLavoroDipendente,
+      ulterioreDetrazione,
+      detrazioniTotali,
+      irpefNetta,
+      addizionaleRegionale,
+      addizionaleComunale,
+      trattamentoIntegrativo,
+      sommaIntegrativa,
+      sommeAggiuntive,
+      totaleTrattenute,
+      nettoAnnuo,
+      nettoMensile,
+      aliquotaEffettiva,
+      dettaglio,
+      avvertenze
+    };
+  }
+  function componiFormulaScaglioni(righe, totale) {
+    const eur = (n) => arrotonda(n).toLocaleString("it-IT", { minimumFractionDigits: 2 });
+    if (righe.length === 0) return "Imponibile nullo → nessuna imposta";
+    if (righe.length === 1) return righe[0];
+    return righe.join("  +  ") + `  =  ${eur(totale)} €`;
+  }
+  function formulaDetrazione(reddito, risultato) {
+    const eur = (n) => arrotonda(n).toLocaleString("it-IT", { minimumFractionDigits: 2 });
+    if (reddito <= DETRAZIONI_LAVORO_DIPENDENTE.sogliaBase) {
+      return `Reddito ≤ 15.000 € → importo fisso ${eur(DETRAZIONI_LAVORO_DIPENDENTE.importoBase)} €`;
+    }
+    if (reddito <= DETRAZIONI_LAVORO_DIPENDENTE.fascia2.limite) {
+      return `1.910 + 1.190 \xD7 [(28.000 − ${eur(reddito)}) / 13.000] = ${eur(
+        risultato
+      )} €`;
+    }
+    if (reddito <= DETRAZIONI_LAVORO_DIPENDENTE.fascia3.limite) {
+      return `1.910 \xD7 [(50.000 − ${eur(reddito)}) / 22.000] = ${eur(risultato)} €`;
+    }
+    return "Reddito oltre 50.000 € → detrazione azzerata";
+  }
+  function calcolaRalDaNetto(nettoMensileDesiderato, mensilita = MENSILITA_DEFAULT, tolleranza = 0.5) {
+    const obiettivo = nettoMensileDesiderato * mensilita;
+    let basso = 0;
+    let alto = Math.max(obiettivo * 3, 2e4);
+    for (let i = 0; i < 100; i++) {
+      const medio = (basso + alto) / 2;
+      const risultato = calcolaNetto(medio, mensilita).nettoAnnuo;
+      if (Math.abs(risultato - obiettivo) < tolleranza) return arrotonda(medio);
+      if (risultato < obiettivo) basso = medio;
+      else alto = medio;
+    }
+    return arrotonda((basso + alto) / 2);
+  }
+
+  // anteprima/entry.ts
+  globalThis.CALC = { calcolaNetto, calcolaRalDaNetto };
+})();
+</script>
+<script>
+const eur = n => n.toLocaleString('it-IT',{minimumFractionDigits:2,maximumFractionDigits:2});
+let modalita='diretta', aperte=new Set();
+const $ = s => document.querySelector(s);
+
+function segno(v){ return v==='negativo'?'−':v==='positivo'?'+':''; }
+
+function render(r){
+  if(!r){ $('#out').innerHTML=''; return; }
+  const mens = Number($('#mensilita').value);
+  const voci = r.dettaglio.map(v=>{
+    const ap = aperte.has(v.id);
+    return `<li class="voce ${v.id==='netto-annuo'||v.id==='imponibile'?'tappa':''}">
+      <button class="voce-riga" data-id="${v.id}" aria-expanded="${ap}">
+        <span class="freccia ${ap?'giu':''}">›</span>
+        <span class="voce-label">${v.etichetta}</span>
+        <span class="voce-importo ${v.segno}">${segno(v.segno)}${eur(v.importo)} €</span>
+      </button>
+      ${ap?`<div class="voce-dettaglio">
+        <div class="riga-dettaglio"><span class="tag">Formula</span><code>${v.formula}</code></div>
+        <div class="riga-dettaglio"><span class="tag">Fonte</span><p>${v.fonte}</p></div>
+      </div>`:''}
+    </li>`;
+  }).join('');
+
+  $('#out').innerHTML = `
+  <section class="card risultati">
+    ${modalita==='inversa'?`<p class="inversa-nota">Per portare a casa <strong>${eur(r.nettoMensile)} €</strong> al mese su ${mens} mensilità serve una RAL di circa <strong>${eur(r.ral)} €</strong>.</p>`:''}
+    <div class="numeroni">
+      <div class="numerone"><span class="label">Netto annuo</span><span class="valore">${eur(r.nettoAnnuo)} €</span></div>
+      <div class="numerone primario"><span class="label">Netto mensile (${mens} mensilità)</span><span class="valore">${eur(r.nettoMensile)} €</span></div>
+      <div class="numerone"><span class="label">Totale trattenute</span><span class="valore negativo">−${eur(r.totaleTrattenute)} €</span></div>
+    </div>
+    <div class="barra">
+      <div class="barra-netto" style="width:${(r.nettoAnnuo/r.ral)*100}%"></div>
+      <div class="barra-contributi" style="width:${(r.contributiInps/r.ral)*100}%"></div>
+      <div class="barra-tasse"></div>
+    </div>
+    <div class="legenda">
+      <span><i class="q netto"></i> Netto ${r.aliquotaEffettiva.toLocaleString('it-IT',{minimumFractionDigits:1,maximumFractionDigits:1})}%</span>
+      <span><i class="q contributi"></i> Contributi INPS</span>
+      <span><i class="q tasse"></i> IRPEF e addizionali</span>
+    </div>
+  </section>
+  <section class="card breakdown">
+    <div class="breakdown-head"><h2>Il percorso dal lordo al netto</h2>
+    <button class="link" id="espandi">${aperte.size===r.dettaglio.length?'Chiudi tutto':'Espandi tutto'}</button></div>
+    <ul class="voci">${voci}</ul>
+  </section>
+  ${r.avvertenze.length?`<section class="card avvertenze"><h2>Avvertenze su questo risultato</h2><ul>${r.avvertenze.map(a=>'<li>'+a+'</li>').join('')}</ul></section>`:''}`;
+
+  document.querySelectorAll('.voce-riga').forEach(b=>b.onclick=()=>{
+    const id=b.dataset.id; aperte.has(id)?aperte.delete(id):aperte.add(id); render(ultimo);
+  });
+  const e=$('#espandi');
+  if(e) e.onclick=()=>{ aperte = aperte.size===ultimo.dettaglio.length?new Set():new Set(ultimo.dettaglio.map(v=>v.id)); render(ultimo); };
+}
+
+let ultimo=null;
+function calcola(){
+  $('#errore').textContent='';
+  const mens=Number($('#mensilita').value);
+  try{
+    if(modalita==='diretta'){
+      const v=parseFloat($('#ral').value.replace(',','.'));
+      if(!isFinite(v)||v<=0){ $('#errore').textContent='Inserisci una RAL valida.'; return; }
+      ultimo=CALC.calcolaNetto(v,mens);
+    }else{
+      const t=parseFloat($('#netto').value.replace(',','.'));
+      if(!isFinite(t)||t<=0){ $('#errore').textContent='Inserisci un netto mensile valido.'; return; }
+      const ral=CALC.calcolaRalDaNetto(t,mens);
+      ultimo=CALC.calcolaNetto(ral,mens);
+    }
+    render(ultimo);
+  }catch(e){ $('#errore').textContent=e.message; }
+}
+
+document.querySelectorAll('.tab').forEach(t=>t.onclick=()=>{
+  modalita=t.dataset.mod;
+  document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('attivo',x===t));
+  $('#campo-ral').style.display = modalita==='diretta'?'block':'none';
+  $('#campo-netto').style.display = modalita==='inversa'?'block':'none';
+  aperte=new Set(); ultimo=null; render(null);
+});
+$('#calcola').onclick=calcola;
+['ral','netto'].forEach(id=>$('#'+id).addEventListener('keydown',e=>{if(e.key==='Enter')calcola();}));
+calcola();
 </script>
 </body>
 </html>
