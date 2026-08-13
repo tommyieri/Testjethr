@@ -4,53 +4,49 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="light dark">
-<meta name="description" content="Calcolatore della retribuzione netta annuale e mensile a partire dalla RAL — anno fiscale 2026, impiegato a tempo indeterminato, Milano.">
-<title>Dalla RAL al netto — calcolatore 2026</title>
+<meta name="description" content="Dalla RAL al netto: calcolatore della retribuzione netta annuale e mensile per l'anno fiscale 2026. Prototipo realizzato per il task di selezione Product Builder di Jet HR.">
+<title>Dalla RAL al netto — Jet HR</title>
 <style>
 /* ============================================================
-   TOKEN — le uniche decisioni. Sotto questo blocco non compare
-   nessun valore grezzo: né un hex, né un px fuori scala.
+   TOKEN
+   Palette ispirata al posizionamento di Jet HR (SaaS HR italiano,
+   comunicazione diretta e anti-burocratica). NON è il brand verificato:
+   jethr.com non era raggiungibile, quindi i colori sono una scelta
+   documentata, non un prelievo dal loro design system.
    ============================================================ */
 :root {
-  /* colore — palette "Slate Pro", un solo accento */
-  --bg:            #f6f7f9;
+  --bg:            #f7f7fb;
   --surface:       #ffffff;
-  --surface-sunk:  #f1f3f6;
-  --ink:           #14181f;
-  --muted:         #5f6875;
-  --border:        #e3e6ea;
-  --border-strong: #cdd3da;
+  --surface-sunk:  #f1f1f8;
+  --ink:           #16151f;
+  --muted:         #605d75;
+  --border:        #e4e3ee;
+  --border-strong: #cdcbdd;
 
-  --accent:        #1f5fd8;
-  --accent-hover:  #1a51ba;
-  --accent-soft:   #eef3fd;
-  --accent-line:   #cfdff9;
+  --accent:        #4f46e5;
+  --accent-hover:  #4338ca;
+  --accent-soft:   #eeeefe;
+  --accent-line:   #d6d5fb;
 
   --positive:      #1a7f45;
-  --positive-soft: #e8f5ee;
   --negative:      #b3261e;
   --negative-soft: #fdeceb;
   --warning-ink:   #7a5c12;
   --warning-bg:    #fffaef;
   --warning-line:  #f0e2c0;
 
-  /* quote della barra di composizione */
   --q-netto:       #1a7f45;
   --q-contributi:  #d99413;
   --q-imposte:     #c14a44;
 
-  /* spazio — 4 / 8 / 12 / 16 / 24 / 32 / 48 / 64 */
   --s-1: 4px;  --s-2: 8px;  --s-3: 12px; --s-4: 16px;
   --s-5: 24px; --s-6: 32px; --s-7: 48px; --s-8: 64px;
 
-  /* raggio — tre valori, mai un quarto */
   --r-sm: 8px; --r-md: 14px; --r-full: 999px;
 
-  /* tipo */
   --font: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
           Helvetica, Arial, sans-serif;
 
-  /* moto — una durata per stato, una per layout, una curva */
   --t-state:  150ms;
   --t-layout: 250ms;
   --ease: cubic-bezier(0.2, 0, 0, 1);
@@ -58,241 +54,158 @@
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --bg:            #0f1115;
-    --surface:       #16181d;
-    --surface-sunk:  #1b1e24;
-    --ink:           #e4e6eb;
-    --muted:         #98a0ab;
-    --border:        #2a2e37;
-    --border-strong: #3a3f4a;
-
-    --accent:        #7aa2f7;
-    --accent-hover:  #97b6f9;
-    --accent-soft:   #1a2436;
-    --accent-line:   #2c3d5c;
-
+    --bg:            #101018;
+    --surface:       #17161f;
+    --surface-sunk:  #1d1c27;
+    --ink:           #e5e4ec;
+    --muted:         #9b98ae;
+    --border:        #2b2937;
+    --border-strong: #3c3950;
+    --accent:        #9b95f9;
+    --accent-hover:  #b3aefb;
+    --accent-soft:   #1e1b36;
+    --accent-line:   #332f5e;
     --positive:      #5fcf90;
-    --positive-soft: #16241d;
     --negative:      #f08b83;
     --negative-soft: #2a1a19;
     --warning-ink:   #e0c184;
     --warning-bg:    #211c11;
     --warning-line:  #3a3220;
-
     --q-netto:       #45b877;
     --q-contributi:  #d9a441;
     --q-imposte:     #d2645e;
   }
 }
-
 :root[data-theme="dark"] {
-  --bg:            #0f1115;
-  --surface:       #16181d;
-  --surface-sunk:  #1b1e24;
-  --ink:           #e4e6eb;
-  --muted:         #98a0ab;
-  --border:        #2a2e37;
-  --border-strong: #3a3f4a;
-
-  --accent:        #7aa2f7;
-  --accent-hover:  #97b6f9;
-  --accent-soft:   #1a2436;
-  --accent-line:   #2c3d5c;
-
+  --bg:            #101018;
+  --surface:       #17161f;
+  --surface-sunk:  #1d1c27;
+  --ink:           #e5e4ec;
+  --muted:         #9b98ae;
+  --border:        #2b2937;
+  --border-strong: #3c3950;
+  --accent:        #9b95f9;
+  --accent-hover:  #b3aefb;
+  --accent-soft:   #1e1b36;
+  --accent-line:   #332f5e;
   --positive:      #5fcf90;
-  --positive-soft: #16241d;
   --negative:      #f08b83;
   --negative-soft: #2a1a19;
   --warning-ink:   #e0c184;
   --warning-bg:    #211c11;
   --warning-line:  #3a3220;
-
   --q-netto:       #45b877;
   --q-contributi:  #d9a441;
   --q-imposte:     #d2645e;
 }
 
-/* ============================================================
-   BASE
-   ============================================================ */
+/* ---------- base ---------- */
 *, *::before, *::after { box-sizing: border-box; }
-
 html { -webkit-text-size-adjust: 100%; }
-
 body {
-  margin: 0;
-  background: var(--bg);
-  color: var(--ink);
+  margin: 0; background: var(--bg); color: var(--ink);
   font: 400 16px/1.55 var(--font);
-  transition: background-color var(--t-layout) var(--ease),
-              color var(--t-layout) var(--ease);
+  transition: background-color var(--t-layout) var(--ease);
 }
-
-h1, h2, h3, p, ul, ol, figure, figcaption { margin: 0; }
+h1,h2,h3,p,ul,ol,dl,dd,figure,figcaption { margin: 0; }
 ul { list-style: none; padding: 0; }
-
-:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
-  border-radius: var(--r-sm);
-}
-
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: var(--r-sm); }
 .sr-only {
-  position: absolute; width: 1px; height: 1px;
-  padding: 0; margin: -1px; overflow: hidden;
-  clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
 }
-
-.page {
-  max-width: 820px;
-  margin: 0 auto;
-  padding: var(--s-7) var(--s-4) var(--s-8);
-}
-
+.page { max-width: 860px; margin: 0 auto; padding: var(--s-6) var(--s-4) var(--s-8); }
 .card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--r-md);
-  padding: var(--s-5);
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--r-md); padding: var(--s-5);
 }
 
-/* ============================================================
-   TESTATA
-   ============================================================ */
-.masthead { margin-bottom: var(--s-6); }
-
-.masthead-row {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: var(--s-4);
-  margin-bottom: var(--s-3);
+/* ---------- testata ---------- */
+.topbar {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: var(--s-4); margin-bottom: var(--s-6);
 }
-
-.masthead h1 {
-  font-size: clamp(28px, 5vw, 38px);
-  font-weight: 650;
-  line-height: 1.08;
-  letter-spacing: -0.025em;
+.marchio { display: flex; align-items: center; gap: var(--s-3); flex-wrap: wrap; }
+.wordmark {
+  display: inline-flex; align-items: center; gap: 7px;
+  font-size: 18px; font-weight: 700; letter-spacing: -0.03em;
 }
-
-.lede {
-  color: var(--muted);
-  max-width: 62ch;
-  font-size: 16px;
+.wordmark .glifo {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 26px; height: 26px; border-radius: 7px;
+  background: var(--accent); color: #fff;
+  font-size: 14px; font-weight: 700; letter-spacing: -0.04em;
 }
-
-.assunzioni {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--s-2);
-  margin-top: var(--s-4);
+:root[data-theme="dark"] .wordmark .glifo { color: #101018; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .wordmark .glifo { color: #101018; }
 }
-.assunzioni li {
-  font-size: 12.5px;
-  font-weight: 500;
-  color: var(--muted);
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--r-full);
-  padding: 5px var(--s-3) 6px;
+.badge-proto {
+  font-size: 11.5px; font-weight: 600; letter-spacing: 0.02em;
+  color: var(--muted); background: var(--surface-sunk);
+  border: 1px solid var(--border); border-radius: var(--r-full);
+  padding: 4px 10px 5px;
 }
-
 .theme-toggle {
-  flex: 0 0 auto;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 44px; height: 44px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--r-sm);
-  color: var(--muted);
-  cursor: pointer;
-  transition: color var(--t-state) var(--ease),
-              border-color var(--t-state) var(--ease);
+  flex: 0 0 auto; display: inline-flex; align-items: center; justify-content: center;
+  width: 44px; height: 44px; background: var(--surface);
+  border: 1px solid var(--border); border-radius: var(--r-sm);
+  color: var(--muted); cursor: pointer;
+  transition: color var(--t-state) var(--ease), border-color var(--t-state) var(--ease);
 }
 .theme-toggle:hover { color: var(--ink); border-color: var(--border-strong); }
 .theme-toggle svg { width: 18px; height: 18px; }
-.theme-toggle .icon-sun  { display: none; }
-:root[data-theme="dark"] .theme-toggle .icon-sun  { display: block; }
+.theme-toggle .icon-sun { display: none; }
+:root[data-theme="dark"] .theme-toggle .icon-sun { display: block; }
 :root[data-theme="dark"] .theme-toggle .icon-moon { display: none; }
 @media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) .theme-toggle .icon-sun  { display: block; }
+  :root:not([data-theme="light"]) .theme-toggle .icon-sun { display: block; }
   :root:not([data-theme="light"]) .theme-toggle .icon-moon { display: none; }
 }
 
-/* ============================================================
-   FORM
-   ============================================================ */
+.hero-testo { margin-bottom: var(--s-5); }
+.hero-testo h1 {
+  font-size: clamp(30px, 5.5vw, 42px); font-weight: 700;
+  line-height: 1.05; letter-spacing: -0.03em; margin-bottom: var(--s-3);
+}
+.hero-testo p { color: var(--muted); max-width: 60ch; font-size: 16.5px; }
+
+/* ---------- form ---------- */
 .segmented {
-  display: inline-flex;
-  border: 0; padding: var(--s-1); margin: 0 0 var(--s-5);
-  background: var(--surface-sunk);
-  border-radius: var(--r-sm);
-  gap: var(--s-1);
+  display: inline-flex; border: 0; padding: var(--s-1); margin: 0 0 var(--s-5);
+  background: var(--surface-sunk); border-radius: var(--r-sm); gap: var(--s-1);
 }
 .segmented label { cursor: pointer; }
-.segmented input {
-  position: absolute; opacity: 0;
-  width: 1px; height: 1px;
-}
+.segmented input { position: absolute; opacity: 0; width: 1px; height: 1px; }
 .segmented span {
-  display: flex;
-  align-items: center;
-  min-height: 44px;              /* target touch */
-  padding: 0 var(--s-4);
-  border-radius: 6px;
-  font-size: 14px; font-weight: 500;
-  color: var(--muted);
-  white-space: nowrap;
-  transition: background-color var(--t-state) var(--ease),
-              color var(--t-state) var(--ease);
+  display: flex; align-items: center; min-height: 44px; padding: 0 var(--s-4);
+  border-radius: 6px; font-size: 14px; font-weight: 500;
+  color: var(--muted); white-space: nowrap;
+  transition: background-color var(--t-state) var(--ease), color var(--t-state) var(--ease);
 }
 .segmented input:checked + span {
-  background: var(--surface);
-  color: var(--ink);
-  box-shadow: 0 0 0 1px var(--border);
+  background: var(--surface); color: var(--ink); box-shadow: 0 0 0 1px var(--border);
 }
-.segmented input:focus-visible + span {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
-}
+.segmented input:focus-visible + span { outline: 2px solid var(--accent); outline-offset: 2px; }
 
-.campi {
-  display: flex;
-  gap: var(--s-3);
-  align-items: flex-end;
-  flex-wrap: wrap;
-}
-.campo { display: grid; gap: 6px; flex: 1 1 240px; min-width: 0; }
-/* deve battere `display: grid`, altrimenti [hidden] non nasconde nulla */
+.riga-campi { display: flex; gap: var(--s-3); align-items: flex-end; flex-wrap: wrap; }
+.campo { display: grid; gap: 6px; flex: 1 1 220px; min-width: 0; }
 .campo[hidden] { display: none; }
-.campo.stretto { flex: 0 0 120px; }
-.campo > .etichetta {
-  font-size: 13px; font-weight: 500;
-  color: var(--muted);
-}
+.campo.stretto { flex: 0 0 116px; }
+.campo.medio { flex: 0 0 168px; }
+.etichetta { font-size: 13px; font-weight: 500; color: var(--muted); }
+.aiuto { font-size: 12px; color: var(--muted); line-height: 1.45; }
 
 .input-wrap { position: relative; display: block; }
 .input-wrap .suffisso {
-  position: absolute; right: var(--s-3); top: 50%;
-  transform: translateY(-50%);
-  color: var(--muted);
-  pointer-events: none;
-  font-size: 15px;
+  position: absolute; right: var(--s-3); top: 50%; transform: translateY(-50%);
+  color: var(--muted); pointer-events: none; font-size: 15px;
 }
-
 input[type="text"], select {
-  width: 100%;
-  min-height: 46px;
-  padding: 11px var(--s-3) 12px;
-  font: 400 17px/1.3 var(--font);
-  font-variant-numeric: tabular-nums;
-  color: var(--ink);
-  background: var(--surface);
-  border: 1px solid var(--border-strong);
-  border-radius: var(--r-sm);
+  width: 100%; min-height: 46px; padding: 11px var(--s-3) 12px;
+  font: 400 17px/1.3 var(--font); font-variant-numeric: tabular-nums;
+  color: var(--ink); background: var(--surface);
+  border: 1px solid var(--border-strong); border-radius: var(--r-sm);
   transition: border-color var(--t-state) var(--ease);
 }
 input[type="text"] { padding-right: var(--s-6); }
@@ -301,432 +214,387 @@ select {
   background-image: linear-gradient(45deg, transparent 50%, currentColor 50%),
                     linear-gradient(135deg, currentColor 50%, transparent 50%);
   background-position: calc(100% - 18px) 50%, calc(100% - 13px) 50%;
-  background-size: 5px 5px, 5px 5px;
-  background-repeat: no-repeat;
+  background-size: 5px 5px, 5px 5px; background-repeat: no-repeat;
   padding-right: var(--s-6);
 }
 input:hover, select:hover { border-color: var(--muted); }
 input:focus-visible, select:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: -1px;
-  border-color: var(--accent);
+  outline: 2px solid var(--accent); outline-offset: -1px; border-color: var(--accent);
 }
 
 .btn-primary {
-  flex: 0 0 auto;
-  min-height: 46px;
-  padding: 11px var(--s-6) 12px;
-  font: 600 15px/1 var(--font);
-  color: #fff;
-  background: var(--accent);
-  border: 1px solid transparent;
-  border-radius: var(--r-sm);
-  cursor: pointer;
+  flex: 0 0 auto; min-height: 46px; padding: 11px var(--s-6) 12px;
+  font: 600 15px/1 var(--font); color: #fff; background: var(--accent);
+  border: 1px solid transparent; border-radius: var(--r-sm); cursor: pointer;
   transition: background-color var(--t-state) var(--ease);
 }
-:root[data-theme="dark"] .btn-primary { color: #0f1115; }
+:root[data-theme="dark"] .btn-primary { color: #101018; }
 @media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) .btn-primary { color: #0f1115; }
+  :root:not([data-theme="light"]) .btn-primary { color: #101018; }
 }
 .btn-primary:hover { background: var(--accent-hover); }
 .btn-primary:active { transform: translateY(0.5px); }
 
 .errore {
-  margin-top: var(--s-3);
-  padding: var(--s-2) var(--s-3);
-  background: var(--negative-soft);
-  border-radius: var(--r-sm);
-  color: var(--negative);
-  font-size: 14px;
+  margin-top: var(--s-3); padding: var(--s-2) var(--s-3);
+  background: var(--negative-soft); border-radius: var(--r-sm);
+  color: var(--negative); font-size: 14px;
 }
 .errore:empty { display: none; }
 
-/* ============================================================
-   RISULTATO
-   ============================================================ */
-.risultato { margin-top: var(--s-4); }
-
-.nota-inversa {
-  margin-bottom: var(--s-4);
-  padding: var(--s-3) var(--s-4);
-  background: var(--accent-soft);
-  border: 1px solid var(--accent-line);
-  border-radius: var(--r-sm);
-  font-size: 15px;
+/* ---------- dettagli avanzati ---------- */
+.avanzate { margin-top: var(--s-5); border-top: 1px solid var(--border); }
+.avanzate > summary {
+  display: flex; align-items: center; gap: var(--s-2);
+  min-height: 44px; cursor: pointer; list-style: none;
+  font-size: 14px; font-weight: 500; color: var(--accent);
 }
+.avanzate > summary::-webkit-details-marker { display: none; }
+.avanzate > summary .chev { transition: transform var(--t-state) var(--ease); }
+.avanzate[open] > summary .chev { transform: rotate(90deg); }
+.avanzate > summary svg { width: 10px; height: 10px; display: block; }
 
-.hero {
-  display: grid;
-  gap: var(--s-1);
+.gruppo { margin-top: var(--s-4); }
+.gruppo > h3 {
+  font-size: 11.5px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.07em; color: var(--muted); margin-bottom: var(--s-3);
+}
+.gruppo + .gruppo { margin-top: var(--s-5); padding-top: var(--s-5); border-top: 1px solid var(--border); }
+
+.check {
+  display: flex; align-items: flex-start; gap: var(--s-3);
+  min-height: 44px; padding: var(--s-2) 0; cursor: pointer;
+}
+.check input { width: 18px; height: 18px; margin: 3px 0 0; accent-color: var(--accent); flex: 0 0 auto; }
+.check .testo { display: grid; gap: 2px; }
+.check .titolo { font-size: 14.5px; }
+.check .aiuto { max-width: 62ch; }
+
+/* ---------- risultato ---------- */
+.risultato { margin-top: var(--s-4); }
+.nota-inversa {
+  margin-bottom: var(--s-4); padding: var(--s-3) var(--s-4);
+  background: var(--accent-soft); border: 1px solid var(--accent-line);
+  border-radius: var(--r-sm); font-size: 15px;
+}
+.pannello-hero {
+  display: grid; gap: var(--s-1);
   padding: var(--s-5) var(--s-5) var(--s-6);
-  background: var(--accent-soft);
-  border: 1px solid var(--accent-line);
-  border-radius: var(--r-md);
-  margin-bottom: var(--s-3);
+  background: var(--accent-soft); border: 1px solid var(--accent-line);
+  border-radius: var(--r-md); margin-bottom: var(--s-3);
 }
 .hero-label {
-  font-size: 12px; font-weight: 600;
-  text-transform: uppercase; letter-spacing: 0.06em;
-  color: var(--muted);
+  font-size: 12px; font-weight: 600; text-transform: uppercase;
+  letter-spacing: 0.06em; color: var(--muted);
 }
 .hero-value {
-  font-size: clamp(40px, 9vw, 60px);
-  font-weight: 650;
-  line-height: 1.02;
-  letter-spacing: -0.03em;
-  font-variant-numeric: tabular-nums;
+  font-size: clamp(40px, 9vw, 60px); font-weight: 700; line-height: 1.02;
+  letter-spacing: -0.035em; font-variant-numeric: tabular-nums;
 }
 .hero-value .valuta { font-size: 0.5em; font-weight: 500; color: var(--muted); }
 .hero-sub { font-size: 14px; color: var(--muted); }
 
-.metriche {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: var(--s-3);
-}
-.metrica {
-  padding: var(--s-4);
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--r-md);
-}
+.metriche { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: var(--s-3); }
+.metrica { padding: var(--s-4); background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-md); }
 .metrica dt {
-  font-size: 12px; font-weight: 600;
-  text-transform: uppercase; letter-spacing: 0.06em;
-  color: var(--muted);
-  margin-bottom: var(--s-1);
+  font-size: 12px; font-weight: 600; text-transform: uppercase;
+  letter-spacing: 0.06em; color: var(--muted); margin-bottom: var(--s-1);
 }
-.metrica dd {
-  margin: 0;
-  font-size: 25px; font-weight: 600;
-  letter-spacing: -0.02em;
-  font-variant-numeric: tabular-nums;
-}
+.metrica dd { font-size: 25px; font-weight: 600; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
 .metrica dd.neg { color: var(--negative); }
 
-/* ---- barra di composizione ---- */
 .composizione { margin-top: var(--s-5); }
-
-.barra {
-  display: flex;
-  height: 14px;
-  border-radius: var(--r-full);
-  overflow: hidden;
-  background: var(--surface-sunk);
-}
+.barra { display: flex; height: 14px; border-radius: var(--r-full); overflow: hidden; background: var(--surface-sunk); }
 .barra > span { min-width: 3px; transition: width var(--t-layout) var(--ease); }
-.seg-netto      { background: var(--q-netto); }
+.seg-netto { background: var(--q-netto); }
 .seg-contributi { background: var(--q-contributi); }
-.seg-imposte    { background: var(--q-imposte); }
+.seg-imposte { background: var(--q-imposte); }
+.legenda { display: grid; grid-template-columns: repeat(auto-fit, minmax(165px, 1fr)); gap: var(--s-3) var(--s-5); margin-top: var(--s-4); }
+.legenda li { display: grid; grid-template-columns: 10px 1fr; gap: 3px var(--s-2); align-items: start; }
+.legenda .swatch { width: 10px; height: 10px; border-radius: 3px; margin-top: 5px; }
+.legenda .nome { grid-column: 2; font-size: 13px; color: var(--muted); }
+.legenda .valori { grid-column: 2; display: flex; align-items: baseline; gap: var(--s-2); flex-wrap: wrap; }
+.legenda .cifra { font-size: 15px; font-weight: 600; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.legenda .quota { font-size: 12.5px; color: var(--muted); font-variant-numeric: tabular-nums; }
 
-.legenda {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(165px, 1fr));
-  gap: var(--s-3) var(--s-5);
-  margin-top: var(--s-4);
-}
-.legenda li {
-  display: grid;
-  grid-template-columns: 10px 1fr;
-  gap: 3px var(--s-2);
-  align-items: start;
-}
-.legenda .swatch {
-  width: 10px; height: 10px;
-  border-radius: 3px;
-  margin-top: 5px;
-}
-.legenda .nome {
-  grid-column: 2;
-  font-size: 13px;
-  color: var(--muted);
-}
-.legenda .valori {
-  grid-column: 2;
-  display: flex;
-  align-items: baseline;
-  gap: var(--s-2);
-  flex-wrap: wrap;
-}
-.legenda .cifra {
-  font-size: 15px; font-weight: 600;
-  font-variant-numeric: tabular-nums;
-  white-space: nowrap;
-}
-.legenda .quota {
-  font-size: 12.5px;
-  color: var(--muted);
-  font-variant-numeric: tabular-nums;
-}
-
-/* ============================================================
-   BREAKDOWN
-   ============================================================ */
+/* ---------- breakdown ---------- */
 .breakdown { margin-top: var(--s-4); padding-bottom: var(--s-2); }
-
-.breakdown-head {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: var(--s-3);
-  flex-wrap: wrap;
-  margin-bottom: var(--s-2);
-}
-.breakdown h2, .avvertenze h2 {
-  font-size: 17px; font-weight: 600; letter-spacing: -0.01em;
-}
+.breakdown-head { display: flex; align-items: baseline; justify-content: space-between; gap: var(--s-3); flex-wrap: wrap; margin-bottom: var(--s-2); }
+.breakdown h2, .avvertenze h2, .semplificazioni h2 { font-size: 17px; font-weight: 600; letter-spacing: -0.01em; }
 .breakdown-head p { font-size: 13px; color: var(--muted); flex: 1 1 100%; }
-
 .btn-link {
-  display: inline-flex; align-items: center;
-  min-height: 44px;                /* target touch, senza chrome visibile */
-  background: none; border: 0; padding: 0;
-  color: var(--accent);
-  font: 500 13.5px/1 var(--font);
-  cursor: pointer;
+  display: inline-flex; align-items: center; min-height: 44px;
+  background: none; border: 0; padding: 0; color: var(--accent);
+  font: 500 13.5px/1 var(--font); cursor: pointer;
 }
 .btn-link:hover { text-decoration: underline; }
 
 .voce { border-top: 1px solid var(--border); }
 .voce:first-child { border-top: 0; }
 .voce.tappa { background: var(--surface-sunk); }
-
 .voce-riga {
-  display: flex;
-  align-items: center;
-  gap: var(--s-3);
-  width: 100%;
-  min-height: 46px;
-  padding: var(--s-3) var(--s-2);
-  background: none; border: 0;
-  font: 400 14.5px/1.35 var(--font);
-  color: var(--ink);
-  text-align: left;
-  cursor: pointer;
+  display: flex; align-items: center; gap: var(--s-3); width: 100%;
+  min-height: 46px; padding: var(--s-3) var(--s-2);
+  background: none; border: 0; font: 400 14.5px/1.35 var(--font);
+  color: var(--ink); text-align: left; cursor: pointer;
   transition: background-color var(--t-state) var(--ease);
 }
 .voce-riga:hover { background: var(--surface-sunk); }
 .voce.tappa .voce-riga:hover { background: var(--border); }
-
-.chevron {
-  flex: 0 0 10px;
-  color: var(--muted);
-  transition: transform var(--t-state) var(--ease);
-}
+.chevron { flex: 0 0 10px; color: var(--muted); transition: transform var(--t-state) var(--ease); }
 .chevron svg { display: block; width: 10px; height: 10px; }
 .voce-riga[aria-expanded="true"] .chevron { transform: rotate(90deg); }
-
 .voce-nome { flex: 1 1 auto; min-width: 0; }
-.voce-cifra {
-  flex: 0 0 auto;
-  font-weight: 600;
-  font-variant-numeric: tabular-nums;
-  white-space: nowrap;
-}
+.voce-cifra { flex: 0 0 auto; font-weight: 600; font-variant-numeric: tabular-nums; white-space: nowrap; }
 .voce-cifra.negativo { color: var(--negative); }
 .voce-cifra.positivo { color: var(--positive); }
-
-.voce-dettaglio {
-  display: grid;
-  gap: var(--s-3);
-  padding: 0 var(--s-2) var(--s-5) var(--s-5);
-}
+.voce-dettaglio { display: grid; gap: var(--s-3); padding: 0 var(--s-2) var(--s-5) var(--s-5); }
 .riga-dett { display: grid; grid-template-columns: 64px 1fr; gap: var(--s-3); }
-.riga-dett .tag {
-  font-size: 10.5px; font-weight: 600;
-  text-transform: uppercase; letter-spacing: 0.07em;
-  color: var(--muted);
-  padding-top: 5px;
-}
-.riga-dett code {
-  display: block;
-  padding: var(--s-2) var(--s-3);
-  background: var(--surface-sunk);
-  border-radius: 6px;
-  font-size: 12.5px;
-  line-height: 1.65;
-  overflow-x: auto;
-}
+.riga-dett .tag { font-size: 10.5px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.07em; color: var(--muted); padding-top: 5px; }
+.riga-dett code { display: block; padding: var(--s-2) var(--s-3); background: var(--surface-sunk); border-radius: 6px; font-size: 12.5px; line-height: 1.65; overflow-x: auto; }
 .riga-dett p { font-size: 13.5px; color: var(--muted); }
 
-/* ============================================================
-   AVVERTENZE
-   ============================================================ */
-.avvertenze {
-  margin-top: var(--s-4);
-  background: var(--warning-bg);
-  border-color: var(--warning-line);
-}
+/* ---------- avvertenze e semplificazioni ---------- */
+.avvertenze { margin-top: var(--s-4); background: var(--warning-bg); border-color: var(--warning-line); }
 .avvertenze h2 { color: var(--warning-ink); }
 .avvertenze ul { margin-top: var(--s-3); display: grid; gap: var(--s-3); }
-.avvertenze li {
-  display: flex; gap: var(--s-3);
-  font-size: 13.5px; line-height: 1.6;
-  color: var(--warning-ink);
-}
-.avvertenze li::before {
-  content: ""; flex: 0 0 3px;
-  border-radius: var(--r-full);
-  background: var(--warning-line);
-}
+.avvertenze li { display: flex; gap: var(--s-3); font-size: 13.5px; line-height: 1.6; color: var(--warning-ink); }
+.avvertenze li::before { content: ""; flex: 0 0 3px; border-radius: var(--r-full); background: var(--warning-line); }
 
-/* ============================================================
-   ASSUNZIONI E SEMPLIFICAZIONI
-   ============================================================ */
 .semplificazioni { margin-top: var(--s-4); }
-.semplificazioni h2 {
-  font-size: 17px; font-weight: 600; letter-spacing: -0.01em;
-}
-.semp-intro {
-  margin-top: var(--s-2);
-  font-size: 13.5px;
-  color: var(--muted);
-  max-width: 62ch;
-}
-.semp-lista {
-  margin: var(--s-5) 0 0;
-  display: grid;
-  gap: var(--s-4);
-}
-.semp-lista > div {
-  display: grid;
-  gap: var(--s-1);
-  padding-left: var(--s-4);
-  border-left: 2px solid var(--border);
-}
-.semp-lista dt {
-  font-size: 13.5px; font-weight: 600;
-}
-.semp-lista dd {
-  margin: 0;
-  font-size: 13.5px;
-  line-height: 1.6;
-  color: var(--muted);
-  max-width: 68ch;
-}
+.semp-intro { margin-top: var(--s-2); font-size: 13.5px; color: var(--muted); max-width: 62ch; }
+.semp-lista { margin-top: var(--s-5); display: grid; gap: var(--s-4); }
+.semp-lista > div { display: grid; gap: var(--s-1); padding-left: var(--s-4); border-left: 2px solid var(--border); }
+.semp-lista dt { font-size: 13.5px; font-weight: 600; }
+.semp-lista dd { font-size: 13.5px; line-height: 1.6; color: var(--muted); max-width: 68ch; }
 
-/* ============================================================
-   PIÈ DI PAGINA
-   ============================================================ */
-.colophon {
-  margin-top: var(--s-6);
-  padding-top: var(--s-5);
-  border-top: 1px solid var(--border);
-  font-size: 13px;
-  color: var(--muted);
-}
-.colophon p { max-width: 62ch; }
+.colophon { margin-top: var(--s-6); padding-top: var(--s-5); border-top: 1px solid var(--border); font-size: 13px; color: var(--muted); }
+.colophon p { max-width: 64ch; }
 .colophon p + p { margin-top: var(--s-2); }
 
-/* ============================================================
-   RESPONSIVE
-   ============================================================ */
+/* ---------- responsive ---------- */
 @media (max-width: 560px) {
   .page { padding: var(--s-5) var(--s-3) var(--s-7); }
   .card { padding: var(--s-4); }
-  .campo, .campo.stretto, .btn-primary { flex: 1 1 100%; }
+  .campo, .campo.stretto, .campo.medio, .btn-primary { flex: 1 1 100%; }
   .riga-dett { grid-template-columns: 1fr; gap: var(--s-1); }
   .voce-dettaglio { padding-left: var(--s-4); }
-  .legenda .cifra { margin-left: auto; }
 }
-
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation-duration: 0.01ms !important;
-    transition-duration: 0.01ms !important;
-  }
+  *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
 }
 </style>
 </head>
 <body>
 <main class="page">
 
-  <header class="masthead">
-    <div class="masthead-row">
-      <h1>Dalla RAL al netto</h1>
-      <button class="theme-toggle" id="tema" type="button" aria-label="Cambia tema chiaro/scuro">
-        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
-      </button>
+  <div class="topbar">
+    <div class="marchio">
+      <span class="wordmark"><span class="glifo" aria-hidden="true">J</span>Jet HR</span>
+      <span class="badge-proto">Prototipo · task di selezione</span>
     </div>
-    <p class="lede">Proiezione della retribuzione netta annuale e mensile a partire dalla retribuzione annua lorda. Anno fiscale 2026.</p>
-    <ul class="assunzioni">
-      <li>Impiegato a tempo indeterminato</li>
-      <li>Residenza Milano</li>
-      <li>Nessuna agevolazione</li>
-      <li>Nessun familiare a carico</li>
-    </ul>
+    <button class="theme-toggle" id="tema" type="button" aria-label="Cambia tema chiaro o scuro">
+      <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+    </button>
+  </div>
+
+  <header class="hero-testo">
+    <h1>Dalla RAL al netto, senza sorprese</h1>
+    <p>Scopri quanto ti resta davvero in busta paga. Inserisci il lordo annuale: il resto lo calcoliamo noi, voce per voce, con la formula applicata e la fonte normativa sempre a portata di clic. Anno fiscale 2026.</p>
   </header>
 
   <section class="card" aria-labelledby="h-calc">
-    <h2 id="h-calc" class="sr-only">Dati di calcolo</h2>
+    <h2 id="h-calc" class="sr-only">Dati per il calcolo</h2>
+
     <fieldset class="segmented">
       <legend class="sr-only">Modalità di calcolo</legend>
       <label><input type="radio" name="modalita" value="diretta" checked><span>Ho una RAL</span></label>
       <label><input type="radio" name="modalita" value="inversa"><span>Voglio un netto</span></label>
     </fieldset>
 
-    <div class="campi">
+    <div class="riga-campi">
       <div class="campo" id="campo-ral">
-        <label class="etichetta" for="ral">Retribuzione annua lorda</label>
+        <label class="etichetta" for="ral">Stipendio lordo annuale</label>
         <span class="input-wrap">
-          <input type="text" inputmode="decimal" id="ral" value="30000" autocomplete="off" aria-describedby="errore">
+          <input type="text" inputmode="decimal" id="ral" value="30000" autocomplete="off">
           <span class="suffisso" aria-hidden="true">€</span>
         </span>
       </div>
       <div class="campo" id="campo-netto" hidden>
-        <label class="etichetta" for="netto">Netto mensile desiderato</label>
+        <label class="etichetta" for="netto">Netto mensile che vuoi</label>
         <span class="input-wrap">
-          <input type="text" inputmode="decimal" id="netto" value="2000" autocomplete="off" aria-describedby="errore">
+          <input type="text" inputmode="decimal" id="netto" value="2000" autocomplete="off">
           <span class="suffisso" aria-hidden="true">€</span>
         </span>
       </div>
       <div class="campo stretto">
         <label class="etichetta" for="mensilita">Mensilità</label>
-        <select id="mensilita">
-          <option>12</option><option selected>13</option><option>14</option>
-        </select>
+        <select id="mensilita"><option>12</option><option selected>13</option><option>14</option></select>
       </div>
       <button class="btn-primary" id="calcola" type="button">Calcola</button>
     </div>
     <p class="errore" id="errore" role="alert"></p>
+
+    <details class="avanzate" id="avanzate">
+      <summary>
+        <span class="chev"><svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 1.5L7 5l-3.5 3.5"/></svg></span>
+        Personalizza la tua situazione
+      </summary>
+
+      <div class="gruppo">
+        <h3>Contratto</h3>
+        <div class="riga-campi">
+          <div class="campo medio">
+            <label class="etichetta" for="contratto">Tipo di rapporto</label>
+            <select id="contratto">
+              <option value="indeterminato" selected>Tempo indeterminato</option>
+              <option value="determinato">Tempo determinato</option>
+              <option value="apprendistato">Apprendistato</option>
+            </select>
+          </div>
+          <div class="campo stretto">
+            <label class="etichetta" for="giorni">Giorni lavorati</label>
+            <input type="text" inputmode="numeric" id="giorni" value="365" autocomplete="off">
+          </div>
+          <div class="campo">
+            <span class="aiuto">L'apprendistato riduce i contributi a tuo carico dal 9,19% al 5,84%. Il tempo determinato alza il minimo garantito della detrazione da 690 a 1.380 €. I giorni servono a rapportare le detrazioni a un anno parziale.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="gruppo">
+        <h3>Famiglia</h3>
+        <div class="riga-campi">
+          <div class="campo stretto">
+            <label class="etichetta" for="figli">Figli 21-29 anni</label>
+            <input type="text" inputmode="numeric" id="figli" value="0" autocomplete="off">
+          </div>
+          <div class="campo stretto">
+            <label class="etichetta" for="percFigli">A carico al</label>
+            <select id="percFigli"><option value="100" selected>100%</option><option value="50">50%</option></select>
+          </div>
+          <div class="campo stretto">
+            <label class="etichetta" for="altriFam">Altri familiari</label>
+            <input type="text" inputmode="numeric" id="altriFam" value="0" autocomplete="off">
+          </div>
+          <div class="campo">
+            <span class="aiuto">Per i figli sotto i 21 anni o con disabilità non c'è detrazione: dal marzo 2022 c'è l'assegno unico INPS, che si richiede a parte. Gli altri familiari valgono solo se sono ascendenti conviventi.</span>
+          </div>
+        </div>
+        <label class="check">
+          <input type="checkbox" id="coniuge">
+          <span class="testo">
+            <span class="titolo">Coniuge a carico</span>
+            <span class="aiuto">Vale se il suo reddito annuo non supera 2.840,51 €.</span>
+          </span>
+        </label>
+      </div>
+
+      <div class="gruppo">
+        <h3>Dove vivi</h3>
+        <div class="riga-campi">
+          <div class="campo medio">
+            <label class="etichetta" for="regione">Addizionale regionale</label>
+            <select id="regione">
+              <option value="lombardia" selected>Lombardia (a scaglioni)</option>
+              <option value="altra">Altra regione</option>
+            </select>
+          </div>
+          <div class="campo stretto" id="campo-aliqReg" hidden>
+            <label class="etichetta" for="aliqReg">Aliquota</label>
+            <span class="input-wrap">
+              <input type="text" inputmode="decimal" id="aliqReg" value="1,73" autocomplete="off">
+              <span class="suffisso" aria-hidden="true">%</span>
+            </span>
+          </div>
+          <div class="campo stretto">
+            <label class="etichetta" for="aliqCom">Comunale</label>
+            <span class="input-wrap">
+              <input type="text" inputmode="decimal" id="aliqCom" value="0,80" autocomplete="off">
+              <span class="suffisso" aria-hidden="true">%</span>
+            </span>
+          </div>
+          <div class="campo stretto">
+            <label class="etichetta" for="sogliaCom">Esenzione fino a</label>
+            <span class="input-wrap">
+              <input type="text" inputmode="decimal" id="sogliaCom" value="23000" autocomplete="off">
+              <span class="suffisso" aria-hidden="true">€</span>
+            </span>
+          </div>
+        </div>
+        <p class="aiuto" style="margin-top:var(--s-2)">Comunale precompilata sui valori di Milano. Le aliquote regionali 2026 variano dallo 0,70% a oltre il 2% e hanno strutture diverse regione per regione: qui è modellata a scaglioni solo la Lombardia, per le altre inserisci l'aliquota della tua regione.</p>
+      </div>
+
+      <div class="gruppo">
+        <h3>Altre voci</h3>
+        <div class="riga-campi">
+          <div class="campo medio">
+            <label class="etichetta" for="welfare">Welfare e fringe benefit</label>
+            <span class="input-wrap">
+              <input type="text" inputmode="decimal" id="welfare" value="0" autocomplete="off">
+              <span class="suffisso" aria-hidden="true">€</span>
+            </span>
+          </div>
+          <div class="campo">
+            <span class="aiuto">Totale annuo dei compensi non tassabili concessi dall'azienda: buoni, rimborso smart working, fringe benefit. Attenzione alla soglia — 1.000 €, o 2.000 € se hai figli a carico: se la superi anche di un solo euro diventa imponibile tutto l'importo, non solo l'eccedenza.</span>
+          </div>
+        </div>
+        <label class="check">
+          <input type="checkbox" id="bonus100" checked>
+          <span class="testo">
+            <span class="titolo">Includi il bonus 100 € (trattamento integrativo)</span>
+            <span class="aiuto">Fra 15.000 e 28.000 € il bonus può essere parziale, perché dipende anche da spese mediche e bonus edilizi che questo calcolatore non conosce. In quella fascia il prototipo non lo applica.</span>
+          </span>
+        </label>
+      </div>
+    </details>
   </section>
 
   <div id="out"></div>
 
   <section class="card semplificazioni" aria-labelledby="h-semp">
     <h2 id="h-semp">Assunzioni e semplificazioni</h2>
-    <p class="semp-intro">I parametri fiscali sono verificati sulle fonti 2026 e citati voce per voce nel dettaglio del calcolo. Quello che segue è invece l'elenco di ciò che il modello <em>non</em> copre, per scelta.</p>
+    <p class="semp-intro">I parametri fiscali sono verificati sulle fonti 2026 e citati voce per voce nel dettaglio del calcolo. Qui sotto invece c'è, in chiaro, tutto quello che il modello <em>non</em> copre.</p>
     <dl class="semp-lista">
+      <div>
+        <dt>Aliquote regionali diverse dalla Lombardia</dt>
+        <dd>Solo la Lombardia è modellata a scaglioni su valori verificati. Per le altre regioni serve inserire a mano l'aliquota, perché le venti tabelle non erano verificabili su fonte primaria e precaricare dati incerti avrebbe reso il risultato meno affidabile, non più completo.</dd>
+      </div>
       <div>
         <dt>Anno di competenza delle addizionali</dt>
         <dd>Regionale e comunale sono calcolate sul reddito dell'anno corrente. Nella realtà si determinano a conguaglio e si trattengono a rate nell'anno successivo, quindi in busta paga convivono l'acconto dell'anno in corso e il saldo del precedente.</dd>
       </div>
       <div>
         <dt>Trattamento integrativo fra 15.000 e 28.000 €</dt>
-        <dd>In quella fascia spetta solo per la parte in cui le detrazioni superano l'imposta lorda. Senza familiari a carico né oneri detraibili quella differenza è sempre nulla, quindi la fascia non è implementata.</dd>
+        <dd>In quella fascia spetta solo per la parte in cui le detrazioni superano l'imposta lorda, e fra le detrazioni rientrano spese mediche e bonus edilizi che il calcolatore non conosce. Non è quindi modellato.</dd>
       </div>
       <div>
-        <dt>Detrazioni per familiari a carico e oneri detraibili</dt>
-        <dd>Escluse per assunzione. Sono la variabile che sposta di più il netto reale fra due persone con la stessa RAL.</dd>
+        <dt>Oneri detraibili e deducibili</dt>
+        <dd>Spese mediche, interessi sul mutuo, previdenza complementare e simili non sono considerati. Insieme ai familiari a carico sono la variabile che sposta di più il netto reale fra due persone con la stessa RAL.</dd>
+      </div>
+      <div>
+        <dt>Soglia del welfare e figli sotto i 21 anni</dt>
+        <dd>La soglia di 2.000 € si attiva qui solo se indichi figli fra 21 e 29 anni. Nella realtà si alza per qualunque figlio a carico, compresi i minori coperti dall'assegno unico, che non sono un input di questo prototipo.</dd>
       </div>
       <div>
         <dt>Sterilizzazione IRPEF oltre 200.000 €</dt>
-        <dd>Dal 2026 chi supera quella soglia subisce un taglio forfetario di 440 € sulle detrazioni, che annulla il vantaggio della riduzione al 33%. Incide sugli oneri detraibili al 19%, qui assenti per assunzione: non è quindi implementata perché non produrrebbe alcun effetto.</dd>
+        <dd>Dal 2026 chi supera quella soglia subisce un taglio forfetario di 440 € sulle detrazioni, che annulla il vantaggio della riduzione al 33%. Incide sugli oneri detraibili al 19%, qui assenti per assunzione: non è implementata perché non produrrebbe alcun effetto.</dd>
       </div>
       <div>
         <dt>Contrattazione collettiva</dt>
-        <dd>Nessun CCNL specifico. Le mensilità aggiuntive sono un semplice divisore del netto annuo, non voci con imponibilità propria, e non sono modellati premi, straordinari, welfare o fringe benefit.</dd>
+        <dd>Nessun CCNL specifico. Le mensilità aggiuntive sono un divisore del netto annuo, non voci con imponibilità propria, e non sono modellati premi, straordinari o scatti di anzianità.</dd>
       </div>
       <div>
         <dt>Cadenza reale delle trattenute</dt>
-        <dd>Il calcolo è annuale e poi diviso per le mensilità. Una busta paga vera applica IRPEF e detrazioni mese per mese su base presunta, con conguaglio a dicembre: i singoli mesi possono quindi differire dalla media qui mostrata.</dd>
+        <dd>Il calcolo è annuale e poi diviso per le mensilità. Una busta paga vera applica IRPEF e detrazioni mese per mese su base presunta, con conguaglio a dicembre: i singoli mesi possono differire dalla media mostrata qui.</dd>
       </div>
     </dl>
   </section>
 
   <footer class="colophon">
-    <p>Prototipo a scopo dimostrativo, non sostituisce il calcolo di un consulente del lavoro.</p>
+    <p><strong>Prototipo realizzato per il task di selezione Product Builder di Jet HR.</strong> Non è un prodotto ufficiale Jet HR e non sostituisce il calcolo di un consulente del lavoro.</p>
+    <p>Il marchio e i colori di questa pagina sono un'interpretazione grafica realizzata senza accesso al sito jethr.com, non un prelievo dal design system dell'azienda.</p>
     <p>Ogni riga del percorso dal lordo al netto è espandibile e mostra la formula applicata e la fonte normativa del parametro.</p>
   </footer>
 
@@ -734,412 +602,582 @@ input:focus-visible, select:focus-visible {
 
 <script>"use strict";
 (() => {
-  // lib/parametri-2026.ts
+  // ============================================================
+  // PARAMETRI FISCALI 2026 — ogni valore ha la fonte accanto
+  // ============================================================
   var ANNO_FISCALE = 2026;
+
   var CONTRIBUTI = {
-    /**
-     * Aliquota IVS a carico del lavoratore dipendente, settore privato.
-     * L'aliquota complessiva è il 33%, di cui 23,81% a carico del datore
-     * di lavoro: quella quota è costo aziendale, non compare in busta paga
-     * e quindi non entra nel calcolo del netto.
-     * Fonte: circolari INPS aliquote contributive 2026.
-     */
+    /** IVS a carico del lavoratore, settore privato. Il 23,81% a carico del
+     *  datore è costo aziendale e non compare in busta paga.
+     *  Fonte: circolari INPS aliquote contributive 2026. */
     aliquotaDipendente: 0.0919,
-    /**
-     * Massimale annuo della base contributiva e pensionabile, applicabile
-     * ai lavoratori privi di anzianità contributiva al 31/12/1995
-     * (sistema contributivo puro). Oltre il massimale non si versa IVS.
-     * Fonte: circolare INPS massimale 2026 (~120.607 €).
-     */
+    /** Apprendista: aliquota ridotta a carico del lavoratore.
+     *  Fonte: disciplina apprendistato, aliquote INPS 2026. */
+    aliquotaApprendista: 0.0584,
+    /** Massimale annuo della base contributiva e pensionabile, per gli
+     *  iscritti privi di anzianità al 31/12/1995.
+     *  Fonte: circolare INPS massimali 2026. */
     massimaleAnnuo: 120607,
-    /**
-     * Aliquota aggiuntiva dell'1% a carico del lavoratore sulla quota di
-     * retribuzione eccedente la prima fascia di retribuzione pensionabile,
-     * fissata per il 2026 a 56.224 € annui (4.685 € mensili).
-     * Fonte: art. 3-ter DL 384/1992 conv. L. 438/1992; circolare INPS
-     * minimali e massimali 2026.
-     */
+    /** Aliquota aggiuntiva dell'1% sulla quota eccedente la prima fascia di
+     *  retribuzione pensionabile, 56.224 € per il 2026.
+     *  Fonte: art. 3-ter L. 438/1992; circolare INPS massimali 2026. */
     aliquotaAggiuntiva: 0.01,
     primaFasciaPensionabile: 56224
   };
+
+  /** Scaglioni IRPEF 2026. La seconda aliquota scende dal 35% al 33% con la
+   *  Legge di Bilancio 2026. Fonte: MEF, misure legge di bilancio 2026. */
   var SCAGLIONI_IRPEF = [
     { limite: 28e3, aliquota: 0.23 },
     { limite: 5e4, aliquota: 0.33 },
     { limite: null, aliquota: 0.43 }
   ];
+
+  /** Detrazione per lavoro dipendente, art. 13 TUIR. */
   var DETRAZIONI_LAVORO_DIPENDENTE = {
-    /** Fino a 15.000 € di reddito complessivo: importo fisso. */
     importoBase: 1955,
-    /** Detrazione minima garantita per rapporti a tempo indeterminato. */
-    minimoGarantito: 690,
     sogliaBase: 15e3,
-    /**
-     * Scaglione 15.001 – 28.000:
-     *   1.910 + 1.190 × [(28.000 − reddito) / 13.000]
-     */
+    /** Minimo garantito: 690 € a tempo indeterminato, 1.380 € a termine.
+     *  Non è rapportato ai giorni: fa da pavimento al risultato. */
+    minimoIndeterminato: 690,
+    minimoDeterminato: 1380,
     fascia2: { limite: 28e3, fisso: 1910, variabile: 1190, ampiezza: 13e3 },
-    /**
-     * Scaglione 28.001 – 50.000:
-     *   1.910 × [(50.000 − reddito) / 22.000]
-     */
     fascia3: { limite: 5e4, fisso: 1910, ampiezza: 22e3 },
-    /** Oltre 50.000 € la detrazione per lavoro dipendente si azzera. */
-    /**
-     * Maggiorazione di 65 € per redditi complessivi tra 25.000 e 35.000.
-     * Fonte: art. 13 co. 1 lett. b) TUIR come modificato.
-     */
-    maggiorazione: { importo: 65, da: 25e3, a: 35e3 }
+    /** Maggiorazione art. 13 co. 1.1 TUIR. */
+    maggiorazione: { importo: 65, da: 25e3, a: 35e3 },
+    giorniAnno: 365
   };
+
+  /** Detrazioni per carichi di famiglia, art. 12 TUIR, come riscritto dal
+   *  D.Lgs. 192/2024 e dalla L. 207/2024. */
+  var DETRAZIONI_FAMILIARI = {
+    /** Un familiare è a carico sotto questa soglia di reddito proprio. */
+    limiteRedditoFamiliare: 2840.51,
+    coniuge: {
+      /** ≤ 15.000: 800 − 110 × (reddito / 15.000) */
+      fascia1: { limite: 15e3, base: 800, riduzione: 110 },
+      /** 15.000 – 40.000: importo fisso */
+      fascia2: { limite: 4e4, importo: 690 },
+      /** 40.000 – 80.000: 690 × (80.000 − reddito) / 40.000 */
+      fascia3: { limite: 8e4, importo: 690, ampiezza: 4e4 }
+    },
+    figli: {
+      /** Spetta solo per i figli dai 21 ai 29 anni: sotto i 21 c'è l'assegno
+       *  unico INPS, dai 30 non spetta più. */
+      importo: 950,
+      soglia: 95e3,
+      /** La soglia sale di 15.000 € per ogni figlio oltre il primo. */
+      incrementoPerFiglio: 15e3
+    },
+    altri: {
+      /** Solo ascendenti conviventi: 750 × (80.000 − reddito) / 80.000 */
+      importo: 750,
+      soglia: 8e4
+    }
+  };
+
+  /** Ulteriore detrazione L. 207/2024 art. 1 co. 6, confermata per il 2026. */
   var ULTERIORE_DETRAZIONE = {
-    attiva: true,
-    importo: 1e3,
-    da: 2e4,
-    sogliaPiena: 32e3,
-    a: 4e4
+    importo: 1e3, da: 2e4, sogliaPiena: 32e3, a: 4e4
   };
+
+  /** Somma integrativa L. 207/2024 art. 1 co. 4-5. Percentuale sul reddito di
+   *  lavoro dipendente, accesso per redditi complessivi fino a 20.000 €. */
   var SOMMA_INTEGRATIVA = {
-    attiva: true,
     fasce: [
       { limite: 8500, percentuale: 0.071 },
       { limite: 15e3, percentuale: 0.053 },
       { limite: 2e4, percentuale: 0.048 }
     ]
   };
-  var TRATTAMENTO_INTEGRATIVO = {
-    attiva: true,
-    importo: 1200,
-    sogliaReddito: 15e3
-  };
-  var ADDIZIONALE_REGIONALE = {
-    regione: "Lombardia",
-    scaglioni: [
-      { limite: 15e3, aliquota: 0.0123 },
-      { limite: 28e3, aliquota: 0.0158 },
-      { limite: 5e4, aliquota: 0.0172 },
-      { limite: null, aliquota: 0.0173 }
-    ]
-  };
-  var ADDIZIONALE_COMUNALE = {
-    comune: "Milano",
-    aliquota: 8e-3,
-    sogliaEsenzione: 23e3
-  };
+
+  /** Trattamento integrativo, DL 3/2020 art. 1 ("bonus 100 €"). */
+  var TRATTAMENTO_INTEGRATIVO = { importo: 1200, sogliaReddito: 15e3 };
+
+  /** Addizionale regionale. La Lombardia è modellata a scaglioni sui valori
+   *  verificati; per le altre regioni si usa l'aliquota unica inserita
+   *  dall'utente, perché non è stato possibile verificare le venti tabelle. */
+  var ADDIZIONALE_REGIONALE_LOMBARDIA = [
+    { limite: 15e3, aliquota: 0.0123 },
+    { limite: 28e3, aliquota: 0.0158 },
+    { limite: 5e4, aliquota: 0.0172 },
+    { limite: null, aliquota: 0.0173 }
+  ];
+
+  /** Addizionale comunale. Default Milano: 0,80% con esenzione fino a
+   *  23.000 €. È una soglia, non una franchigia. */
+  var ADDIZIONALE_COMUNALE_DEFAULT = { aliquota: 8e-3, sogliaEsenzione: 23e3 };
+
+  /** Welfare e fringe benefit. Soglia 1.000 €, elevata a 2.000 € per chi ha
+   *  figli a carico, per i periodi d'imposta 2025-2027. Superata anche di un
+   *  euro, diventa imponibile l'intero importo e non solo l'eccedenza. */
+  var FRINGE_BENEFIT = { soglia: 1e3, sogliaConFigli: 2e3 };
+
   var MENSILITA_DEFAULT = 13;
 
-  // lib/calcolo.ts
+  // ============================================================
+  // MOTORE
+  // ============================================================
   function arrotonda(n) {
     return Math.round((n + Number.EPSILON) * 100) / 100;
   }
+  var euro = (n) =>
+    arrotonda(n).toLocaleString("it-IT", { minimumFractionDigits: 2 });
+  var perc = (n) => (n * 100).toFixed(2).replace(".", ",");
+
   function applicaScaglioni(imponibile, scaglioni) {
-    let residuo = imponibile;
-    let precedente = 0;
-    let totale = 0;
+    let residuo = imponibile, precedente = 0, totale = 0;
     const dettaglio = [];
-    for (const scaglione of scaglioni) {
+    for (const s of scaglioni) {
       if (residuo <= 0) break;
-      const tetto = scaglione.limite ?? Infinity;
-      const ampiezza = tetto - precedente;
-      const imponibileScaglione = Math.min(residuo, ampiezza);
-      const imposta = imponibileScaglione * scaglione.aliquota;
+      const tetto = s.limite ?? Infinity;
+      const quota = Math.min(residuo, tetto - precedente);
+      const imposta = quota * s.aliquota;
       totale += imposta;
-      dettaglio.push(
-        `${arrotonda(imponibileScaglione).toLocaleString("it-IT")} € \xD7 ${(scaglione.aliquota * 100).toFixed(2).replace(".", ",")}% = ${arrotonda(imposta).toLocaleString("it-IT")} €`
-      );
-      residuo -= imponibileScaglione;
+      dettaglio.push(`${euro(quota)} € × ${perc(s.aliquota)}% = ${euro(imposta)} €`);
+      residuo -= quota;
       precedente = tetto;
     }
     return { totale: arrotonda(totale), dettaglio };
   }
-  function calcolaContributi(ral) {
-    const baseImponibile = Math.min(ral, CONTRIBUTI.massimaleAnnuo);
-    const ivs = baseImponibile * CONTRIBUTI.aliquotaDipendente;
-    const eccedenza = Math.max(
-      0, baseImponibile - CONTRIBUTI.primaFasciaPensionabile
-    );
+
+  function aliquotaContributiva(contratto) {
+    return contratto === "apprendistato"
+      ? CONTRIBUTI.aliquotaApprendista
+      : CONTRIBUTI.aliquotaDipendente;
+  }
+
+  function calcolaContributi(imponibilePrevidenziale, contratto) {
+    const base = Math.min(imponibilePrevidenziale, CONTRIBUTI.massimaleAnnuo);
+    const ivs = base * aliquotaContributiva(contratto);
+    const eccedenza = Math.max(0, base - CONTRIBUTI.primaFasciaPensionabile);
     return arrotonda(ivs + eccedenza * CONTRIBUTI.aliquotaAggiuntiva);
   }
-  function calcolaDetrazioneLavoroDipendente(reddito) {
-    let detrazione;
-    if (reddito <= 0) {
-      return 0;
-    } else if (reddito <= DETRAZIONI_LAVORO_DIPENDENTE.sogliaBase) {
-      detrazione = Math.max(DETRAZIONI_LAVORO_DIPENDENTE.importoBase, DETRAZIONI_LAVORO_DIPENDENTE.minimoGarantito);
-    } else if (reddito <= DETRAZIONI_LAVORO_DIPENDENTE.fascia2.limite) {
-      detrazione = DETRAZIONI_LAVORO_DIPENDENTE.fascia2.fisso + DETRAZIONI_LAVORO_DIPENDENTE.fascia2.variabile * ((DETRAZIONI_LAVORO_DIPENDENTE.fascia2.limite - reddito) / DETRAZIONI_LAVORO_DIPENDENTE.fascia2.ampiezza);
-    } else if (reddito <= DETRAZIONI_LAVORO_DIPENDENTE.fascia3.limite) {
-      detrazione = DETRAZIONI_LAVORO_DIPENDENTE.fascia3.fisso * ((DETRAZIONI_LAVORO_DIPENDENTE.fascia3.limite - reddito) / DETRAZIONI_LAVORO_DIPENDENTE.fascia3.ampiezza);
+
+  /** Art. 13 TUIR. La detrazione è rapportata ai giorni di lavoro nell'anno;
+   *  il minimo garantito fa da pavimento e non è rapportato. */
+  function calcolaDetrazioneLavoroDipendente(reddito, giorni, contratto) {
+    const D = DETRAZIONI_LAVORO_DIPENDENTE;
+    if (reddito <= 0) return 0;
+    let base;
+    if (reddito <= D.sogliaBase) {
+      base = D.importoBase;
+    } else if (reddito <= D.fascia2.limite) {
+      base = D.fascia2.fisso +
+        D.fascia2.variabile * ((D.fascia2.limite - reddito) / D.fascia2.ampiezza);
+    } else if (reddito <= D.fascia3.limite) {
+      base = D.fascia3.fisso * ((D.fascia3.limite - reddito) / D.fascia3.ampiezza);
     } else {
-      detrazione = 0;
+      return 0;
     }
-    const m = DETRAZIONI_LAVORO_DIPENDENTE.maggiorazione;
-    if (reddito >= m.da && reddito <= m.a) {
-      detrazione += m.importo;
-    }
-    return arrotonda(Math.max(detrazione, 0));
+    let ragguagliata = base * (giorni / D.giorniAnno);
+    const m = D.maggiorazione;
+    if (reddito >= m.da && reddito <= m.a) ragguagliata += m.importo;
+    const minimo = contratto === "determinato"
+      ? D.minimoDeterminato : D.minimoIndeterminato;
+    return arrotonda(Math.max(ragguagliata, minimo));
   }
+
+  function calcolaDetrazioneConiuge(reddito, presente) {
+    if (!presente || reddito <= 0) return 0;
+    const C = DETRAZIONI_FAMILIARI.coniuge;
+    if (reddito <= C.fascia1.limite) {
+      return arrotonda(C.fascia1.base - C.fascia1.riduzione * (reddito / C.fascia1.limite));
+    }
+    if (reddito <= C.fascia2.limite) return C.fascia2.importo;
+    if (reddito <= C.fascia3.limite) {
+      return arrotonda(C.fascia3.importo * ((C.fascia3.limite - reddito) / C.fascia3.ampiezza));
+    }
+    return 0;
+  }
+
+  function calcolaDetrazioneFigli(reddito, numero, percentuale) {
+    const F = DETRAZIONI_FAMILIARI.figli;
+    if (numero <= 0 || reddito <= 0) return 0;
+    const soglia = F.soglia + F.incrementoPerFiglio * (numero - 1);
+    if (reddito >= soglia) return 0;
+    const teorica = F.importo * numero;
+    return arrotonda(teorica * ((soglia - reddito) / soglia) * (percentuale / 100));
+  }
+
+  function calcolaDetrazioneAltriFamiliari(reddito, numero) {
+    const A = DETRAZIONI_FAMILIARI.altri;
+    if (numero <= 0 || reddito <= 0 || reddito >= A.soglia) return 0;
+    return arrotonda(A.importo * numero * ((A.soglia - reddito) / A.soglia));
+  }
+
   function calcolaUlterioreDetrazione(reddito) {
     const u = ULTERIORE_DETRAZIONE;
-    if (!u.attiva) return 0;
     if (reddito < u.da || reddito > u.a) return 0;
     if (reddito <= u.sogliaPiena) return u.importo;
     return arrotonda(u.importo * ((u.a - reddito) / (u.a - u.sogliaPiena)));
   }
-  function calcolaAddizionaleRegionale(imponibile) {
+
+  function calcolaAddizionaleRegionale(imponibile, aliquotaUnica) {
     if (imponibile <= 0) return 0;
-    return applicaScaglioni(imponibile, ADDIZIONALE_REGIONALE.scaglioni).totale;
+    if (aliquotaUnica == null) {
+      return applicaScaglioni(imponibile, ADDIZIONALE_REGIONALE_LOMBARDIA).totale;
+    }
+    return arrotonda(imponibile * aliquotaUnica);
   }
-  function calcolaAddizionaleComunale(imponibile) {
-    if (imponibile <= ADDIZIONALE_COMUNALE.sogliaEsenzione) return 0;
-    return arrotonda(imponibile * ADDIZIONALE_COMUNALE.aliquota);
+
+  function calcolaAddizionaleComunale(imponibile, aliquota, soglia) {
+    if (imponibile <= soglia) return 0;
+    return arrotonda(imponibile * aliquota);
   }
-  function calcolaTrattamentoIntegrativo(reddito, irpefLorda, detrazioneLavoro) {
+
+  function calcolaTrattamentoIntegrativo(reddito, irpefLorda, detrazioneLavoro, attivo) {
     const t = TRATTAMENTO_INTEGRATIVO;
-    if (!t.attiva) return 0;
-    if (reddito > t.sogliaReddito) return 0;
+    if (!attivo || reddito > t.sogliaReddito) return 0;
     if (irpefLorda <= detrazioneLavoro) return 0;
     return t.importo;
   }
+
   function calcolaSommaIntegrativa(reddito) {
-    const s = SOMMA_INTEGRATIVA;
-    if (!s.attiva || reddito <= 0) return 0;
-    const fascia = s.fasce.find((f) => reddito <= f.limite);
-    if (!fascia) return 0;
-    return arrotonda(reddito * fascia.percentuale);
+    if (reddito <= 0) return 0;
+    const f = SOMMA_INTEGRATIVA.fasce.find((x) => reddito <= x.limite);
+    return f ? arrotonda(reddito * f.percentuale) : 0;
   }
-  function calcolaNetto(ral, mensilita = MENSILITA_DEFAULT) {
+
+  function sogliaFringe(figli) {
+    return figli > 0 ? FRINGE_BENEFIT.sogliaConFigli : FRINGE_BENEFIT.soglia;
+  }
+
+  // ------------------------------------------------------------
+  function calcolaNetto(ral, opzioni) {
+    const o = Object.assign({
+      mensilita: MENSILITA_DEFAULT,
+      contratto: "indeterminato",
+      giorni: 365,
+      coniugeACarico: false,
+      figli: 0,
+      percentualeFigli: 100,
+      altriFamiliari: 0,
+      bonus100: true,
+      welfare: 0,
+      aliquotaRegionale: null,
+      aliquotaComunale: ADDIZIONALE_COMUNALE_DEFAULT.aliquota,
+      sogliaComunale: ADDIZIONALE_COMUNALE_DEFAULT.sogliaEsenzione
+    }, opzioni || {});
+
     if (!Number.isFinite(ral) || ral < 0) {
       throw new Error("La RAL deve essere un numero positivo.");
     }
-    if (!Number.isFinite(mensilita) || mensilita <= 0) {
-      throw new Error("Il numero di mensilit\xE0 deve essere maggiore di zero.");
+    if (!Number.isFinite(o.mensilita) || o.mensilita <= 0) {
+      throw new Error("Il numero di mensilità deve essere maggiore di zero.");
     }
-    const contributiInps = calcolaContributi(ral);
-    const imponibileFiscale = arrotonda(ral - contributiInps);
+    if (!Number.isFinite(o.giorni) || o.giorni <= 0 || o.giorni > 365) {
+      throw new Error("I giorni di lavoro devono essere compresi fra 1 e 365.");
+    }
+
+    /* Welfare e fringe benefit: sotto soglia sono esenti e si sommano al
+       netto; superata la soglia anche di un euro diventa imponibile l'intero
+       importo, che quindi entra nella base contributiva e fiscale. */
+    const soglia = sogliaFringe(o.figli);
+    const welfareEsente = o.welfare > 0 && o.welfare <= soglia;
+    const welfareImponibile = o.welfare > soglia ? o.welfare : 0;
+    const baseLorda = arrotonda(ral + welfareImponibile);
+
+    const contributiInps = calcolaContributi(baseLorda, o.contratto);
+    const imponibileFiscale = arrotonda(baseLorda - contributiInps);
+
     const scagl = applicaScaglioni(imponibileFiscale, SCAGLIONI_IRPEF);
     const irpefLorda = scagl.totale;
-    const detrazioneLavoroDipendente = calcolaDetrazioneLavoroDipendente(imponibileFiscale);
+
+    const detrazioneLavoroDipendente =
+      calcolaDetrazioneLavoroDipendente(imponibileFiscale, o.giorni, o.contratto);
+    const detrazioneConiuge =
+      calcolaDetrazioneConiuge(imponibileFiscale, o.coniugeACarico);
+    const detrazioneFigli =
+      calcolaDetrazioneFigli(imponibileFiscale, o.figli, o.percentualeFigli);
+    const detrazioneAltriFamiliari =
+      calcolaDetrazioneAltriFamiliari(imponibileFiscale, o.altriFamiliari);
+    const detrazioniFamiliari =
+      arrotonda(detrazioneConiuge + detrazioneFigli + detrazioneAltriFamiliari);
     const ulterioreDetrazione = calcolaUlterioreDetrazione(imponibileFiscale);
+
     const detrazioniTotali = arrotonda(
-      detrazioneLavoroDipendente + ulterioreDetrazione
+      detrazioneLavoroDipendente + detrazioniFamiliari + ulterioreDetrazione
     );
     const irpefNetta = arrotonda(Math.max(0, irpefLorda - detrazioniTotali));
-    const addizionaleRegionale = calcolaAddizionaleRegionale(imponibileFiscale);
-    const addizionaleComunale = calcolaAddizionaleComunale(imponibileFiscale);
+
+    const addizionaleRegionale =
+      calcolaAddizionaleRegionale(imponibileFiscale, o.aliquotaRegionale);
+    const addizionaleComunale =
+      calcolaAddizionaleComunale(imponibileFiscale, o.aliquotaComunale, o.sogliaComunale);
+
     const trattamentoIntegrativo = calcolaTrattamentoIntegrativo(
-      imponibileFiscale,
-      irpefLorda,
-      detrazioneLavoroDipendente
+      imponibileFiscale, irpefLorda, detrazioneLavoroDipendente, o.bonus100
     );
     const sommaIntegrativa = calcolaSommaIntegrativa(imponibileFiscale);
-    const sommeAggiuntive = arrotonda(trattamentoIntegrativo + sommaIntegrativa);
+    const welfareNetto = welfareEsente ? o.welfare : 0;
+    const sommeAggiuntive =
+      arrotonda(trattamentoIntegrativo + sommaIntegrativa + welfareNetto);
+
     const totaleTrattenute = arrotonda(
       contributiInps + irpefNetta + addizionaleRegionale + addizionaleComunale
     );
-    const nettoAnnuo = arrotonda(ral - totaleTrattenute + sommeAggiuntive);
-    const nettoMensile = arrotonda(nettoAnnuo / mensilita);
-    const aliquotaEffettiva = ral > 0 ? arrotonda(nettoAnnuo / ral * 100) : 0;
-    const pct = (n) => (n * 100).toFixed(2).replace(".", ",");
-    const eur = (n) => arrotonda(n).toLocaleString("it-IT", { minimumFractionDigits: 2 });
-    const dettaglio = [
-      {
-        id: "ral",
-        etichetta: "Retribuzione annua lorda",
-        importo: ral,
-        segno: "neutro",
-        formula: "Valore inserito dall'utente",
-        fonte: "Input"
-      },
-      {
-        id: "contributi",
-        etichetta: "Contributi previdenziali INPS (carico dipendente)",
-        importo: contributiInps,
-        segno: "negativo",
-        formula: formulaContributi(ral, contributiInps),
-        fonte: `Aliquota IVS ${pct(CONTRIBUTI.aliquotaDipendente)}% a carico del lavoratore, settore privato (il 23,81% a carico del datore è costo aziendale e non entra in busta paga). Massimale contributivo ${eur(CONTRIBUTI.massimaleAnnuo)} €. Sulla quota eccedente la prima fascia di retribuzione pensionabile, ${eur(CONTRIBUTI.primaFasciaPensionabile)} € per il 2026, si applica l'aliquota aggiuntiva dell'1% (art. 3-ter L. 438/1992). Fonte: circolari INPS aliquote, minimali e massimali 2026.`
-      },
-      {
-        id: "imponibile",
-        etichetta: "Imponibile fiscale",
-        importo: imponibileFiscale,
-        segno: "neutro",
-        formula: `${eur(ral)} € − ${eur(contributiInps)} € = ${eur(
-          imponibileFiscale
-        )} €`,
-        fonte: "I contributi previdenziali sono deducibili dal reddito imponibile."
-      },
-      {
-        id: "irpef-lorda",
-        etichetta: "IRPEF lorda",
-        importo: irpefLorda,
-        segno: "negativo",
-        formula: componiFormulaScaglioni(scagl.dettaglio, irpefLorda),
-        fonte: "Scaglioni IRPEF 2026: 23% fino a 28.000, 33% da 28.001 a 50.000, 43% oltre. La seconda aliquota \xE8 scesa dal 35% al 33% con la Legge di Bilancio 2026 (L. 199/2025, art. 1 co. 3)."
-      },
-      {
-        id: "detrazione-lavoro",
-        etichetta: "Detrazione per lavoro dipendente",
-        importo: detrazioneLavoroDipendente,
-        segno: "positivo",
-        formula: formulaDetrazione(imponibileFiscale, detrazioneLavoroDipendente),
-        fonte: "Art. 13 TUIR. Include la maggiorazione di 65 € per redditi tra 25.000 e 35.000 €."
-      },
-      {
-        id: "ulteriore-detrazione",
-        etichetta: "Ulteriore detrazione (redditi 20.000 – 40.000 €)",
-        importo: ulterioreDetrazione,
-        segno: "positivo",
-        formula: ulterioreDetrazione > 0 ? imponibileFiscale <= ULTERIORE_DETRAZIONE.sogliaPiena ? `Importo pieno: ${eur(ULTERIORE_DETRAZIONE.importo)} €` : `1.000 \xD7 [(40.000 − ${eur(imponibileFiscale)}) / 8.000] = ${eur(
-          ulterioreDetrazione
-        )} €` : "Non spettante per questa fascia di reddito",
-        fonte: "L. 207/2024 art. 1 co. 6, confermata per il 2026. Importo pieno di 1.000 € fino a 32.000 € di reddito complessivo, poi décalage lineare fino ad azzerarsi a 40.000 €. È alternativa alla somma integrativa, che spetta sotto i 20.000 €."
-      },
-      {
-        id: "irpef-netta",
-        etichetta: "IRPEF netta",
-        importo: irpefNetta,
-        segno: "negativo",
-        formula: `max(0; ${eur(irpefLorda)} € − ${eur(
-          detrazioniTotali
-        )} €) = ${eur(irpefNetta)} €`,
-        fonte: "L'imposta netta non pu\xF2 essere negativa: le detrazioni eccedenti si perdono."
-      },
-      {
-        id: "add-regionale",
-        etichetta: `Addizionale regionale ${ADDIZIONALE_REGIONALE.regione}`,
-        importo: addizionaleRegionale,
-        segno: "negativo",
-        formula: componiFormulaScaglioni(
-          applicaScaglioni(imponibileFiscale, ADDIZIONALE_REGIONALE.scaglioni).dettaglio,
-          addizionaleRegionale
-        ),
-        fonte: "Aliquote a scaglioni dall'1,23% all'1,73%, confermate per il 2026. Fonte: Dipartimento delle Finanze (MEF), art. 72 L.R. Lombardia 14/07/2003 n. 10. Semplificazione: qui è calcolata sul reddito dell'anno corrente, mentre nella realtà si determina a conguaglio sul reddito dell'anno stesso e si trattiene a rate nell'anno successivo."
-      },
-      {
-        id: "add-comunale",
-        etichetta: `Addizionale comunale ${ADDIZIONALE_COMUNALE.comune}`,
-        importo: addizionaleComunale,
-        segno: "negativo",
-        formula: addizionaleComunale > 0 ? `${eur(imponibileFiscale)} € \xD7 ${pct(
-          ADDIZIONALE_COMUNALE.aliquota
-        )}% = ${eur(addizionaleComunale)} €` : `Imponibile sotto la soglia di esenzione di ${eur(
-          ADDIZIONALE_COMUNALE.sogliaEsenzione
-        )} € → esente`,
-        fonte: `Aliquota unica ${pct(ADDIZIONALE_COMUNALE.aliquota)}%, confermata per il 2026, con esenzione fino a ${eur(ADDIZIONALE_COMUNALE.sogliaEsenzione)} €. \xC8 una soglia, non una franchigia: superata, si paga sull'intero imponibile e non solo sull'eccedenza. Fonte: delibera del Comune di Milano n. 46 del 28/09/2020. Vale la stessa semplificazione sull'anno di competenza indicata per l'addizionale regionale.`
-      }
-    ];
-    if (trattamentoIntegrativo > 0) {
-      dettaglio.push({
-        id: "trattamento-integrativo",
-        etichetta: "Trattamento integrativo",
-        importo: trattamentoIntegrativo,
-        segno: "positivo",
-        formula: `Reddito ≤ ${eur(
-          TRATTAMENTO_INTEGRATIVO.sogliaReddito
-        )} € e imposta lorda capiente → ${eur(trattamentoIntegrativo)} €`,
-        fonte: "DL 3/2020 art. 1, disciplina confermata per il 2026. Spetta per intero fino a 15.000 € di reddito, a condizione che l'imposta lorda superi la detrazione per lavoro dipendente. Fra 15.000 e 28.000 € spetta solo per la parte in cui le detrazioni eccedono l'imposta lorda: con le assunzioni di questo prototipo (nessun familiare a carico, nessun onere detraibile) quella differenza è sempre nulla, quindi la fascia non è implementata. È cumulabile con la somma integrativa."
+    const nettoAnnuo = arrotonda(baseLorda - totaleTrattenute + sommeAggiuntive);
+    const nettoMensile = arrotonda(nettoAnnuo / o.mensilita);
+    const incidenza = baseLorda > 0
+      ? arrotonda((totaleTrattenute / baseLorda) * 100) : 0;
+    const aliquotaEffettiva = baseLorda > 0
+      ? arrotonda((nettoAnnuo / baseLorda) * 100) : 0;
+
+    // --------------------------------------------------------
+    const dettaglio = [];
+    const riga = (o2) => dettaglio.push(o2);
+
+    riga({
+      id: "ral", etichetta: "Retribuzione annua lorda", importo: ral,
+      segno: "neutro", formula: "Valore inserito", fonte: "Dato di partenza."
+    });
+
+    if (welfareImponibile > 0) {
+      riga({
+        id: "welfare-imponibile",
+        etichetta: "Welfare e fringe benefit (oltre soglia, imponibili)",
+        importo: welfareImponibile, segno: "neutro",
+        formula: `${euro(o.welfare)} € > soglia di ${euro(soglia)} € → imponibile per intero`,
+        fonte: `La soglia di esenzione è ${euro(FRINGE_BENEFIT.soglia)} €, elevata a ${euro(FRINGE_BENEFIT.sogliaConFigli)} € per chi ha figli a carico (periodi d'imposta 2025-2027). Superata anche di un solo euro, diventa imponibile l'intero importo e non la sola eccedenza: per questo qui rientra nella base contributiva e fiscale.`
       });
     }
+
+    riga({
+      id: "contributi",
+      etichetta: o.contratto === "apprendistato"
+        ? "Contributi INPS (apprendista)" : "Contributi INPS (carico dipendente)",
+      importo: contributiInps, segno: "negativo",
+      formula: formulaContributi(baseLorda, contributiInps, o.contratto),
+      fonte: `Aliquota IVS ${perc(aliquotaContributiva(o.contratto))}% a carico del lavoratore${o.contratto === "apprendistato" ? ", ridotta per il contratto di apprendistato" : " nel settore privato"}. Il 23,81% a carico del datore è costo aziendale e non compare in busta paga. Massimale ${euro(CONTRIBUTI.massimaleAnnuo)} €; sulla quota oltre ${euro(CONTRIBUTI.primaFasciaPensionabile)} € si applica l'aliquota aggiuntiva dell'1% (art. 3-ter L. 438/1992). Fonte: circolari INPS 2026.`
+    });
+
+    riga({
+      id: "imponibile", etichetta: "Imponibile fiscale",
+      importo: imponibileFiscale, segno: "neutro",
+      formula: `${euro(baseLorda)} € − ${euro(contributiInps)} € = ${euro(imponibileFiscale)} €`,
+      fonte: "I contributi previdenziali obbligatori sono deducibili, quindi non concorrono a formare il reddito di lavoro dipendente (art. 51 co. 2 lett. a TUIR)."
+    });
+
+    riga({
+      id: "irpef-lorda", etichetta: "IRPEF lorda",
+      importo: irpefLorda, segno: "negativo",
+      formula: componiFormula(scagl.dettaglio, irpefLorda),
+      fonte: "Scaglioni 2026: 23% fino a 28.000 €, 33% da 28.001 a 50.000 €, 43% oltre. La seconda aliquota è scesa dal 35% al 33% con la Legge di Bilancio 2026. Fonte: MEF."
+    });
+
+    riga({
+      id: "detrazione-lavoro", etichetta: "Detrazione per lavoro dipendente",
+      importo: detrazioneLavoroDipendente, segno: "positivo",
+      formula: formulaDetrazioneLavoro(imponibileFiscale, detrazioneLavoroDipendente, o),
+      fonte: `Art. 13 TUIR. Include la maggiorazione di 65 € fra 25.000 e 35.000 € di reddito. È rapportata ai giorni di lavoro nell'anno (${o.giorni}/365) e non può comunque scendere sotto ${o.contratto === "determinato" ? "1.380 € per i rapporti a termine" : "690 € per i rapporti a tempo indeterminato"}.`
+    });
+
+    if (o.coniugeACarico) {
+      riga({
+        id: "detr-coniuge", etichetta: "Detrazione per coniuge a carico",
+        importo: detrazioneConiuge, segno: "positivo",
+        formula: formulaConiuge(imponibileFiscale, detrazioneConiuge),
+        fonte: `Art. 12 co. 1 lett. a) TUIR. Il coniuge è a carico se il suo reddito proprio non supera ${euro(DETRAZIONI_FAMILIARI.limiteRedditoFamiliare)} €. La detrazione si azzera oltre 80.000 € di reddito del dichiarante.`
+      });
+    }
+
+    if (o.figli > 0) {
+      const sogliaFigli = DETRAZIONI_FAMILIARI.figli.soglia +
+        DETRAZIONI_FAMILIARI.figli.incrementoPerFiglio * (o.figli - 1);
+      riga({
+        id: "detr-figli",
+        etichetta: `Detrazione per ${o.figli} figl${o.figli === 1 ? "io" : "i"} a carico (21-29 anni)`,
+        importo: detrazioneFigli, segno: "positivo",
+        formula: detrazioneFigli > 0
+          ? `${o.figli} × 950 € × [(${euro(sogliaFigli)} − ${euro(imponibileFiscale)}) / ${euro(sogliaFigli)}] × ${o.percentualeFigli}% = ${euro(detrazioneFigli)} €`
+          : `Reddito oltre la soglia di ${euro(sogliaFigli)} € → detrazione azzerata`,
+        fonte: `Art. 12 co. 1 lett. c) TUIR, come riscritto dal D.Lgs. 192/2024 e dalla L. 207/2024. Spetta solo per i figli dai 21 ai 29 anni: sotto i 21 anni è sostituita dall'assegno unico INPS, dai 30 anni non spetta più. La soglia di 95.000 € sale di 15.000 € per ogni figlio oltre il primo. Ripartizione applicata: ${o.percentualeFigli}%.`
+      });
+    }
+
+    if (o.altriFamiliari > 0) {
+      riga({
+        id: "detr-altri",
+        etichetta: `Detrazione per ${o.altriFamiliari} altro/i familiare/i a carico`,
+        importo: detrazioneAltriFamiliari, segno: "positivo",
+        formula: detrazioneAltriFamiliari > 0
+          ? `${o.altriFamiliari} × 750 € × [(80.000 − ${euro(imponibileFiscale)}) / 80.000] = ${euro(detrazioneAltriFamiliari)} €`
+          : "Reddito oltre 80.000 € → detrazione azzerata",
+        fonte: "Art. 12 co. 1 lett. d) TUIR. Dal 2025 spetta ai soli ascendenti conviventi con il contribuente."
+      });
+    }
+
+    riga({
+      id: "ulteriore-detrazione",
+      etichetta: "Ulteriore detrazione (redditi 20.000 – 40.000 €)",
+      importo: ulterioreDetrazione, segno: "positivo",
+      formula: ulterioreDetrazione > 0
+        ? (imponibileFiscale <= ULTERIORE_DETRAZIONE.sogliaPiena
+            ? `Importo pieno: ${euro(ULTERIORE_DETRAZIONE.importo)} €`
+            : `1.000 × [(40.000 − ${euro(imponibileFiscale)}) / 8.000] = ${euro(ulterioreDetrazione)} €`)
+        : "Non spettante per questa fascia di reddito",
+      fonte: "L. 207/2024 art. 1 co. 6, confermata per il 2026. Piena fino a 32.000 €, poi si riduce linearmente fino ad azzerarsi a 40.000 €. È alternativa alla somma integrativa, che spetta sotto i 20.000 €."
+    });
+
+    riga({
+      id: "irpef-netta", etichetta: "IRPEF netta", importo: irpefNetta,
+      segno: "negativo",
+      formula: `max(0; ${euro(irpefLorda)} € − ${euro(detrazioniTotali)} € di detrazioni) = ${euro(irpefNetta)} €`,
+      fonte: "L'imposta netta non può essere negativa: le detrazioni eccedenti si perdono e non generano un credito."
+    });
+
+    riga({
+      id: "add-regionale",
+      etichetta: o.aliquotaRegionale == null
+        ? "Addizionale regionale Lombardia"
+        : "Addizionale regionale",
+      importo: addizionaleRegionale, segno: "negativo",
+      formula: o.aliquotaRegionale == null
+        ? componiFormula(applicaScaglioni(imponibileFiscale, ADDIZIONALE_REGIONALE_LOMBARDIA).dettaglio, addizionaleRegionale)
+        : `${euro(imponibileFiscale)} € × ${perc(o.aliquotaRegionale)}% = ${euro(addizionaleRegionale)} €`,
+      fonte: o.aliquotaRegionale == null
+        ? "Lombardia, aliquote a scaglioni dall'1,23% all'1,73%. Fonte: Dipartimento delle Finanze (MEF), art. 72 L.R. Lombardia 10/2003. Semplificazione: calcolata sul reddito dell'anno corrente, mentre nella realtà si trattiene a rate nell'anno successivo."
+        : "Aliquota unica inserita manualmente. Le aliquote regionali 2026 vanno dallo 0,70% a oltre il 2%, con strutture a scaglioni diverse regione per regione: non essendo state verificabili su fonte primaria, il prototipo non le precarica."
+    });
+
+    riga({
+      id: "add-comunale", etichetta: "Addizionale comunale",
+      importo: addizionaleComunale, segno: "negativo",
+      formula: addizionaleComunale > 0
+        ? `${euro(imponibileFiscale)} € × ${perc(o.aliquotaComunale)}% = ${euro(addizionaleComunale)} €`
+        : `Imponibile sotto la soglia di esenzione di ${euro(o.sogliaComunale)} € → esente`,
+      fonte: `Aliquota ${perc(o.aliquotaComunale)}% con esenzione fino a ${euro(o.sogliaComunale)} €, precompilate sui valori di Milano (delibera n. 46 del 28/09/2020). È una soglia e non una franchigia: superata, si paga sull'intero imponibile e non sulla sola eccedenza.`
+    });
+
+    if (trattamentoIntegrativo > 0) {
+      riga({
+        id: "trattamento-integrativo",
+        etichetta: "Trattamento integrativo (bonus 100 €)",
+        importo: trattamentoIntegrativo, segno: "positivo",
+        formula: `Reddito ≤ ${euro(TRATTAMENTO_INTEGRATIVO.sogliaReddito)} € e imposta lorda capiente → ${euro(trattamentoIntegrativo)} €`,
+        fonte: "DL 3/2020 art. 1, disciplina confermata per il 2026. Spetta per intero fino a 15.000 € di reddito, se l'imposta lorda supera la detrazione per lavoro dipendente. Fra 15.000 e 28.000 € spetta solo per la parte in cui le detrazioni complessive eccedono l'imposta lorda: dipende anche da spese mediche e bonus edilizi, che questo calcolatore non conosce, quindi quella fascia non è modellata. È cumulabile con la somma integrativa."
+      });
+    }
+
     if (sommaIntegrativa > 0) {
-      dettaglio.push({
+      riga({
         id: "somma-integrativa",
         etichetta: "Somma integrativa non imponibile",
-        importo: sommaIntegrativa,
-        segno: "positivo",
-        formula: `${eur(imponibileFiscale)} € \xD7 percentuale di fascia = ${eur(
-          sommaIntegrativa
-        )} €`,
-        fonte: "L. 207/2024 art. 1 co. 4-5, confermata per il 2026. Percentuale sul reddito di lavoro dipendente: 7,1% fino a 8.500 €, 5,3% da 8.501 a 15.000 €, 4,8% oltre, con accesso riservato ai redditi complessivi fino a 20.000 €. Non concorre alla formazione del reddito, quindi non è né tassata né soggetta a contribuzione. È cumulabile con il trattamento integrativo."
+        importo: sommaIntegrativa, segno: "positivo",
+        formula: `${euro(imponibileFiscale)} € × percentuale di fascia = ${euro(sommaIntegrativa)} €`,
+        fonte: "L. 207/2024 art. 1 co. 4-5, confermata per il 2026. Percentuale sul reddito di lavoro dipendente: 7,1% fino a 8.500 €, 5,3% fino a 15.000 €, 4,8% oltre, riservata ai redditi complessivi fino a 20.000 €. Non concorre a formare il reddito, quindi non è né tassata né soggetta a contributi."
       });
     }
-    /* Le avvertenze restano come canale per segnalazioni legate al singolo
-       risultato. Le voci "da riverificare" che comparivano qui sono state
-       rimosse dopo la verifica dei parametri sulle fonti 2026; le
-       semplificazioni strutturali, che valgono per ogni calcolo e non per
-       un risultato in particolare, sono documentate in pagina. */
-    const avvertenze = [];
-    if (ral > CONTRIBUTI.massimaleAnnuo) {
-      avvertenze.push(
-        `RAL oltre il massimale contributivo di ${arrotonda(CONTRIBUTI.massimaleAnnuo).toLocaleString("it-IT", { minimumFractionDigits: 2 })} €: sulla quota eccedente non si versa IVS. Il massimale si applica ai soli iscritti privi di anzianità contributiva al 31/12/1995, assunzione che questo prototipo adotta per tutti.`
-      );
+
+    if (welfareNetto > 0) {
+      riga({
+        id: "welfare-esente",
+        etichetta: "Welfare e fringe benefit (esenti)",
+        importo: welfareNetto, segno: "positivo",
+        formula: `${euro(welfareNetto)} € ≤ soglia di ${euro(soglia)} € → esenti da IRPEF e contributi`,
+        fonte: `Soglia di ${euro(FRINGE_BENEFIT.soglia)} €, elevata a ${euro(FRINGE_BENEFIT.sogliaConFigli)} € per chi ha figli a carico, per i periodi d'imposta 2025-2027. Qui la soglia applicata è ${euro(soglia)} € perché ${o.figli > 0 ? "sono stati indicati figli a carico" : "non sono stati indicati figli a carico"}.`
+      });
     }
-    dettaglio.push({
-      id: "netto-annuo",
-      etichetta: "Netto annuo",
-      importo: nettoAnnuo,
+
+    riga({
+      id: "netto-annuo", etichetta: "Netto annuo", importo: nettoAnnuo,
       segno: "neutro",
-      formula: `${eur(ral)} € − ${eur(totaleTrattenute)} € di trattenute${sommeAggiuntive > 0 ? ` + ${eur(sommeAggiuntive)} € di somme aggiuntive` : ""} = ${eur(nettoAnnuo)} €`,
-      fonte: "Somma delle voci precedenti."
+      formula: `${euro(baseLorda)} € − ${euro(totaleTrattenute)} € di trattenute${sommeAggiuntive > 0 ? ` + ${euro(sommeAggiuntive)} € di somme non imponibili` : ""} = ${euro(nettoAnnuo)} €`,
+      fonte: "Somma algebrica delle voci precedenti."
     });
+
+    // --------------------------------------------------------
+    const avvertenze = [];
+    if (baseLorda > CONTRIBUTI.massimaleAnnuo) {
+      avvertenze.push(`Lordo oltre il massimale contributivo di ${euro(CONTRIBUTI.massimaleAnnuo)} €: sulla quota eccedente non si versa IVS. Il massimale vale per i soli iscritti privi di anzianità contributiva al 31/12/1995, assunzione che il prototipo adotta per tutti.`);
+    }
+    if (o.welfare > 0 && welfareImponibile > 0) {
+      avvertenze.push(`I ${euro(o.welfare)} € di welfare superano la soglia di ${euro(soglia)} €, quindi sono interamente imponibili: concorrono al lordo e sono tassati come retribuzione. Restando sotto soglia sarebbero stati esenti per intero.`);
+    }
+    if (o.giorni < 365) {
+      avvertenze.push(`Le detrazioni sono rapportate a ${o.giorni} giorni su 365. Il risultato rappresenta quindi un anno parziale: il netto mensile è il netto di periodo diviso per le mensilità indicate.`);
+    }
+
     return {
-      annoFiscale: ANNO_FISCALE,
-      ral,
-      mensilita,
-      contributiInps,
-      imponibileFiscale,
-      irpefLorda,
-      detrazioneLavoroDipendente,
-      ulterioreDetrazione,
-      detrazioniTotali,
-      irpefNetta,
-      addizionaleRegionale,
-      addizionaleComunale,
-      trattamentoIntegrativo,
-      sommaIntegrativa,
-      sommeAggiuntive,
-      totaleTrattenute,
-      nettoAnnuo,
-      nettoMensile,
-      aliquotaEffettiva,
-      dettaglio,
-      avvertenze
+      annoFiscale: ANNO_FISCALE, ral, baseLorda, opzioni: o,
+      mensilita: o.mensilita, contributiInps, imponibileFiscale, irpefLorda,
+      detrazioneLavoroDipendente, detrazioneConiuge, detrazioneFigli,
+      detrazioneAltriFamiliari, detrazioniFamiliari, ulterioreDetrazione,
+      detrazioniTotali, irpefNetta, addizionaleRegionale, addizionaleComunale,
+      trattamentoIntegrativo, sommaIntegrativa, welfareEsente: welfareNetto,
+      welfareImponibile, sommeAggiuntive, totaleTrattenute, nettoAnnuo,
+      nettoMensile, incidenza, aliquotaEffettiva, dettaglio, avvertenze
     };
   }
-  function formulaContributi(ral, totale) {
-    const eur = (n) => arrotonda(n).toLocaleString("it-IT", { minimumFractionDigits: 2 });
-    const pct = (n) => (n * 100).toFixed(2).replace(".", ",");
-    const base = Math.min(ral, CONTRIBUTI.massimaleAnnuo);
-    const eccedenza = Math.max(0, base - CONTRIBUTI.primaFasciaPensionabile);
-    const ivs = `${eur(base)} € \xD7 ${pct(CONTRIBUTI.aliquotaDipendente)}% = ${eur(base * CONTRIBUTI.aliquotaDipendente)} €`;
-    if (eccedenza <= 0) return ivs;
-    return `${ivs}  +  quota oltre ${eur(CONTRIBUTI.primaFasciaPensionabile)} €: ${eur(eccedenza)} € \xD7 ${pct(CONTRIBUTI.aliquotaAggiuntiva)}% = ${eur(eccedenza * CONTRIBUTI.aliquotaAggiuntiva)} €  =  ${eur(totale)} €`;
-  }
-  function componiFormulaScaglioni(righe, totale) {
-    const eur = (n) => arrotonda(n).toLocaleString("it-IT", { minimumFractionDigits: 2 });
+
+  // ------------------------------------------------------------
+  function componiFormula(righe, totale) {
     if (righe.length === 0) return "Imponibile nullo → nessuna imposta";
     if (righe.length === 1) return righe[0];
-    return righe.join("  +  ") + `  =  ${eur(totale)} €`;
+    return righe.join("  +  ") + `  =  ${euro(totale)} €`;
   }
-  function formulaDetrazione(reddito, risultato) {
-    const eur = (n) => arrotonda(n).toLocaleString("it-IT", { minimumFractionDigits: 2 });
-    if (reddito <= DETRAZIONI_LAVORO_DIPENDENTE.sogliaBase) {
-      return `Reddito ≤ 15.000 € → importo fisso ${eur(DETRAZIONI_LAVORO_DIPENDENTE.importoBase)} €`;
-    }
-    if (reddito <= DETRAZIONI_LAVORO_DIPENDENTE.fascia2.limite) {
-      return `1.910 + 1.190 \xD7 [(28.000 − ${eur(reddito)}) / 13.000] = ${eur(
-        risultato
-      )} €`;
-    }
-    if (reddito <= DETRAZIONI_LAVORO_DIPENDENTE.fascia3.limite) {
-      return `1.910 \xD7 [(50.000 − ${eur(reddito)}) / 22.000] = ${eur(risultato)} €`;
-    }
-    return "Reddito oltre 50.000 € → detrazione azzerata";
+
+  function formulaContributi(base, totale, contratto) {
+    const b = Math.min(base, CONTRIBUTI.massimaleAnnuo);
+    const al = aliquotaContributiva(contratto);
+    const ecc = Math.max(0, b - CONTRIBUTI.primaFasciaPensionabile);
+    const testa = `${euro(b)} € × ${perc(al)}% = ${euro(b * al)} €`;
+    if (ecc <= 0) return testa;
+    return `${testa}  +  quota oltre ${euro(CONTRIBUTI.primaFasciaPensionabile)} €: ${euro(ecc)} € × ${perc(CONTRIBUTI.aliquotaAggiuntiva)}% = ${euro(ecc * CONTRIBUTI.aliquotaAggiuntiva)} €  =  ${euro(totale)} €`;
   }
-  function calcolaRalDaNetto(nettoMensileDesiderato, mensilita = MENSILITA_DEFAULT, tolleranza = 0.5) {
-    const obiettivo = nettoMensileDesiderato * mensilita;
-    let basso = 0;
-    let alto = Math.max(obiettivo * 3, 2e4);
+
+  function formulaDetrazioneLavoro(reddito, risultato, o) {
+    const D = DETRAZIONI_LAVORO_DIPENDENTE;
+    const rag = o.giorni < 365 ? ` × ${o.giorni}/365` : "";
+    let base;
+    if (reddito <= D.sogliaBase) base = `importo fisso 1.955 €${rag}`;
+    else if (reddito <= D.fascia2.limite) base = `1.910 + 1.190 × [(28.000 − ${euro(reddito)}) / 13.000]${rag}`;
+    else if (reddito <= D.fascia3.limite) base = `1.910 × [(50.000 − ${euro(reddito)}) / 22.000]${rag}`;
+    else return "Reddito oltre 50.000 € → detrazione azzerata";
+    const magg = (reddito >= D.maggiorazione.da && reddito <= D.maggiorazione.a)
+      ? "  +  65 € di maggiorazione" : "";
+    return `${base}${magg}  =  ${euro(risultato)} €`;
+  }
+
+  function formulaConiuge(reddito, risultato) {
+    const C = DETRAZIONI_FAMILIARI.coniuge;
+    if (reddito <= C.fascia1.limite)
+      return `800 − 110 × (${euro(reddito)} / 15.000) = ${euro(risultato)} €`;
+    if (reddito <= C.fascia2.limite)
+      return `Reddito fra 15.000 e 40.000 € → importo fisso 690 €`;
+    if (reddito <= C.fascia3.limite)
+      return `690 × [(80.000 − ${euro(reddito)}) / 40.000] = ${euro(risultato)} €`;
+    return "Reddito oltre 80.000 € → detrazione azzerata";
+  }
+
+  /** Inverte il calcolo per bisezione: il netto è monotono crescente nella
+   *  RAL, quindi la bisezione converge sempre. */
+  function calcolaRalDaNetto(nettoMensileDesiderato, opzioni, tolleranza) {
+    const o = opzioni || {};
+    const mens = o.mensilita || MENSILITA_DEFAULT;
+    const toll = tolleranza == null ? 0.5 : tolleranza;
+    const obiettivo = nettoMensileDesiderato * mens;
+    let basso = 0, alto = Math.max(obiettivo * 3, 2e4);
     for (let i = 0; i < 100; i++) {
       const medio = (basso + alto) / 2;
-      const risultato = calcolaNetto(medio, mensilita).nettoAnnuo;
-      if (Math.abs(risultato - obiettivo) < tolleranza) return arrotonda(medio);
-      if (risultato < obiettivo) basso = medio;
-      else alto = medio;
+      const r = calcolaNetto(medio, o).nettoAnnuo;
+      if (Math.abs(r - obiettivo) < toll) return arrotonda(medio);
+      if (r < obiettivo) basso = medio; else alto = medio;
     }
     return arrotonda((basso + alto) / 2);
   }
 
-  // anteprima/entry.ts
-  globalThis.CALC = { calcolaNetto, calcolaRalDaNetto };
+  globalThis.CALC = {
+    calcolaNetto, calcolaRalDaNetto,
+    PARAMETRI: {
+      CONTRIBUTI, SCAGLIONI_IRPEF, DETRAZIONI_LAVORO_DIPENDENTE,
+      DETRAZIONI_FAMILIARI, ULTERIORE_DETRAZIONE, SOMMA_INTEGRATIVA,
+      TRATTAMENTO_INTEGRATIVO, FRINGE_BENEFIT,
+      ADDIZIONALE_COMUNALE_DEFAULT, ANNO_FISCALE
+    }
+  };
 })();
 </script>
 
@@ -1147,71 +1185,88 @@ input:focus-visible, select:focus-visible {
 "use strict";
 (() => {
   const $ = s => document.querySelector(s);
-
-  const nf = new Intl.NumberFormat("it-IT", {
-    minimumFractionDigits: 2, maximumFractionDigits: 2
-  });
+  const nf = new Intl.NumberFormat("it-IT", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   const eur = n => nf.format(n);
-  const pct = (n, d = 1) => n.toLocaleString("it-IT", {
-    minimumFractionDigits: d, maximumFractionDigits: d
-  });
+  const pct = (n, d = 1) => n.toLocaleString("it-IT", { minimumFractionDigits: d, maximumFractionDigits: d });
+  const esc = s => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  const CHEV = '<svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 1.5L7 5l-3.5 3.5"/></svg>';
 
-  const CHEVRON =
-    '<svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.6" ' +
-    'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
-    '<path d="M3.5 1.5L7 5l-3.5 3.5"/></svg>';
-
-  const esc = s => String(s)
-    .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-
-  let modalita = "diretta";
-  let aperte = new Set();
-  let ultimo = null;
-
+  let modalita = "diretta", aperte = new Set(), ultimo = null;
   const segno = s => s === "negativo" ? "−" : s === "positivo" ? "+" : "";
 
   /* ---------- tema ---------- */
-  const salvaTema = t => { try { localStorage.setItem("tema", t); } catch (e) {} };
   const leggiTema = () => { try { return localStorage.getItem("tema"); } catch (e) { return null; } };
-
-  const temaIniziale = leggiTema();
-  if (temaIniziale) document.documentElement.setAttribute("data-theme", temaIniziale);
-
+  const salvaTema = t => { try { localStorage.setItem("tema", t); } catch (e) {} };
+  const t0 = leggiTema();
+  if (t0) document.documentElement.setAttribute("data-theme", t0);
   $("#tema").addEventListener("click", () => {
-    const scuroOra = document.documentElement.getAttribute("data-theme") === "dark" ||
-      (!document.documentElement.hasAttribute("data-theme") &&
-        matchMedia("(prefers-color-scheme: dark)").matches);
-    const nuovo = scuroOra ? "light" : "dark";
+    const scuro = document.documentElement.getAttribute("data-theme") === "dark" ||
+      (!document.documentElement.hasAttribute("data-theme") && matchMedia("(prefers-color-scheme: dark)").matches);
+    const nuovo = scuro ? "light" : "dark";
     document.documentElement.setAttribute("data-theme", nuovo);
     salvaTema(nuovo);
   });
+
+  /* ---------- lettura input ----------
+     Accetta "30000", "30.000", "30.000,50" e "30000.50": con la virgola vale
+     la convenzione italiana; senza virgola i punti sono separatori delle
+     migliaia solo se tutti in posizione valida. */
+  function numero(sel) {
+    let s = $(sel).value.trim().replace(/[\s €%]/g, "");
+    if (!s) return NaN;
+    if (s.includes(",")) s = s.replace(/\./g, "").replace(",", ".");
+    else if (/^\d{1,3}(\.\d{3})+$/.test(s)) s = s.replace(/\./g, "");
+    return parseFloat(s);
+  }
+  function intero(sel, fallback) {
+    const n = numero(sel);
+    return Number.isFinite(n) ? Math.round(n) : fallback;
+  }
+  function positivo(sel, fallback) {
+    const n = numero(sel);
+    return Number.isFinite(n) && n >= 0 ? n : fallback;
+  }
+
+  function opzioni() {
+    const regionale = $("#regione").value === "lombardia"
+      ? null : positivo("#aliqReg", 1.73) / 100;
+    return {
+      mensilita: Number($("#mensilita").value),
+      contratto: $("#contratto").value,
+      giorni: intero("#giorni", 365),
+      coniugeACarico: $("#coniuge").checked,
+      figli: Math.max(0, intero("#figli", 0)),
+      percentualeFigli: Number($("#percFigli").value),
+      altriFamiliari: Math.max(0, intero("#altriFam", 0)),
+      bonus100: $("#bonus100").checked,
+      welfare: Math.max(0, positivo("#welfare", 0)),
+      aliquotaRegionale: regionale,
+      aliquotaComunale: positivo("#aliqCom", 0.8) / 100,
+      sogliaComunale: positivo("#sogliaCom", 23000)
+    };
+  }
 
   /* ---------- render ---------- */
   function render(r) {
     const out = $("#out");
     if (!r) { out.innerHTML = ""; return; }
+    const mens = r.mensilita;
 
-    const mens = Number($("#mensilita").value);
-
-    /* Composizione: netto + contributi + imposte.
-       La base è netto+contributi+imposte (= RAL + eventuali somme aggiuntive
-       non imponibili), così i segmenti chiudono sempre a 100%. L'ultimo
-       segmento è calcolato come resto, mai come rapporto arrotondato. */
+    /* Base della composizione: netto + contributi + imposte, cioè il lordo
+       più le somme non imponibili. L'ultimo segmento è il resto, così i tre
+       chiudono sempre a 100% invece di traboccare per arrotondamento. */
     const imposte = r.irpefNetta + r.addizionaleRegionale + r.addizionaleComunale;
     const base = r.nettoAnnuo + r.contributiInps + imposte;
-    const pNetto = base > 0 ? (r.nettoAnnuo / base) * 100 : 0;
-    const pContributi = base > 0 ? (r.contributiInps / base) * 100 : 0;
-    const pImposte = Math.max(0, 100 - pNetto - pContributi);
-
-    const incidenza = r.ral > 0 ? (r.totaleTrattenute / r.ral) * 100 : 0;
+    const pN = base > 0 ? (r.nettoAnnuo / base) * 100 : 0;
+    const pC = base > 0 ? (r.contributiInps / base) * 100 : 0;
+    const pI = Math.max(0, 100 - pN - pC);
 
     const voci = r.dettaglio.map(v => {
       const ap = aperte.has(v.id);
-      const tappa = v.id === "netto-annuo" || v.id === "imponibile" ? " tappa" : "";
+      const tappa = (v.id === "netto-annuo" || v.id === "imponibile") ? " tappa" : "";
       return `<li class="voce${tappa}">
-        <button class="voce-riga" type="button" data-id="${v.id}"
-                aria-expanded="${ap}" aria-controls="d-${v.id}">
-          <span class="chevron">${CHEVRON}</span>
+        <button class="voce-riga" type="button" data-id="${v.id}" aria-expanded="${ap}" aria-controls="d-${v.id}">
+          <span class="chevron">${CHEV}</span>
           <span class="voce-nome">${esc(v.etichetta)}</span>
           <span class="voce-cifra ${v.segno}">${segno(v.segno)}${eur(v.importo)}&nbsp;€</span>
         </button>
@@ -1222,116 +1277,80 @@ input:focus-visible, select:focus-visible {
       </li>`;
     }).join("");
 
-    const tutteAperte = aperte.size === r.dettaglio.length;
-
     out.innerHTML = `
     <section class="risultato" aria-labelledby="h-ris">
-      <h2 id="h-ris" class="sr-only">Risultato del calcolo</h2>
-      ${modalita === "inversa" ? `<p class="nota-inversa">Per portare a casa
-        <strong>${eur(r.nettoMensile)} €</strong> al mese su ${mens} mensilità
-        serve una RAL di circa <strong>${eur(r.ral)} €</strong>.</p>` : ""}
-
-      <div class="hero">
+      <h2 id="h-ris" class="sr-only">Risultato</h2>
+      ${modalita === "inversa" ? `<p class="nota-inversa">Per portarti a casa <strong>${eur(r.nettoMensile)} €</strong> al mese su ${mens} mensilità ti serve una RAL di circa <strong>${eur(r.ral)} €</strong>.</p>` : ""}
+      <div class="pannello-hero">
         <span class="hero-label">Netto mensile · ${mens} mensilità</span>
         <span class="hero-value">${eur(r.nettoMensile)}<span class="valuta"> €</span></span>
-        <span class="hero-sub">su una RAL di ${eur(r.ral)} €</span>
+        <span class="hero-sub">su un lordo di ${eur(r.baseLorda)} €</span>
       </div>
-
       <dl class="metriche">
         <div class="metrica"><dt>Netto annuo</dt><dd>${eur(r.nettoAnnuo)} €</dd></div>
         <div class="metrica"><dt>Trattenute totali</dt><dd class="neg">−${eur(r.totaleTrattenute)} €</dd></div>
-        <div class="metrica"><dt>Incidenza sul lordo</dt><dd>${pct(incidenza)}%</dd></div>
+        <div class="metrica"><dt>Incidenza sul lordo</dt><dd>${pct(r.incidenza)}%</dd></div>
       </dl>
-
       <figure class="composizione">
-        <div class="barra" role="img" aria-label="Composizione: netto ${pct(pNetto)}%, contributi INPS ${pct(pContributi)}%, IRPEF e addizionali ${pct(pImposte)}%.">
-          <span class="seg-netto" style="width:${pNetto}%"></span>
-          <span class="seg-contributi" style="width:${pContributi}%"></span>
-          <span class="seg-imposte" style="width:${pImposte}%"></span>
+        <div class="barra" role="img" aria-label="Composizione del lordo: netto ${pct(pN)}%, contributi INPS ${pct(pC)}%, IRPEF e addizionali ${pct(pI)}%.">
+          <span class="seg-netto" style="width:${pN}%"></span>
+          <span class="seg-contributi" style="width:${pC}%"></span>
+          <span class="seg-imposte" style="width:${pI}%"></span>
         </div>
-        <figcaption>
-          <ul class="legenda">
-            <li><span class="swatch" style="background:var(--q-netto)"></span>
-                <span class="nome">Netto</span>
-                <span class="valori"><span class="cifra">${eur(r.nettoAnnuo)} €</span><span class="quota">${pct(pNetto)}%</span></span></li>
-            <li><span class="swatch" style="background:var(--q-contributi)"></span>
-                <span class="nome">Contributi INPS</span>
-                <span class="valori"><span class="cifra">${eur(r.contributiInps)} €</span><span class="quota">${pct(pContributi)}%</span></span></li>
-            <li><span class="swatch" style="background:var(--q-imposte)"></span>
-                <span class="nome">IRPEF e addizionali</span>
-                <span class="valori"><span class="cifra">${eur(imposte)} €</span><span class="quota">${pct(pImposte)}%</span></span></li>
-          </ul>
-        </figcaption>
+        <figcaption><ul class="legenda">
+          <li><span class="swatch" style="background:var(--q-netto)"></span><span class="nome">Ti resta</span><span class="valori"><span class="cifra">${eur(r.nettoAnnuo)} €</span><span class="quota">${pct(pN)}%</span></span></li>
+          <li><span class="swatch" style="background:var(--q-contributi)"></span><span class="nome">Contributi INPS</span><span class="valori"><span class="cifra">${eur(r.contributiInps)} €</span><span class="quota">${pct(pC)}%</span></span></li>
+          <li><span class="swatch" style="background:var(--q-imposte)"></span><span class="nome">IRPEF e addizionali</span><span class="valori"><span class="cifra">${eur(imposte)} €</span><span class="quota">${pct(pI)}%</span></span></li>
+        </ul></figcaption>
       </figure>
     </section>
 
     <section class="card breakdown" aria-labelledby="h-brk">
       <div class="breakdown-head">
         <h2 id="h-brk">Il percorso dal lordo al netto</h2>
-        <button class="btn-link" id="espandi" type="button">${tutteAperte ? "Chiudi tutto" : "Espandi tutto"}</button>
-        <p>Espandi una voce per vedere la formula applicata e la fonte del parametro.</p>
+        <button class="btn-link" id="espandi" type="button">${aperte.size === r.dettaglio.length ? "Chiudi tutto" : "Espandi tutto"}</button>
+        <p>Apri una voce per vedere la formula applicata e la fonte del parametro.</p>
       </div>
       <ul class="voci">${voci}</ul>
     </section>
 
     ${r.avvertenze.length ? `<section class="card avvertenze" aria-labelledby="h-avv">
-      <h2 id="h-avv">Avvertenze su questo risultato</h2>
+      <h2 id="h-avv">Da tenere presente</h2>
       <ul>${r.avvertenze.map(a => `<li>${esc(a)}</li>`).join("")}</ul>
     </section>` : ""}`;
 
-    out.querySelectorAll(".voce-riga").forEach(b => {
-      b.addEventListener("click", () => {
-        const id = b.dataset.id;
-        aperte.has(id) ? aperte.delete(id) : aperte.add(id);
-        render(ultimo);
-      });
-    });
-
+    out.querySelectorAll(".voce-riga").forEach(b => b.addEventListener("click", () => {
+      const id = b.dataset.id;
+      aperte.has(id) ? aperte.delete(id) : aperte.add(id);
+      render(ultimo);
+    }));
     const exp = $("#espandi");
     if (exp) exp.addEventListener("click", () => {
-      aperte = aperte.size === ultimo.dettaglio.length
-        ? new Set()
-        : new Set(ultimo.dettaglio.map(v => v.id));
+      aperte = aperte.size === ultimo.dettaglio.length ? new Set() : new Set(ultimo.dettaglio.map(v => v.id));
       render(ultimo);
     });
   }
 
   /* ---------- calcolo ---------- */
-  /* Accetta sia "30000" sia "30.000" sia "30.000,50" sia "30000.50".
-     Con la virgola vale la convenzione italiana: virgola decimale, punto
-     separatore delle migliaia. Senza virgola, i punti sono trattati come
-     separatore delle migliaia solo se sono TUTTI in posizione valida
-     (gruppi da tre cifre), altrimenti come punto decimale. */
-  function leggiNumero(sel) {
-    let s = $(sel).value.trim().replace(/[\s €]/g, "");
-    if (!s) return NaN;
-    if (s.includes(",")) {
-      s = s.replace(/\./g, "").replace(",", ".");
-    } else if (/^\d{1,3}(\.\d{3})+$/.test(s)) {
-      s = s.replace(/\./g, "");
-    }
-    return parseFloat(s);
-  }
-
   function calcola() {
     const err = $("#errore");
     err.textContent = "";
-    const mens = Number($("#mensilita").value);
+    const o = opzioni();
     try {
       if (modalita === "diretta") {
-        const v = leggiNumero("#ral");
-        if (!isFinite(v) || v <= 0) {
-          err.textContent = "Inserisci una RAL valida, maggiore di zero.";
+        const v = numero("#ral");
+        if (!Number.isFinite(v) || v <= 0) {
+          err.textContent = "Inserisci uno stipendio lordo valido, maggiore di zero.";
           ultimo = null; render(null); return;
         }
-        ultimo = CALC.calcolaNetto(v, mens);
+        ultimo = CALC.calcolaNetto(v, o);
       } else {
-        const t = leggiNumero("#netto");
-        if (!isFinite(t) || t <= 0) {
+        const t = numero("#netto");
+        if (!Number.isFinite(t) || t <= 0) {
           err.textContent = "Inserisci un netto mensile valido, maggiore di zero.";
           ultimo = null; render(null); return;
         }
-        ultimo = CALC.calcolaNetto(CALC.calcolaRalDaNetto(t, mens), mens);
+        ultimo = CALC.calcolaNetto(CALC.calcolaRalDaNetto(t, o), o);
       }
       render(ultimo);
     } catch (e) {
@@ -1346,17 +1365,21 @@ input:focus-visible, select:focus-visible {
       modalita = radio.value;
       $("#campo-ral").hidden = modalita !== "diretta";
       $("#campo-netto").hidden = modalita !== "inversa";
-      aperte = new Set(); ultimo = null;
-      $("#errore").textContent = "";
+      aperte = new Set(); ultimo = null; $("#errore").textContent = "";
       render(null);
     });
   });
 
-  $("#calcola").addEventListener("click", calcola);
-  ["#ral", "#netto"].forEach(sel => {
-    $(sel).addEventListener("keydown", e => { if (e.key === "Enter") calcola(); });
+  $("#regione").addEventListener("change", () => {
+    $("#campo-aliqReg").hidden = $("#regione").value === "lombardia";
+    if (ultimo) calcola();
   });
-  $("#mensilita").addEventListener("change", () => { if (ultimo) calcola(); });
+
+  $("#calcola").addEventListener("click", calcola);
+  ["#ral", "#netto", "#giorni", "#figli", "#altriFam", "#welfare", "#aliqReg", "#aliqCom", "#sogliaCom"]
+    .forEach(sel => $(sel).addEventListener("keydown", e => { if (e.key === "Enter") calcola(); }));
+  ["#mensilita", "#contratto", "#percFigli", "#coniuge", "#bonus100"]
+    .forEach(sel => $(sel).addEventListener("change", () => { if (ultimo) calcola(); }));
 
   calcola();
 })();
