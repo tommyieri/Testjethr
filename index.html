@@ -571,6 +571,41 @@ input:focus-visible, select:focus-visible {
 }
 
 /* ============================================================
+   ASSUNZIONI E SEMPLIFICAZIONI
+   ============================================================ */
+.semplificazioni { margin-top: var(--s-4); }
+.semplificazioni h2 {
+  font-size: 17px; font-weight: 600; letter-spacing: -0.01em;
+}
+.semp-intro {
+  margin-top: var(--s-2);
+  font-size: 13.5px;
+  color: var(--muted);
+  max-width: 62ch;
+}
+.semp-lista {
+  margin: var(--s-5) 0 0;
+  display: grid;
+  gap: var(--s-4);
+}
+.semp-lista > div {
+  display: grid;
+  gap: var(--s-1);
+  padding-left: var(--s-4);
+  border-left: 2px solid var(--border);
+}
+.semp-lista dt {
+  font-size: 13.5px; font-weight: 600;
+}
+.semp-lista dd {
+  margin: 0;
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: var(--muted);
+  max-width: 68ch;
+}
+
+/* ============================================================
    PIÈ DI PAGINA
    ============================================================ */
 .colophon {
@@ -659,8 +694,39 @@ input:focus-visible, select:focus-visible {
 
   <div id="out"></div>
 
+  <section class="card semplificazioni" aria-labelledby="h-semp">
+    <h2 id="h-semp">Assunzioni e semplificazioni</h2>
+    <p class="semp-intro">I parametri fiscali sono verificati sulle fonti 2026 e citati voce per voce nel dettaglio del calcolo. Quello che segue è invece l'elenco di ciò che il modello <em>non</em> copre, per scelta.</p>
+    <dl class="semp-lista">
+      <div>
+        <dt>Anno di competenza delle addizionali</dt>
+        <dd>Regionale e comunale sono calcolate sul reddito dell'anno corrente. Nella realtà si determinano a conguaglio e si trattengono a rate nell'anno successivo, quindi in busta paga convivono l'acconto dell'anno in corso e il saldo del precedente.</dd>
+      </div>
+      <div>
+        <dt>Trattamento integrativo fra 15.000 e 28.000 €</dt>
+        <dd>In quella fascia spetta solo per la parte in cui le detrazioni superano l'imposta lorda. Senza familiari a carico né oneri detraibili quella differenza è sempre nulla, quindi la fascia non è implementata.</dd>
+      </div>
+      <div>
+        <dt>Detrazioni per familiari a carico e oneri detraibili</dt>
+        <dd>Escluse per assunzione. Sono la variabile che sposta di più il netto reale fra due persone con la stessa RAL.</dd>
+      </div>
+      <div>
+        <dt>Sterilizzazione IRPEF oltre 200.000 €</dt>
+        <dd>Dal 2026 chi supera quella soglia subisce un taglio forfetario di 440 € sulle detrazioni, che annulla il vantaggio della riduzione al 33%. Incide sugli oneri detraibili al 19%, qui assenti per assunzione: non è quindi implementata perché non produrrebbe alcun effetto.</dd>
+      </div>
+      <div>
+        <dt>Contrattazione collettiva</dt>
+        <dd>Nessun CCNL specifico. Le mensilità aggiuntive sono un semplice divisore del netto annuo, non voci con imponibilità propria, e non sono modellati premi, straordinari, welfare o fringe benefit.</dd>
+      </div>
+      <div>
+        <dt>Cadenza reale delle trattenute</dt>
+        <dd>Il calcolo è annuale e poi diviso per le mensilità. Una busta paga vera applica IRPEF e detrazioni mese per mese su base presunta, con conguaglio a dicembre: i singoli mesi possono quindi differire dalla media qui mostrata.</dd>
+      </div>
+    </dl>
+  </section>
+
   <footer class="colophon">
-    <p>Prototipo a scopo dimostrativo, non sostituisce il calcolo di un consulente del lavoro. Assunzioni, semplificazioni e limiti noti sono indicati nelle avvertenze e nel dettaglio di ogni voce del calcolo.</p>
+    <p>Prototipo a scopo dimostrativo, non sostituisce il calcolo di un consulente del lavoro.</p>
     <p>Ogni riga del percorso dal lordo al netto è espandibile e mostra la formula applicata e la fonte normativa del parametro.</p>
   </footer>
 
@@ -685,7 +751,16 @@ input:focus-visible, select:focus-visible {
      * (sistema contributivo puro). Oltre il massimale non si versa IVS.
      * Fonte: circolare INPS massimale 2026 (~120.607 €).
      */
-    massimaleAnnuo: 120607
+    massimaleAnnuo: 120607,
+    /**
+     * Aliquota aggiuntiva dell'1% a carico del lavoratore sulla quota di
+     * retribuzione eccedente la prima fascia di retribuzione pensionabile,
+     * fissata per il 2026 a 56.224 € annui (4.685 € mensili).
+     * Fonte: art. 3-ter DL 384/1992 conv. L. 438/1992; circolare INPS
+     * minimali e massimali 2026.
+     */
+    aliquotaAggiuntiva: 0.01,
+    primaFasciaPensionabile: 56224
   };
   var SCAGLIONI_IRPEF = [
     { limite: 28e3, aliquota: 0.23 },
@@ -777,7 +852,11 @@ input:focus-visible, select:focus-visible {
   }
   function calcolaContributi(ral) {
     const baseImponibile = Math.min(ral, CONTRIBUTI.massimaleAnnuo);
-    return arrotonda(baseImponibile * CONTRIBUTI.aliquotaDipendente);
+    const ivs = baseImponibile * CONTRIBUTI.aliquotaDipendente;
+    const eccedenza = Math.max(
+      0, baseImponibile - CONTRIBUTI.primaFasciaPensionabile
+    );
+    return arrotonda(ivs + eccedenza * CONTRIBUTI.aliquotaAggiuntiva);
   }
   function calcolaDetrazioneLavoroDipendente(reddito) {
     let detrazione;
@@ -875,10 +954,8 @@ input:focus-visible, select:focus-visible {
         etichetta: "Contributi previdenziali INPS (carico dipendente)",
         importo: contributiInps,
         segno: "negativo",
-        formula: `${eur(Math.min(ral, CONTRIBUTI.massimaleAnnuo))} € \xD7 ${pct(
-          CONTRIBUTI.aliquotaDipendente
-        )}% = ${eur(contributiInps)} €`,
-        fonte: `Aliquota IVS a carico lavoratore, settore privato — circolari INPS 2026. Massimale contributivo ${eur(CONTRIBUTI.massimaleAnnuo)} €.`
+        formula: formulaContributi(ral, contributiInps),
+        fonte: `Aliquota IVS ${pct(CONTRIBUTI.aliquotaDipendente)}% a carico del lavoratore, settore privato (il 23,81% a carico del datore è costo aziendale e non entra in busta paga). Massimale contributivo ${eur(CONTRIBUTI.massimaleAnnuo)} €. Sulla quota eccedente la prima fascia di retribuzione pensionabile, ${eur(CONTRIBUTI.primaFasciaPensionabile)} € per il 2026, si applica l'aliquota aggiuntiva dell'1% (art. 3-ter L. 438/1992). Fonte: circolari INPS aliquote, minimali e massimali 2026.`
       },
       {
         id: "imponibile",
@@ -914,7 +991,7 @@ input:focus-visible, select:focus-visible {
         formula: ulterioreDetrazione > 0 ? imponibileFiscale <= ULTERIORE_DETRAZIONE.sogliaPiena ? `Importo pieno: ${eur(ULTERIORE_DETRAZIONE.importo)} €` : `1.000 \xD7 [(40.000 − ${eur(imponibileFiscale)}) / 8.000] = ${eur(
           ulterioreDetrazione
         )} €` : "Non spettante per questa fascia di reddito",
-        fonte: "L. 207/2024 art. 1 co. 6 — voce da riverificare sul testo aggiornato della norma."
+        fonte: "L. 207/2024 art. 1 co. 6, confermata per il 2026. Importo pieno di 1.000 € fino a 32.000 € di reddito complessivo, poi décalage lineare fino ad azzerarsi a 40.000 €. È alternativa alla somma integrativa, che spetta sotto i 20.000 €."
       },
       {
         id: "irpef-netta",
@@ -935,7 +1012,7 @@ input:focus-visible, select:focus-visible {
           applicaScaglioni(imponibileFiscale, ADDIZIONALE_REGIONALE.scaglioni).dettaglio,
           addizionaleRegionale
         ),
-        fonte: "Aliquote a scaglioni 1,23% – 1,73%. Fonte: Dipartimento delle Finanze (MEF), art. 72 L.R. Lombardia 14/07/2003 n. 10."
+        fonte: "Aliquote a scaglioni dall'1,23% all'1,73%, confermate per il 2026. Fonte: Dipartimento delle Finanze (MEF), art. 72 L.R. Lombardia 14/07/2003 n. 10. Semplificazione: qui è calcolata sul reddito dell'anno corrente, mentre nella realtà si determina a conguaglio sul reddito dell'anno stesso e si trattiene a rate nell'anno successivo."
       },
       {
         id: "add-comunale",
@@ -947,7 +1024,7 @@ input:focus-visible, select:focus-visible {
         )}% = ${eur(addizionaleComunale)} €` : `Imponibile sotto la soglia di esenzione di ${eur(
           ADDIZIONALE_COMUNALE.sogliaEsenzione
         )} € → esente`,
-        fonte: `Aliquota ${pct(ADDIZIONALE_COMUNALE.aliquota)}%, esenzione fino a ${eur(ADDIZIONALE_COMUNALE.sogliaEsenzione)} €. \xC8 una soglia, non una franchigia: superata, si paga sull'intero imponibile. Fonte: delibera Comune di Milano n. 46 del 28/09/2020.`
+        fonte: `Aliquota unica ${pct(ADDIZIONALE_COMUNALE.aliquota)}%, confermata per il 2026, con esenzione fino a ${eur(ADDIZIONALE_COMUNALE.sogliaEsenzione)} €. \xC8 una soglia, non una franchigia: superata, si paga sull'intero imponibile e non solo sull'eccedenza. Fonte: delibera del Comune di Milano n. 46 del 28/09/2020. Vale la stessa semplificazione sull'anno di competenza indicata per l'addizionale regionale.`
       }
     ];
     if (trattamentoIntegrativo > 0) {
@@ -959,7 +1036,7 @@ input:focus-visible, select:focus-visible {
         formula: `Reddito ≤ ${eur(
           TRATTAMENTO_INTEGRATIVO.sogliaReddito
         )} € e imposta lorda capiente → ${eur(trattamentoIntegrativo)} €`,
-        fonte: "DL 3/2020 art. 1, confermato dalla L. 199/2025."
+        fonte: "DL 3/2020 art. 1, disciplina confermata per il 2026. Spetta per intero fino a 15.000 € di reddito, a condizione che l'imposta lorda superi la detrazione per lavoro dipendente. Fra 15.000 e 28.000 € spetta solo per la parte in cui le detrazioni eccedono l'imposta lorda: con le assunzioni di questo prototipo (nessun familiare a carico, nessun onere detraibile) quella differenza è sempre nulla, quindi la fascia non è implementata. È cumulabile con la somma integrativa."
       });
     }
     if (sommaIntegrativa > 0) {
@@ -971,28 +1048,20 @@ input:focus-visible, select:focus-visible {
         formula: `${eur(imponibileFiscale)} € \xD7 percentuale di fascia = ${eur(
           sommaIntegrativa
         )} €`,
-        fonte: "L. 207/2024 art. 1 co. 4-5 — voce da riverificare sul testo aggiornato della norma."
+        fonte: "L. 207/2024 art. 1 co. 4-5, confermata per il 2026. Percentuale sul reddito di lavoro dipendente: 7,1% fino a 8.500 €, 5,3% da 8.501 a 15.000 €, 4,8% oltre, con accesso riservato ai redditi complessivi fino a 20.000 €. Non concorre alla formazione del reddito, quindi non è né tassata né soggetta a contribuzione. È cumulabile con il trattamento integrativo."
       });
     }
+    /* Le avvertenze restano come canale per segnalazioni legate al singolo
+       risultato. Le voci "da riverificare" che comparivano qui sono state
+       rimosse dopo la verifica dei parametri sulle fonti 2026; le
+       semplificazioni strutturali, che valgono per ogni calcolo e non per
+       un risultato in particolare, sono documentate in pagina. */
     const avvertenze = [];
-    if (sommeAggiuntive > 0) {
-      avvertenze.push(
-        "In questa fascia di reddito il calcolo include misure integrative (trattamento integrativo e/o somma integrativa non imponibile) la cui disciplina 2026 \xE8 stata implementata con confidenza ridotta. Il netto risultante pu\xF2 essere sovrastimato: verificare prima di qualunque uso reale."
-      );
-    }
-    if (ulterioreDetrazione > 0) {
-      avvertenze.push(
-        "\xC8 stata applicata l'ulteriore detrazione per redditi 20.000 – 40.000 €: voce da riverificare sul testo aggiornato della norma."
-      );
-    }
     if (ral > CONTRIBUTI.massimaleAnnuo) {
       avvertenze.push(
-        "RAL oltre il massimale contributivo: sopra la soglia non si versa IVS. Il prototipo non gestisce l'aliquota aggiuntiva dell'1% prevista oltre la prima fascia di retribuzione pensionabile."
+        `RAL oltre il massimale contributivo di ${arrotonda(CONTRIBUTI.massimaleAnnuo).toLocaleString("it-IT", { minimumFractionDigits: 2 })} €: sulla quota eccedente non si versa IVS. Il massimale si applica ai soli iscritti privi di anzianità contributiva al 31/12/1995, assunzione che questo prototipo adotta per tutti.`
       );
     }
-    avvertenze.push(
-      "Le addizionali regionale e comunale sono calcolate sul reddito dell'anno corrente. Nella realt\xE0 si determinano sul reddito dell'anno precedente e si trattengono a rate nell'anno successivo: \xE8 una semplificazione consapevole."
-    );
     dettaglio.push({
       id: "netto-annuo",
       etichetta: "Netto annuo",
@@ -1024,6 +1093,15 @@ input:focus-visible, select:focus-visible {
       dettaglio,
       avvertenze
     };
+  }
+  function formulaContributi(ral, totale) {
+    const eur = (n) => arrotonda(n).toLocaleString("it-IT", { minimumFractionDigits: 2 });
+    const pct = (n) => (n * 100).toFixed(2).replace(".", ",");
+    const base = Math.min(ral, CONTRIBUTI.massimaleAnnuo);
+    const eccedenza = Math.max(0, base - CONTRIBUTI.primaFasciaPensionabile);
+    const ivs = `${eur(base)} € \xD7 ${pct(CONTRIBUTI.aliquotaDipendente)}% = ${eur(base * CONTRIBUTI.aliquotaDipendente)} €`;
+    if (eccedenza <= 0) return ivs;
+    return `${ivs}  +  quota oltre ${eur(CONTRIBUTI.primaFasciaPensionabile)} €: ${eur(eccedenza)} € \xD7 ${pct(CONTRIBUTI.aliquotaAggiuntiva)}% = ${eur(eccedenza * CONTRIBUTI.aliquotaAggiuntiva)} €  =  ${eur(totale)} €`;
   }
   function componiFormulaScaglioni(righe, totale) {
     const eur = (n) => arrotonda(n).toLocaleString("it-IT", { minimumFractionDigits: 2 });
