@@ -368,7 +368,7 @@ footer p { max-width: 62ch; }
   <div id="out"></div>
 
   <footer>
-    <p>Prototipo a scopo dimostrativo. Non sostituisce il calcolo di un consulente del lavoro. Assunzioni, semplificazioni e limiti noti sono documentati nel <strong>README</strong> del repository.</p>
+    <p>Prototipo a scopo dimostrativo. Non sostituisce il calcolo di un consulente del lavoro. Assunzioni, semplificazioni e limiti noti sono indicati nelle <strong>avvertenze</strong> e nel dettaglio di ogni voce del calcolo.</p>
   </footer>
 </main>
 <script>"use strict";
@@ -619,7 +619,7 @@ footer p { max-width: 62ch; }
         formula: ulterioreDetrazione > 0 ? imponibileFiscale <= ULTERIORE_DETRAZIONE.sogliaPiena ? `Importo pieno: ${eur(ULTERIORE_DETRAZIONE.importo)} €` : `1.000 \xD7 [(40.000 − ${eur(imponibileFiscale)}) / 8.000] = ${eur(
           ulterioreDetrazione
         )} €` : "Non spettante per questa fascia di reddito",
-        fonte: "L. 207/2024 art. 1 co. 6 — voce da riverificare, vedi README."
+        fonte: "L. 207/2024 art. 1 co. 6 — voce da riverificare sul testo aggiornato della norma."
       },
       {
         id: "irpef-netta",
@@ -676,7 +676,7 @@ footer p { max-width: 62ch; }
         formula: `${eur(imponibileFiscale)} € \xD7 percentuale di fascia = ${eur(
           sommaIntegrativa
         )} €`,
-        fonte: "L. 207/2024 art. 1 co. 4-5 — voce da riverificare, vedi README."
+        fonte: "L. 207/2024 art. 1 co. 4-5 — voce da riverificare sul testo aggiornato della norma."
       });
     }
     const avvertenze = [];
