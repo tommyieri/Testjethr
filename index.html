@@ -303,6 +303,25 @@ input:focus-visible, select:focus-visible {
 .metrica dd { font-size: 25px; font-weight: 600; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
 .metrica dd.neg { color: var(--negative); }
 
+.gta-mode {
+  display: grid; grid-template-columns: auto 1fr; gap: var(--s-3); align-items: center;
+  margin-top: var(--s-3); padding: var(--s-4);
+  background: linear-gradient(135deg, #241433, #182950); color: #fff;
+  border: 1px solid #543d7d; border-radius: var(--r-md);
+}
+.gta-mark {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 48px; height: 48px; border: 1px solid rgba(255,255,255,.36);
+  border-radius: var(--r-sm); background: rgba(255,255,255,.12);
+  font-size: 22px; font-weight: 800; font-style: italic; letter-spacing: -.08em;
+}
+.gta-eyebrow {
+  display: block; margin-bottom: 2px; color: #f8b6d1;
+  font-size: 11.5px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+}
+.gta-copy { font-size: 14px; line-height: 1.45; }
+.gta-note { display: block; margin-top: 3px; color: rgba(255,255,255,.72); font-size: 12px; }
+
 .composizione { margin-top: var(--s-5); }
 .barra { display: flex; height: 14px; border-radius: var(--r-full); overflow: hidden; background: var(--surface-sunk); }
 .barra > span { min-width: 3px; transition: width var(--t-layout) var(--ease); }
@@ -682,6 +701,12 @@ input:focus-visible, select:focus-visible {
     const pN = base > 0 ? (r.nettoAnnuo / base) * 100 : 0;
     const pC = base > 0 ? (r.contributiInps / base) * 100 : 0;
     const pI = Math.max(0, 100 - pN - pC);
+    const costoGtaVI = 100;
+    const copieGtaVI = Math.floor(r.nettoMensile / costoGtaVI);
+    const restoGtaVI = r.nettoMensile - copieGtaVI * costoGtaVI;
+    const messaggioGtaVI = copieGtaVI > 0
+      ? `Con il netto medio di una mensilità puoi comprare <strong>${copieGtaVI} ${copieGtaVI === 1 ? "copia" : "copie"}</strong> e ti restano ${eur(restoGtaVI)} €.`
+      : `Ti mancano ${eur(costoGtaVI - r.nettoMensile)} € per la prima copia.`;
 
     const voci = r.dettaglio.map(v => {
       const ap = aperte.has(v.id);
@@ -713,6 +738,13 @@ input:focus-visible, select:focus-visible {
         <div class="metrica"><dt>Trattenute totali</dt><dd class="neg">−${eur(r.totaleTrattenute)} €</dd></div>
         <div class="metrica"><dt>Incidenza sul lordo</dt><dd>${pct(r.incidenza)}%</dd></div>
       </dl>
+      <aside class="gta-mode" aria-label="Modalità GTA VI: prezzo di riferimento 100 euro a copia">
+        <span class="gta-mark" aria-hidden="true">VI</span>
+        <div>
+          <span class="gta-eyebrow">Modalità GTA VI</span>
+          <p class="gta-copy">${messaggioGtaVI}<span class="gta-note">Prezzo di riferimento fisso: 100 € a copia. Non incide sul calcolo fiscale.</span></p>
+        </div>
+      </aside>
       <figure class="composizione">
         <div class="barra" role="img" aria-label="Composizione del lordo: netto ${pct(pN)}%, contributi INPS ${pct(pC)}%, IRPEF e addizionali ${pct(pI)}%.">
           <span class="seg-netto" style="width:${pN}%"></span>
