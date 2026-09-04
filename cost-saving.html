@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<meta name="description" content="Console Cost-Saving: quanto costa davvero un'assunzione, quali agevolazioni 2026 spettano, in quale sequenza conviene usarle e quale canale di retribuzione è più efficiente. Prototipo per il task di selezione Cost-Saving di Jet HR.">
+<title>Console Cost-Saving — costo del lavoro e agevolazioni 2026</title>
+<style>
+/* ============================================================
+   TOKEN — gli stessi di index.html, così le due pagine sono
+   un unico prodotto e non due prototipi scollegati.
+   Palette ispirata al posizionamento di Jet HR, non prelevata dal
+   loro design system: jethr.com non è raggiungibile dall'ambiente
+   di sviluppo. La scelta è documentata, non spacciata per originale.
+   ============================================================ */
+:root {
+  --bg:#f7f7fb; --surface:#ffffff; --surface-sunk:#f1f1f8;
+  --ink:#16151f; --muted:#605d75; --border:#e4e3ee; --border-strong:#cdcbdd;
+  --accent:#4f46e5; --accent-hover:#4338ca; --accent-soft:#eeeefe; --accent-line:#d6d5fb;
+  --positive:#1a7f45; --positive-soft:#eaf6ee; --positive-line:#bfe3cd;
+  --negative:#b3261e; --negative-soft:#fdeceb; --negative-line:#f3c9c6;
+  --warning-ink:#7a5c12; --warning-bg:#fffaef; --warning-line:#f0e2c0;
+  --q-ral:#4f46e5; --q-contributi:#d99413; --q-inail:#c14a44; --q-tfr:#1a7f45;
+  --r-sm:8px; --r-md:14px; --r-full:999px;
+  --font:ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --mono:ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  --t-state:150ms; --t-layout:250ms; --ease:cubic-bezier(0.2,0,0,1);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg:#101018; --surface:#17161f; --surface-sunk:#1d1c27;
+    --ink:#e5e4ec; --muted:#9b98ae; --border:#2b2937; --border-strong:#3c3950;
+    --accent:#9b95f9; --accent-hover:#b3aefb; --accent-soft:#1e1b36; --accent-line:#332f5e;
+    --positive:#5fcf90; --positive-soft:#12251a; --positive-line:#1f4430;
+    --negative:#f08b83; --negative-soft:#2a1a19; --negative-line:#4a2523;
+    --warning-ink:#e0c184; --warning-bg:#221d12; --warning-line:#4a3d1e;
+    --q-ral:#9b95f9; --q-contributi:#e8b45c; --q-inail:#f08b83; --q-tfr:#5fcf90;
+  }
+}
+
+*,*::before,*::after { box-sizing:border-box; }
+html { -webkit-text-size-adjust:100%; }
+body {
+  margin:0; background:var(--bg); color:var(--ink); font-family:var(--font);
+  font-size:15px; line-height:1.55; overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,h4 { margin:0; line-height:1.25; font-weight:640; letter-spacing:-0.011em; }
+p { margin:0; }
+a { color:var(--accent); text-decoration:none; border-bottom:1px solid var(--accent-line); }
+a:hover { color:var(--accent-hover); border-bottom-color:currentColor; }
+:focus-visible { outline:2px solid var(--accent); outline-offset:2px; border-radius:4px; }
+
+.wrap { max-width:1180px; margin:0 auto; padding:0 20px; }
+
+/* ---------- intestazione ---------- */
+.top { border-bottom:1px solid var(--border); background:var(--surface); }
+.top-in { display:flex; flex-wrap:wrap; gap:16px; align-items:center;
+  justify-content:space-between; padding:18px 0; }
+.brand { display:flex; align-items:center; gap:11px; }
+.mark { width:30px; height:30px; border-radius:9px; flex:none;
+  background:linear-gradient(135deg,var(--accent),#8b5cf6);
+  display:grid; place-items:center; color:#fff; font-weight:800; font-size:14px; }
+.brand b { font-size:15.5px; font-weight:680; letter-spacing:-0.015em; }
+.brand span { display:block; font-size:12.5px; color:var(--muted); font-weight:450; }
+.top-links { display:flex; gap:8px; flex-wrap:wrap; }
+.chip { font-size:13px; padding:7px 13px; border-radius:var(--r-full);
+  border:1px solid var(--border-strong); color:var(--ink); background:var(--surface);
+  transition:background var(--t-state) var(--ease); }
+.chip:hover { background:var(--surface-sunk); border-bottom-color:var(--border-strong); }
+
+/* ---------- hero ---------- */
+.hero { padding:38px 0 26px; }
+.hero h1 { font-size:clamp(26px,4.4vw,40px); max-width:22ch; }
+.hero .lede { margin-top:14px; max-width:66ch; color:var(--muted); font-size:16.5px; }
+.hero .lede strong { color:var(--ink); font-weight:600; }
+
+/* ---------- navigazione a schede ---------- */
+.tabs { display:flex; gap:4px; overflow-x:auto; padding:4px;
+  background:var(--surface-sunk); border:1px solid var(--border);
+  border-radius:var(--r-md); margin-bottom:22px;
+  scrollbar-width:none; }
+.tabs::-webkit-scrollbar { display:none; }
+.tab { flex:1 0 auto; min-height:42px; padding:9px 15px; border:0; cursor:pointer;
+  background:transparent; color:var(--muted); font:inherit; font-size:14px;
+  font-weight:550; border-radius:10px; white-space:nowrap;
+  transition:background var(--t-state) var(--ease), color var(--t-state) var(--ease); }
+.tab:hover { color:var(--ink); }
+.tab[aria-selected="true"] { background:var(--surface); color:var(--ink);
+  box-shadow:0 1px 3px rgb(0 0 0 / 0.07); }
+.panel[hidden] { display:none; }
+
+/* ---------- struttura a due colonne ---------- */
+.split { display:grid; gap:22px; grid-template-columns:minmax(0,360px) minmax(0,1fr);
+  align-items:start; padding-bottom:56px; }
+@media (max-width:900px) { .split { grid-template-columns:minmax(0,1fr); } }
+
+.card { background:var(--surface); border:1px solid var(--border);
+  border-radius:var(--r-md); padding:20px; }
+.card + .card { margin-top:16px; }
+.card > h2 { font-size:16px; }
+.card > h3 { font-size:14.5px; }
+.card .hint { color:var(--muted); font-size:13.5px; margin-top:6px; }
+
+/* ---------- campi ---------- */
+fieldset { border:0; margin:0; padding:0; }
+legend { font-size:12px; text-transform:uppercase; letter-spacing:0.07em;
+  color:var(--muted); font-weight:640; padding:0; margin:20px 0 10px; }
+fieldset:first-of-type legend { margin-top:6px; }
+.field { margin-bottom:12px; }
+.field label { display:block; font-size:13px; font-weight:550; margin-bottom:5px; }
+.field .sub { font-weight:400; color:var(--muted); }
+input[type=number], input[type=text], input[type=date], select, textarea {
+  width:100%; min-height:42px; padding:9px 11px; font:inherit; font-size:14.5px;
+  color:var(--ink); background:var(--surface); border:1px solid var(--border-strong);
+  border-radius:var(--r-sm); transition:border-color var(--t-state) var(--ease); }
+textarea { min-height:120px; font-family:var(--mono); font-size:13px; line-height:1.5; }
+input:hover, select:hover, textarea:hover { border-color:var(--accent); }
+input:focus, select:focus, textarea:focus { outline:2px solid var(--accent);
+  outline-offset:1px; border-color:var(--accent); }
+.grid2 { display:grid; gap:10px; grid-template-columns:1fr 1fr; }
+@media (max-width:420px) { .grid2 { grid-template-columns:1fr; } }
+
+button.primary { min-height:44px; padding:11px 20px; border:0; border-radius:var(--r-sm);
+  background:var(--accent); color:#fff; font:inherit; font-weight:600; cursor:pointer;
+  transition:background var(--t-state) var(--ease); width:100%; }
+button.primary:hover { background:var(--accent-hover); }
+button.ghost { min-height:40px; padding:9px 15px; border:1px solid var(--border-strong);
+  border-radius:var(--r-sm); background:var(--surface); color:var(--ink);
+  font:inherit; font-size:13.5px; font-weight:550; cursor:pointer; }
+button.ghost:hover { background:var(--surface-sunk); }
+
+/* ---------- indicatore di confidenza ---------- */
+.conf { display:inline-flex; align-items:center; gap:5px; font-size:11.5px;
+  font-weight:600; padding:2px 8px; border-radius:var(--r-full);
+  border:1px solid; letter-spacing:0.01em; }
+.conf-certa, .conf-alta { color:var(--positive); background:var(--positive-soft); border-color:var(--positive-line); }
+.conf-tipica, .conf-media { color:var(--warning-ink); background:var(--warning-bg); border-color:var(--warning-line); }
+.conf-daVerificare { color:var(--negative); background:var(--negative-soft); border-color:var(--negative-line); }
+
+/* ---------- numeri in evidenza ---------- */
+.kpis { display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(158px,1fr)); }
+.kpi { border:1px solid var(--border); border-radius:var(--r-md); padding:15px 16px;
+  background:var(--surface-sunk); }
+.kpi .lab { font-size:12px; text-transform:uppercase; letter-spacing:0.06em;
+  color:var(--muted); font-weight:640; }
+.kpi .val { font-size:clamp(21px,3.2vw,27px); font-weight:700; letter-spacing:-0.02em;
+  margin-top:5px; font-variant-numeric:tabular-nums; }
+.kpi .cap { font-size:12.5px; color:var(--muted); margin-top:3px; line-height:1.4; }
+.kpi.good { background:var(--positive-soft); border-color:var(--positive-line); }
+.kpi.good .val { color:var(--positive); }
+.kpi.accent { background:var(--accent-soft); border-color:var(--accent-line); }
+.kpi.accent .val { color:var(--accent); }
+
+/* ---------- barra di composizione ---------- */
+.stack { display:flex; height:30px; border-radius:var(--r-sm); overflow:hidden;
+  border:1px solid var(--border); margin:14px 0 10px; }
+.stack > i { display:block; }
+.legend { display:flex; flex-wrap:wrap; gap:6px 18px; font-size:13px; }
+.legend > span { display:inline-flex; align-items:center; gap:7px; }
+.legend b { width:10px; height:10px; border-radius:3px; flex:none; }
+.legend .amt { font-variant-numeric:tabular-nums; color:var(--muted); }
+
+/* ---------- timeline della sequenza ---------- */
+.seq { margin-top:6px; }
+.seq-row { display:grid; grid-template-columns:minmax(0,1fr); gap:4px;
+  padding:11px 0; border-bottom:1px solid var(--border); }
+.seq-row:last-child { border-bottom:0; }
+.seq-head { display:flex; flex-wrap:wrap; gap:8px; align-items:baseline;
+  justify-content:space-between; }
+.seq-when { font-family:var(--mono); font-size:12.5px; color:var(--muted);
+  background:var(--surface-sunk); padding:2px 7px; border-radius:5px; flex:none; }
+.seq-what { font-weight:600; font-size:14.5px; }
+.seq-amt { font-variant-numeric:tabular-nums; font-weight:660; flex:none; }
+.seq-bar { height:8px; border-radius:var(--r-full); background:var(--surface-sunk);
+  overflow:hidden; }
+.seq-bar > i { display:block; height:100%; background:var(--accent); border-radius:var(--r-full); }
+.seq-bar.empty > i { background:var(--border-strong); }
+
+/* ---------- elenco misure ---------- */
+details.misura { border:1px solid var(--border); border-radius:var(--r-md);
+  margin-bottom:9px; background:var(--surface); overflow:hidden; }
+details.misura[open] { border-color:var(--border-strong); }
+details.misura > summary { list-style:none; cursor:pointer; padding:13px 15px;
+  display:flex; gap:11px; align-items:center; min-height:46px;
+  transition:background var(--t-state) var(--ease); }
+details.misura > summary::-webkit-details-marker { display:none; }
+details.misura > summary:hover { background:var(--surface-sunk); }
+.st { width:22px; height:22px; border-radius:var(--r-full); flex:none; display:grid;
+  place-items:center; font-size:12px; font-weight:800; color:#fff; }
+.st-eleggibile { background:var(--positive); }
+.st-da-chiarire { background:#d99413; }
+.st-non-eleggibile { background:var(--border-strong); color:var(--muted); }
+.st-fuori-finestra { background:var(--negative); }
+.misura .nm { font-weight:600; font-size:14.5px; flex:1 1 auto; min-width:0; }
+.misura .nm em { display:block; font-style:normal; font-weight:400; font-size:12.5px;
+  color:var(--muted); }
+.misura .amt { font-variant-numeric:tabular-nums; font-weight:660; flex:none;
+  font-size:14.5px; }
+.misura .body { padding:2px 15px 16px; border-top:1px solid var(--border);
+  font-size:14px; }
+.misura .body > * + * { margin-top:12px; }
+.reqs { list-style:none; padding:0; margin:0; }
+.reqs li { display:flex; gap:9px; padding:6px 0; align-items:flex-start; }
+.reqs .ic { flex:none; width:18px; height:18px; border-radius:var(--r-full);
+  display:grid; place-items:center; font-size:11px; font-weight:800; margin-top:1px; }
+.ic-soddisfatto { background:var(--positive-soft); color:var(--positive); }
+.ic-non-soddisfatto { background:var(--negative-soft); color:var(--negative); }
+.ic-ignoto { background:var(--warning-bg); color:var(--warning-ink); }
+.reqs .why { display:block; font-size:12.5px; color:var(--muted); margin-top:2px; }
+.meta { display:grid; gap:4px; font-size:13px; color:var(--muted);
+  background:var(--surface-sunk); border-radius:var(--r-sm); padding:11px 13px; }
+.meta b { color:var(--ink); font-weight:600; }
+ul.plain { margin:6px 0 0; padding-left:20px; font-size:13.5px; color:var(--muted); }
+ul.plain li { margin-bottom:3px; }
+
+/* ---------- avvisi ---------- */
+.note { border-radius:var(--r-sm); padding:12px 14px; font-size:13.5px;
+  border:1px solid; }
+.note-warn { background:var(--warning-bg); border-color:var(--warning-line); color:var(--warning-ink); }
+.note-bad { background:var(--negative-soft); border-color:var(--negative-line); color:var(--negative); }
+.note-ok { background:var(--positive-soft); border-color:var(--positive-line); color:var(--positive); }
+.note-info { background:var(--accent-soft); border-color:var(--accent-line); color:var(--ink); }
+.note b { font-weight:660; }
+
+/* ---------- tabelle ---------- */
+.tw { overflow-x:auto; margin-top:12px; }
+table { width:100%; border-collapse:collapse; font-size:13.5px; min-width:520px; }
+th, td { text-align:left; padding:9px 11px; border-bottom:1px solid var(--border);
+  vertical-align:top; }
+th { font-size:11.5px; text-transform:uppercase; letter-spacing:0.05em;
+  color:var(--muted); font-weight:640; white-space:nowrap; }
+td.num, th.num { text-align:right; font-variant-numeric:tabular-nums; white-space:nowrap; }
+tbody tr:last-child td { border-bottom:0; }
+tr.best td { background:var(--positive-soft); }
+tr.best td:first-child { font-weight:640; }
+
+/* ---------- domande aperte ---------- */
+.ask { display:flex; gap:12px; padding:12px 0; border-bottom:1px solid var(--border);
+  align-items:flex-start; }
+.ask:last-child { border-bottom:0; }
+.ask .q { flex:1 1 auto; min-width:0; }
+.ask .q b { display:block; font-weight:600; font-size:14px; }
+.ask .q em { font-style:normal; display:block; font-size:12.5px; color:var(--muted);
+  margin-top:3px; }
+.ask .v { flex:none; text-align:right; }
+.ask .v b { display:block; font-variant-numeric:tabular-nums; font-weight:700;
+  color:var(--accent); }
+.ask .v em { font-style:normal; font-size:11.5px; color:var(--muted); }
+
+/* ---------- canali ---------- */
+.chan { border:1px solid var(--border); border-radius:var(--r-md); padding:15px;
+  margin-bottom:10px; }
+.chan.top { border-color:var(--positive-line); background:var(--positive-soft); }
+.chan-head { display:flex; flex-wrap:wrap; gap:10px; align-items:baseline;
+  justify-content:space-between; }
+.chan-head b { font-size:15px; font-weight:640; }
+.chan .eff { font-variant-numeric:tabular-nums; font-weight:700; font-size:19px; }
+.chan .bar { height:9px; border-radius:var(--r-full); background:var(--surface-sunk);
+  margin:10px 0; overflow:hidden; }
+.chan .bar > i { display:block; height:100%; background:var(--accent);
+  border-radius:var(--r-full); transition:width var(--t-layout) var(--ease); }
+.chan.top .bar > i { background:var(--positive); }
+.chan dl { display:grid; grid-template-columns:auto 1fr; gap:2px 12px; margin:0;
+  font-size:13px; }
+.chan dt { color:var(--muted); }
+.chan dd { margin:0; font-variant-numeric:tabular-nums; }
+.chan .txt { font-size:13px; color:var(--muted); margin-top:9px; }
+
+footer { border-top:1px solid var(--border); background:var(--surface);
+  padding:28px 0 44px; font-size:13.5px; color:var(--muted); }
+footer h3 { font-size:14px; color:var(--ink); margin-bottom:8px; }
+footer p + p, footer p + h3 { margin-top:14px; }
+.sr { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0);
+  white-space:nowrap; }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap top-in">
+    <div class="brand">
+      <span class="mark" aria-hidden="true">J</span>
+      <span>
+        <b>Console Cost-Saving</b>
+        <span>Costo del lavoro e agevolazioni · anno 2026</span>
+      </span>
+    </div>
+    <nav class="top-links" aria-label="Pagine">
+      <a class="chip" href="index.html">Dalla RAL al netto →</a>
+      <a class="chip" href="https://github.com/tommyieri/Testjethr">Codice e note</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section class="hero">
+    <h1>Il risparmio non è una tabella. È una sequenza.</h1>
+    <p class="lede">
+      Le guide alle agevolazioni rispondono a «quali bonus esistono». Chi assume
+      ha però tre domande diverse: <strong>quale misura spetta a questa persona</strong>,
+      <strong>in quale ordine conviene usarle nei prossimi cinque anni</strong>, e
+      <strong>quale dato mi manca per portarla a casa</strong>. Questa console
+      risponde a quelle tre.
+    </p>
+  </section>
+
+  <div class="tabs" role="tablist" aria-label="Sezioni">
+    <button class="tab" role="tab" id="tab-assunzione" aria-controls="p-assunzione" aria-selected="true">Una assunzione</button>
+    <button class="tab" role="tab" id="tab-canali"     aria-controls="p-canali"     aria-selected="false">L'efficienza dell'euro</button>
+    <button class="tab" role="tab" id="tab-scenari"    aria-controls="p-scenari"    aria-selected="false">Confronto scenari</button>
+    <button class="tab" role="tab" id="p-tab-organico" aria-controls="p-organico"   aria-selected="false">Scan dell'organico</button>
+    <button class="tab" role="tab" id="tab-metodo"     aria-controls="p-metodo"     aria-selected="false">Metodo e limiti</button>
+  </div>
+
+  <!-- ============ 1. UNA ASSUNZIONE ============ -->
+  <section class="panel" id="p-assunzione" role="tabpanel" aria-labelledby="tab-assunzione">
+    <div class="split">
+
+      <form class="card" id="form-assunzione" novalidate>
+        <h2>Il caso</h2>
+        <p class="hint">Solo i primi tre campi sono necessari per una prima stima.
+           Ogni campo in più chiude una domanda aperta e sblocca misure.</p>
+
+        <fieldset>
+          <legend>Retribuzione e azienda</legend>
+          <div class="field">
+            <label for="f-ral">Retribuzione annua lorda <span class="sub">€</span></label>
+            <input type="number" id="f-ral" value="30000" min="0" step="500" inputmode="numeric">
+          </div>
+          <div class="grid2">
+            <div class="field">
+              <label for="f-mensilita">Mensilità</label>
+              <select id="f-mensilita">
+                <option value="12">12</option>
+                <option value="13" selected>13</option>
+                <option value="14">14</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="f-dipendenti">Dipendenti in azienda</label>
+              <input type="number" id="f-dipendenti" value="20" min="0" step="1" inputmode="numeric">
+            </div>
+          </div>
+          <div class="field">
+            <label for="f-settore">Settore <span class="sub">(imposta l'aliquota datore)</span></label>
+            <select id="f-settore"></select>
+          </div>
+          <div class="grid2">
+            <div class="field">
+              <label for="f-aliquota">Aliquota datore <span class="sub">%</span></label>
+              <input type="number" id="f-aliquota" step="0.01" min="0" max="60" inputmode="decimal">
+            </div>
+            <div class="field">
+              <label for="f-inail">Tasso INAIL <span class="sub">%</span></label>
+              <input type="number" id="f-inail" value="0.50" step="0.05" min="0" max="20" inputmode="decimal">
+            </div>
+          </div>
+          <p class="hint" id="hint-aliquota"></p>
+        </fieldset>
+
+        <fieldset>
+          <legend>Rapporto di lavoro</legend>
+          <div class="grid2">
+            <div class="field">
+              <label for="f-contratto">Tipo di contratto</label>
+              <select id="f-contratto">
+                <option value="indeterminato" selected>Tempo indeterminato</option>
+                <option value="determinato">Tempo determinato</option>
+                <option value="apprendistato">Apprendistato professionalizzante</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="f-qualifica">Qualifica</label>
+              <select id="f-qualifica">
+                <option value="operaio">Operaio</option>
+                <option value="impiegato" selected>Impiegato</option>
+                <option value="quadro">Quadro</option>
+                <option value="dirigente">Dirigente</option>
+              </select>
+            </div>
+          </div>
+          <div class="grid2">
+            <div class="field">
+              <label for="f-data">Data di assunzione</label>
+              <input type="date" id="f-data" value="2026-09-15">
+            </div>
+            <div class="field">
+              <label for="f-parttime">Orario</label>
+              <select id="f-parttime">
+                <option value="no" selected>Tempo pieno</option>
+                <option value="si">Part-time</option>
+              </select>
+            </div>
+          </div>
+          <div class="field">
+            <label for="f-regione">Regione dell'unità produttiva</label>
+            <select id="f-regione"></select>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Profilo della persona</legend>
+          <div class="grid2">
+            <div class="field">
+              <label for="f-eta">Età</label>
+              <input type="number" id="f-eta" value="28" min="15" max="80" inputmode="numeric">
+            </div>
+            <div class="field">
+              <label for="f-sesso">Sesso</label>
+              <select id="f-sesso">
+                <option value="ND">Non indicato</option>
+                <option value="M" selected>Uomo</option>
+                <option value="F">Donna</option>
+              </select>
+            </div>
+          </div>
+          <div class="field">
+            <label for="f-mesi">Mesi senza impiego regolarmente retribuito
+              <span class="sub">(vuoto = non lo so)</span></label>
+            <input type="number" id="f-mesi" value="26" min="0" max="600" inputmode="numeric">
+          </div>
+          <div class="field">
+            <label for="f-titolo">Titolo di studio</label>
+            <select id="f-titolo">
+              <option value="">Non lo so</option>
+              <option value="nessuno">Nessuno</option>
+              <option value="secondariaInferiore">Licenza media</option>
+              <option value="secondariaSuperiore">Diploma</option>
+              <option value="terziario" selected>Laurea o superiore</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="f-disabilita">Disabilità</label>
+            <select id="f-disabilita">
+              <option value="no" selected>No</option>
+              <option value="riduzione67-79">Riduzione capacità 67-79%</option>
+              <option value="riduzione&gt;79">Riduzione capacità oltre 79%</option>
+              <option value="intellettivaPsichica&gt;45">Intellettiva o psichica oltre 45%</option>
+            </select>
+          </div>
+          <div class="grid2">
+            <div class="field">
+              <label for="f-adi">Percettore ADI o SFL</label>
+              <select id="f-adi"><option value="">Non lo so</option><option value="no" selected>No</option><option value="si">Sì</option></select>
+            </div>
+            <div class="field">
+              <label for="f-naspi">Percettore NASpI</label>
+              <select id="f-naspi"><option value="">Non lo so</option><option value="no" selected>No</option><option value="si">Sì</option></select>
+            </div>
+          </div>
+          <div class="grid2" id="box-naspi" hidden>
+            <div class="field">
+              <label for="f-naspi-imp">NASpI mensile <span class="sub">€</span></label>
+              <input type="number" id="f-naspi-imp" value="1100" min="0" step="50" inputmode="numeric">
+            </div>
+            <div class="field">
+              <label for="f-naspi-mesi">Mesi residui</label>
+              <input type="number" id="f-naspi-mesi" value="8" min="0" max="24" inputmode="numeric">
+            </div>
+          </div>
+          <div class="field">
+            <label for="f-figli">Figli minori a carico</label>
+            <input type="number" id="f-figli" value="0" min="0" max="12" inputmode="numeric">
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Condizioni generali · art. 31 D.Lgs. 150/2015</legend>
+          <p class="hint" style="margin-bottom:12px">
+            Se una di queste cade, cadono tutti gli incentivi insieme, anche quelli
+            già fruiti. Vengono valutate prima di ogni calcolo.</p>
+          <div class="field">
+            <label for="f-c-obbligo">L'assunzione attua un obbligo di legge o di CCNL?</label>
+            <select id="f-c-obbligo"><option value="">Non lo so</option><option value="no" selected>No</option><option value="si">Sì</option></select>
+          </div>
+          <div class="field">
+            <label for="f-c-precedenza">Esiste un diritto di precedenza di un altro lavoratore?</label>
+            <select id="f-c-precedenza"><option value="">Non lo so</option><option value="no" selected>No</option><option value="si">Sì</option></select>
+          </div>
+          <div class="field">
+            <label for="f-c-licenziamenti">Licenziamenti per GMO o collettivi negli ultimi 6 mesi, stessa qualifica?</label>
+            <select id="f-c-licenziamenti"><option value="">Non lo so</option><option value="no" selected>No</option><option value="si">Sì</option></select>
+          </div>
+          <div class="field">
+            <label for="f-c-sospensioni">Sospensioni in corso per crisi o riorganizzazione?</label>
+            <select id="f-c-sospensioni"><option value="">Non lo so</option><option value="no" selected>No</option><option value="si">Sì</option></select>
+          </div>
+          <div class="field">
+            <label for="f-c-collegata">La persona viene da un'azienda collegata che l'ha licenziata negli ultimi 6 mesi?</label>
+            <select id="f-c-collegata"><option value="">Non lo so</option><option value="no" selected>No</option><option value="si">Sì</option></select>
+          </div>
+          <div class="field">
+            <label for="f-c-durc">DURC regolare?</label>
+            <select id="f-c-durc"><option value="">Non lo so</option><option value="si" selected>Sì</option><option value="no">No</option></select>
+          </div>
+          <div class="field">
+            <label for="f-c-imponibile">L'azienda ha reddito imponibile capiente? <span class="sub">(per la maxi-deduzione)</span></label>
+            <select id="f-c-imponibile"><option value="">Non lo so</option><option value="si" selected>Sì</option><option value="no">No</option></select>
+          </div>
+          <div class="field">
+            <label for="f-c-incremento">L'assunzione produce incremento occupazionale netto?</label>
+            <select id="f-c-incremento"><option value="">Non lo so</option><option value="si" selected>Sì</option><option value="no">No</option></select>
+          </div>
+        </fieldset>
+      </form>
+
+      <div>
+        <div id="out-assunzione"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 2. EFFICIENZA DELL'EURO ============ -->
+  <section class="panel" id="p-canali" role="tabpanel" aria-labelledby="tab-canali" hidden>
+    <div class="split">
+      <form class="card" id="form-canali" novalidate>
+        <h2>Il budget</h2>
+        <p class="hint">Hai deciso di destinare una somma a una persona. La domanda
+           non è quanto le dai, è <em>come</em>: a parità di costo per l'azienda il
+           netto che arriva cambia più del doppio.</p>
+        <fieldset>
+          <legend>Parametri</legend>
+          <div class="field">
+            <label for="c-ral">RAL attuale <span class="sub">€</span></label>
+            <input type="number" id="c-ral" value="30000" min="0" step="500" inputmode="numeric">
+          </div>
+          <div class="field">
+            <label for="c-budget">Budget aggiuntivo lato azienda <span class="sub">€/anno</span></label>
+            <input type="number" id="c-budget" value="3000" min="0" step="250" inputmode="numeric">
+          </div>
+          <div class="grid2">
+            <div class="field">
+              <label for="c-settore">Settore</label>
+              <select id="c-settore"></select>
+            </div>
+            <div class="field">
+              <label for="c-figli">Figli a carico</label>
+              <input type="number" id="c-figli" value="0" min="0" max="12" inputmode="numeric">
+            </div>
+          </div>
+          <div class="field">
+            <label for="c-inail">Tasso INAIL <span class="sub">%</span></label>
+            <input type="number" id="c-inail" value="0.50" step="0.05" min="0" max="20" inputmode="decimal">
+          </div>
+        </fieldset>
+      </form>
+      <div><div id="out-canali"></div></div>
+    </div>
+  </section>
+
+  <!-- ============ 3. CONFRONTO SCENARI ============ -->
+  <section class="panel" id="p-scenari" role="tabpanel" aria-labelledby="tab-scenari" hidden>
+    <div style="padding-bottom:56px">
+      <div class="card">
+        <h2>Lo stesso ruolo, sei modi di coprirlo</h2>
+        <p class="hint">
+          Il confronto parte dai parametri della scheda «Una assunzione» e ne varia
+          un pezzo per volta. È ordinato per <strong>costo netto</strong> e non per
+          risparmio: un risparmio grande su un costo grande resta un costo grande,
+          ed è l'errore di lettura più frequente davanti a una tabella di incentivi.
+        </p>
+        <div id="out-scenari"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 4. SCAN DELL'ORGANICO ============ -->
+  <section class="panel" id="p-organico" role="tabpanel" aria-labelledby="p-tab-organico" hidden>
+    <div class="split">
+      <form class="card" id="form-organico" novalidate>
+        <h2>L'organico che hai già</h2>
+        <p class="hint">
+          Gli incentivi all'assunzione si guardano quando si assume. La
+          Decontribuzione Sud no: vale sullo stock. Incolla l'organico e vedi
+          quanto resta sul tavolo <em>oggi</em>, senza assumere nessuno.
+        </p>
+        <fieldset>
+          <legend>Dati</legend>
+          <div class="field">
+            <label for="o-dati">Una persona per riga, separata da punto e virgola
+              <span class="sub">nome; RAL; età; M/F; regione; mesi senza impiego prima dell'assunzione; mesi di anzianità</span></label>
+            <textarea id="o-dati" spellcheck="false"></textarea>
+          </div>
+          <div class="grid2">
+            <div class="field">
+              <label for="o-settore">Settore</label>
+              <select id="o-settore"></select>
+            </div>
+            <div class="field">
+              <label for="o-dipendenti">Dipendenti</label>
+              <input type="number" id="o-dipendenti" value="12" min="0" step="1" inputmode="numeric">
+            </div>
+          </div>
+          <button type="button" class="ghost" id="o-esempio">Carica un organico di esempio</button>
+        </fieldset>
+      </form>
+      <div><div id="out-organico"></div></div>
+    </div>
+  </section>
+
+  <!-- ============ 5. METODO ============ -->
+  <section class="panel" id="p-metodo" role="tabpanel" aria-labelledby="tab-metodo" hidden>
+    <div style="padding-bottom:56px; max-width:78ch">
+      <div id="out-metodo"></div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <h3>Che cos'è</h3>
+    <p>
+      Prototipo realizzato per il task di selezione del team Cost-Saving di Jet HR.
+      Non è un prodotto ufficiale Jet HR e non sostituisce il parere di un
+      consulente del lavoro. I parametri normativi sono ricostruiti da fonti
+      secondarie: ogni misura dichiara in pagina la propria norma, la prassi di
+      riferimento e il proprio livello di confidenza.
+    </p>
+    <p>
+      Codice e ragionamento completo su
+      <a href="https://github.com/tommyieri/Testjethr">github.com/tommyieri/Testjethr</a>.
+      Pagina gemella: <a href="index.html">dalla RAL al netto</a>.
+    </p>
+  </div>
+</footer>
+
+<script src="parametri-2026.js"></script>
+<script src="calcolo.js"></script>
+<script src="parametri-datore-2026.js"></script>
+<script src="costo-azienda.js"></script>
+<script src="agevolazioni-2026.js"></script>
+<script src="motore-agevolazioni.js"></script>
+<script src="interfaccia.js"></script>
+</body>
+</html>
