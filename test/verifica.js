@@ -599,6 +599,64 @@ gruppo("9. Coerenza del ruleset");
 }
 
 /* ==========================================================================
+ * 10. RISCONTRO CON DATI PUBBLICATI DA TERZI
+ *
+ * I test precedenti verificano la coerenza interna: che il motore faccia
+ * quello che il ruleset dice. Non dicono nulla su se il ruleset sia giusto.
+ *
+ * Questi tre lo mettono alla prova contro numeri pubblicati da Jet HR sul
+ * proprio sito, ricavati da un motore diverso, scritto da altri, su fonti
+ * che io non ho potuto raggiungere. È l'unico controllo indipendente
+ * disponibile in questo ambiente, e vale più di venti test di coerenza:
+ * un ruleset internamente perfetto ma tarato male li passerebbe tutti.
+ *
+ * Le tolleranze sono larghe di proposito. Le differenze residue sono
+ * attribuibili all'aliquota datoriale e al tasso INAIL assunti, che sono
+ * proprio i parametri che il motore dichiara come «tipici» invece che certi:
+ * pretendere una coincidenza al centesimo vorrebbe dire tarare il motore su
+ * un numero di cui non conosco le assunzioni.
+ * ========================================================================*/
+gruppo("10. Riscontro con dati pubblicati da terzi");
+{
+  /* Jet HR: una RAL di 30.000 € costa all'azienda circa 41.100 €. */
+  const c = COSTO.calcolaCostoAzienda(30000, {
+    mensilita: 13, settore: "commercio", tassoInail: 0.005
+  });
+  ok("costo azienda su RAL 30.000 € entro l'1,5% del dato pubblicato (~41.100 €)",
+     Math.abs(c.costoTotale - 41100) / 41100 < 0.015,
+     c.costoTotale.toFixed(2));
+
+  /* Jet HR: l'assunzione di una persona con disabilità grave vale 21.000 € di
+     risparmio sul primo anno, pari al 51% del costo azienda. Due numeri
+     indipendenti che devono tornare entrambi. */
+  const dis = analizza({
+    eta: 40, mesiSenzaImpiego: 30, disabilita: "riduzione>79",
+    dipendentiAzienda: 40, categoriaTutelata: true
+  });
+  quasi("incentivo disabilità grave, primo anno: 21.000 €",
+        21000, dis.sintesi.risparmioPrimoAnno, 1);
+  ok("e vale il 51% del costo azienda",
+     Math.abs(dis.sintesi.incidenzaRisparmioPrimoAnno - 0.51) < 0.01,
+     (dis.sintesi.incidenzaRisparmioPrimoAnno * 100).toFixed(1) + "%");
+
+  /* Jet HR: l'apprendistato professionalizzante fa risparmiare circa il 14%
+     del costo azienda, cioè circa 5.500 € su una RAL di 30.000 €. */
+  const ti = COSTO.calcolaCostoAzienda(30000, {
+    mensilita: 13, settore: "commercio", tassoInail: 0.005
+  });
+  const app = COSTO.calcolaCostoAzienda(30000, {
+    mensilita: 13, settore: "commercio", tassoInail: 0.005,
+    tipoContratto: "apprendistato", dipendentiAzienda: 40
+  });
+  const risparmio = ti.costoTotale - app.costoTotale;
+  quasi("apprendistato: circa 5.500 € di risparmio su RAL 30.000 €",
+        5500, risparmio, 200);
+  ok("apprendistato: circa il 14% del costo azienda",
+     Math.abs(risparmio / ti.costoTotale - 0.14) < 0.01,
+     (risparmio / ti.costoTotale * 100).toFixed(1) + "%");
+}
+
+/* ==========================================================================
  * ESITO
  * ========================================================================*/
 console.log("\n" + "=".repeat(58));
