@@ -169,16 +169,6 @@ ul { list-style: none; padding: 0; }
   line-height: 1.05; letter-spacing: -0.03em; margin-bottom: var(--s-3);
 }
 .hero-testo p { color: var(--muted); max-width: 60ch; font-size: 16.5px; }
-.vai-console {
-  display: inline-flex; align-items: center; gap: 8px; margin-top: 14px;
-  min-height: 44px; padding: 10px 16px; border-radius: 999px;
-  border: 1px solid var(--accent-line); background: var(--accent-soft);
-  color: var(--accent); font-size: 14.5px; font-weight: 600;
-  text-decoration: none; transition: background 150ms cubic-bezier(0.2,0,0,1);
-}
-.vai-console:hover { background: var(--surface); }
-.vai-console span { color: var(--muted); font-weight: 400; }
-@media (max-width: 520px) { .vai-console span { display: none; } }
 
 /* ---------- form ---------- */
 .segmented {
@@ -431,7 +421,6 @@ input:focus-visible, select:focus-visible {
   <header class="hero-testo">
     <h1>Dalla RAL al netto, senza sorprese</h1>
     <p>Scopri quanto ti resta davvero in busta paga. Inserisci il lordo annuale: il resto lo calcoliamo noi, voce per voce, con la formula applicata e la fonte normativa sempre a portata di clic. Anno fiscale 2026.</p>
-    <a class="vai-console" href="cost-saving.html">Console Cost-Saving <span>· lo stesso rapporto visto dal lato azienda →</span></a>
   </header>
 
   <section class="card" aria-labelledby="h-calc">
@@ -626,6 +615,7 @@ input:focus-visible, select:focus-visible {
     <p><strong>Prototipo realizzato per il task di selezione Product Builder di Jet HR.</strong> Non è un prodotto ufficiale Jet HR e non sostituisce il calcolo di un consulente del lavoro.</p>
     <p>Il marchio e i colori di questa pagina sono un'interpretazione grafica realizzata senza accesso al sito jethr.com, non un prelievo dal design system dell'azienda.</p>
     <p>Ogni riga del percorso dal lordo al netto è espandibile e mostra la formula applicata e la fonte normativa del parametro.</p>
+    <p><strong>Fuori dal perimetro della task</strong>, per curiosità mia: la <a href="cost-saving.html">Console Cost-Saving</a> guarda lo stesso rapporto di lavoro dal lato azienda — quanto costa la persona e quali agevolazioni contributive abbattono quel costo. Non fa parte della consegna, che assume espressamente un dipendente senza agevolazioni.</p>
   </footer>
 
 </main>
