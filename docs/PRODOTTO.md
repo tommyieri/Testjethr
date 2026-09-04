@@ -1,19 +1,28 @@
 # Dove si perdono i soldi, e perché ho costruito questo
 
-Note di prodotto per il task di selezione del team Cost-Saving di Jet HR.
-Il codice sta nella cartella sopra, la demo è [qui](https://tommyieri.github.io/Testjethr/cost-saving.html).
-Questo documento spiega il ragionamento che c'è dietro, che conta più del codice.
+> **Questo è materiale fuori dal perimetro della task.**
+> La consegna chiede un calcolatore dalla RAL al netto, per un dipendente
+> senza agevolazioni: quello è
+> [`index.html`](https://tommyieri.github.io/Testjethr/), documentato nel
+> [README](../README.md), e non dipende da nulla di ciò che è descritto qui.
+>
+> Quello che segue è una seconda pagina che ho costruito dopo, per capire
+> come apparisse lo stesso rapporto di lavoro dall'altro lato. La includo
+> perché il ragionamento mi sembra la parte interessante, non perché sia
+> parte della consegna.
+
+Demo: [Console Cost-Saving](https://tommyieri.github.io/Testjethr/cost-saving.html).
 
 ---
 
 ## 1. La domanda che ho cambiato
 
-Il primo prototipo di questo repo era un calcolatore dalla RAL al netto. È
-utile, ma risponde alla domanda del **dipendente**: quanto mi arriva in tasca.
+Il calcolatore della task risponde alla domanda del **dipendente**: quanto mi
+arriva in tasca. È la domanda giusta per chi firma un contratto.
 
-Il team Cost-Saving lavora sull'altra metà: quanto costa quella persona
-all'azienda, e quanto di quel costo si può legittimamente abbattere. Sono due
-mestieri diversi. Il primo è un calcolo, il secondo è una decisione.
+L'altra metà è: quanto costa quella persona all'azienda, e quanto di quel
+costo si può legittimamente abbattere. Sono due mestieri diversi. Il primo è
+un calcolo, il secondo è una decisione.
 
 Quindi la domanda giusta non è «quanto costa un dipendente», a cui rispondono
 già venti calcolatori online. È:

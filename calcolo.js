@@ -63,14 +63,36 @@
   }
 
   /* ---------- detrazioni ---------- */
-  /** Art. 13 TUIR. Rapportata ai giorni di lavoro nell'anno; il minimo
-   *  garantito fa da pavimento e non è rapportato. */
+  /** Art. 13 TUIR. Rapportata ai giorni di lavoro nell'anno.
+   *
+   *  Il minimo garantito — 690 €, elevati a 1.380 € per i rapporti a tempo
+   *  determinato — vale SOLO per il primo scaglione, quello della lettera a)
+   *  con reddito complessivo fino a 15.000 €. Le lettere b) e c) non lo
+   *  prevedono.
+   *
+   *  La distinzione sembra pedante e non lo è. Applicando il pavimento a
+   *  tutti gli scaglioni, nella fascia fra 46.000 e 50.000 € di imponibile —
+   *  dove la formula della lettera c) decade verso zero — la detrazione
+   *  veniva sovrastimata fino a 690 €. E soprattutto si creava una
+   *  discontinuità assurda al superamento dei 50.000 €: la detrazione
+   *  crollava da 690 a 0 di colpo, con il risultato che 1.000 € di lordo in
+   *  più facevano scendere il netto di 190 €.
+   *
+   *  Con il pavimento al suo posto la lettera c) decade in modo continuo
+   *  fino a zero esatto a 50.000 €, e la funzione torna monotona. È il tipo
+   *  di errore che nessun caso di prova "normale" mostra, perché vive in una
+   *  finestra di quattromila euro di imponibile.
+   *
+   *  Il minimo, quando si applica, non è rapportato ai giorni: fa da
+   *  pavimento all'importo già ragguagliato. */
   function calcolaDetrazioneLavoroDipendente(reddito, giorni, contratto) {
     const D = DETRAZIONI_LAVORO_DIPENDENTE;
     if (reddito <= 0) return 0;
-    let base;
+
+    let base, primoScaglione = false;
     if (reddito <= D.sogliaBase) {
       base = D.importoBase;
+      primoScaglione = true;
     } else if (reddito <= D.fascia2.limite) {
       base = D.fascia2.fisso +
         D.fascia2.variabile * ((D.fascia2.limite - reddito) / D.fascia2.ampiezza);
@@ -79,12 +101,17 @@
     } else {
       return 0;
     }
+
     let ragguagliata = base * (giorni / D.giorniAnno);
     const m = D.maggiorazione;
     if (reddito >= m.da && reddito <= m.a) ragguagliata += m.importo;
-    const minimo = contratto === "determinato"
-      ? D.minimoDeterminato : D.minimoIndeterminato;
-    return arrotonda(Math.max(ragguagliata, minimo));
+
+    if (primoScaglione) {
+      const minimo = contratto === "determinato"
+        ? D.minimoDeterminato : D.minimoIndeterminato;
+      ragguagliata = Math.max(ragguagliata, minimo);
+    }
+    return arrotonda(ragguagliata);
   }
 
   function calcolaDetrazioneConiuge(reddito, presente) {
